@@ -42,4 +42,7 @@ public final class MoreCollections {
         return GroupList.create(lists);
     }
 
+    public static <E> SortedSet<E> emptySortedSet() {
+        return (SortedSet<E>) EMPTY_SORTED_SET;
+    }
 }
