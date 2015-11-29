@@ -1,4 +1,4 @@
-package cn.yxffcode.easytookit.collection;
+package cn.yxffcode.easytookit.lang;
 
 import java.io.Closeable;
 import java.util.Iterator;

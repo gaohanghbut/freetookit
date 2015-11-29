@@ -1,6 +1,6 @@
 package cn.yxffcode.easytookit.io;
 
-import cn.yxffcode.easytookit.collection.CloseableIterable;
+import cn.yxffcode.easytookit.lang.CloseableIterable;
 import cn.yxffcode.easytookit.collection.ImmutableIterator;
 
 import java.io.BufferedReader;
