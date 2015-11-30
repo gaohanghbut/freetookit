@@ -8,7 +8,11 @@ import com.google.common.base.Optional;
  * <p>
  * 使用方式:<pre>
  *     {@code
- *          T result = FluentOptional.from(obj).flow(i -> i.xxx()).flow(i -> i.yyy()).flow(i -> i.zzz()).or(defaultValue);
+ *          T result = FluentOptional.from(obj)
+ *                                   .flow(i -> i.xxx())
+ *                                   .flow(i -> i.yyy())
+ *                                   .flow(i -> i.zzz())
+ *                                   .or(defaultValue);
  *     }
  * </pre>
  * 在整个过程中不需要担心会发生NPE
