@@ -1,4 +1,4 @@
-package cn.yxffcode.easytookit.logqueue;
+package cn.yxffcode.easytookit.utils;
 
 /**
  * @author gaohang on 15/9/12.

@@ -1,8 +1,5 @@
 package cn.yxffcode.easytookit.logqueue;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -27,13 +24,10 @@ import java.util.LinkedList;
  * <p>
  * It's better to invoke the {@link #rotate()} method before polling all remaining object.
  * <p>
- * 原来的{@link FSLogQueueOld}逻辑比较混乱，新的LogQueue使用队列取代整形状态
  *
  * @author gaohang on 15/9/11.
  */
 public class FSLogQueue<T> implements LogQueue<T> {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(FSLogQueue.class);
 
     private static final char   ENTITY_DELIMITER      = '\n';
     private static final char   LOG_FILE_ID_DELIMITER = '_';
@@ -46,21 +40,27 @@ public class FSLogQueue<T> implements LogQueue<T> {
     private final String         baseFilename;
     private final LinkedList<File> logFiles = new LinkedList<>();
 
-    public FSLogQueue(Codec<T> codec, String dir, final String baseFilename) {
+    public FSLogQueue(Codec<T> codec,
+                      String dir,
+                      final String baseFilename) {
         this(codec, dir, baseFilename, new FilenameFilter() {
             @Override
-            public boolean accept(File dir, String name) {
-                return !name.contains(CONSUMED_FLAG);
+            public boolean accept(File dir,
+                                  String name) {
+                return ! name.contains(CONSUMED_FLAG);
             }
         });
     }
 
-    public FSLogQueue(Codec<T> codec, String dir, final String baseFilename, FilenameFilter filter) {
+    public FSLogQueue(Codec<T> codec,
+                      String dir,
+                      final String baseFilename,
+                      FilenameFilter filter) {
         this.codec = codec;
         this.dir = dir;
         this.baseFilename = baseFilename;
         File file = new File(dir);
-        if (!file.exists()) {
+        if (! file.exists()) {
             file.mkdirs();
         }
         File[] files = file.listFiles(filter);
@@ -68,7 +68,7 @@ public class FSLogQueue<T> implements LogQueue<T> {
             for (File f : files) {
                 String name = f.getName();
 //                int index = name.lastIndexOf(LOG_FILE_ID_DELIMITER);
-                if (!name.contains(baseFilename)) {
+                if (! name.contains(baseFilename)) {
                     continue;
                 }
                 logFiles.add(f);
@@ -79,7 +79,7 @@ public class FSLogQueue<T> implements LogQueue<T> {
     @Override
     public synchronized void rotate() throws RotateQueueException {
         File file = new File(dir, baseFilename + LOG_FILE_ID_DELIMITER + System.nanoTime());
-        if (!file.exists()) {
+        if (! file.exists()) {
             try {
                 file.createNewFile();
             } catch (IOException e) {
@@ -93,7 +93,6 @@ public class FSLogQueue<T> implements LogQueue<T> {
         }
         try {
             out = new BufferedWriter(new FileWriter(file));
-            LOGGER.info("current log file:{}", file.getName());
         } catch (IOException e) {
             throw new RotateQueueException(e);
         }
@@ -104,7 +103,6 @@ public class FSLogQueue<T> implements LogQueue<T> {
             try {
                 out.flush();
             } catch (IOException ignore) {
-                LOGGER.error("flush failed");
             } finally {
                 try {
                     out.close();
@@ -126,7 +124,6 @@ public class FSLogQueue<T> implements LogQueue<T> {
         }
         try {
             String encoded = codec.encode(obj);
-            LOGGER.info("offer:{}", encoded);
             out.write(encoded);
             out.write(ENTITY_DELIMITER);
             out.flush();
