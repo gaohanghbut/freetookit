@@ -3,7 +3,7 @@ package cn.yxffcode.easytookit.lang;
 import java.util.Calendar;
 
 /**
- * 表示日期的域(年,月,日)的枚举
+ * 表示日期的域(年,月,日)的枚举,在{@link Calendar}类中,年/月/日三个域都是使用整型常量表示,意思不明确,且容易出错
  *
  * @author gaohang on 15/11/29.
  */
