@@ -1,8 +1,9 @@
 package cn.yxffcode.easytookit.lang;
 
 /**
- * 在分词过程中使用的是int类型的数据,使用面向int类型数据的StringBuilder性能表现更好,
- * 此工具类用于取代{@link StringBuilder}
+ * 此工具类用于在需要append(int)的场景下取代{@link StringBuilder},可取得更好的性能提升
+ * <p>
+ * 最初出来在分词器的实现中(https://github.com/gaohanghbut/easyanalyzer)
  *
  * @author gaohang on 15/11/17.
  */
