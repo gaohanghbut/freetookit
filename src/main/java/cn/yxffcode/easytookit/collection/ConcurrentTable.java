@@ -18,7 +18,6 @@ import java.util.Set;
  * 删除过程也不是线程安全的，所以在{@link #put(Object, Object, Object)},{@link #remove(Object, Object)}, 和{@link
  * #putAll(Table)}三个方法需要加锁
  *
- *
  * @author gaohang on 15/8/12.
  * @see java.util.concurrent.ConcurrentMap
  * @see java.util.concurrent.ConcurrentHashMap
@@ -27,9 +26,10 @@ import java.util.Set;
  */
 public class ConcurrentTable<R, C, V> implements Table<R, C, V>, Serializable {
 
-    private static final long           serialVersionUID = 8050987423067929531L;
-    private              Table<R, C, V> delegate         = MoreCollections.newConcurrentMapBasedTable();
-    private              Object         dataWriteLock    = new Object();
+    private static final long serialVersionUID = 8050987423067929531L;
+
+    private Table<R, C, V> delegate      = MoreCollections.newConcurrentMapBasedTable();
+    private Object         dataWriteLock = new Object();
 
     public ConcurrentTable() {
     }
