@@ -45,7 +45,7 @@ public final class IOStreams {
      * </pre>
      * 换成此方法，代码如下：
      * <pre>
-     *     for (String line : Streams.lines(reader)) {
+     *     for (String line : IOStreams.lines(reader)) {
      *         if (line...) {
      *             break;//停止读，因为是lazy的，当前行处理结束前，下一行不会被读入到内存
      *         }
