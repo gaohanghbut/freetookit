@@ -31,7 +31,6 @@ public class FSLogQueue<T> implements LogQueue<T> {
 
     private static final char   ENTITY_DELIMITER      = '\n';
     private static final char   LOG_FILE_ID_DELIMITER = '_';
-    private static final String CONSUMED_FLAG         = "_at_";
 
     private final Codec<T>       codec;
     private       BufferedWriter out;
@@ -47,7 +46,7 @@ public class FSLogQueue<T> implements LogQueue<T> {
             @Override
             public boolean accept(File dir,
                                   String name) {
-                return ! name.contains(CONSUMED_FLAG);
+                return true;
             }
         });
     }

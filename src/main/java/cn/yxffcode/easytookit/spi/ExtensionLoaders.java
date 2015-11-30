@@ -1,10 +1,9 @@
 package cn.yxffcode.easytookit.spi;
 
-import io.netty.util.internal.chmv8.ConcurrentHashMapV8;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ServiceLoader;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 /**
@@ -15,7 +14,7 @@ public final class ExtensionLoaders {
     }
 
     private static final ConcurrentMap<Class<?>, ExtensionLoader<?>> extensionLoaderMap =
-            new ConcurrentHashMapV8<Class<?>, ExtensionLoader<?>>();
+            new ConcurrentHashMap<>();
 
     private static final Object extensionMapLock = new Object();
 

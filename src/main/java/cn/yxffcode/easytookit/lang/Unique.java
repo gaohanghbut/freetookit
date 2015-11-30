@@ -1,7 +1,7 @@
 package cn.yxffcode.easytookit.lang;
 
 /**
- * 表示唯一的
+ * 表示对象是唯一的
  *
  * @author gaohang on 15/11/30.
  */
