@@ -34,7 +34,7 @@ public abstract class IndexBasedComparator<ID, T> implements Comparator<T> {
     @Override
     public int compare(final T left,
                        final T right) {
-        if (reverse) {
+        if (!reverse) {
             return indexes.get(getId(left))
                           .compareTo(indexes.get(getId(right)));
         } else {
