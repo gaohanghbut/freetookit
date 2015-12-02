@@ -20,4 +20,7 @@ public final class StringUtils {
         return true;
     }
 
+    public static boolean equalsIgnoreCase(String left, String right) {
+        return (left == right) || (left != null && left.equalsIgnoreCase(right));
+    }
 }

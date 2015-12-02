@@ -2,7 +2,6 @@ package cn.yxffcode.easytookit.collection;
 
 import com.google.common.collect.Table;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
@@ -24,7 +23,7 @@ import java.util.Set;
  * @see com.google.common.collect.HashBasedTable
  * <p>
  */
-public class ConcurrentTable<R, C, V> implements Table<R, C, V>, Serializable {
+public class ConcurrentTable<R, C, V> implements Table<R, C, V> {
 
     private static final long serialVersionUID = 8050987423067929531L;
 

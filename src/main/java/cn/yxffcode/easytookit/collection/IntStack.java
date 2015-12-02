@@ -1,11 +1,15 @@
 package cn.yxffcode.easytookit.collection;
 
+import java.io.Serializable;
+
 /**
  * @author gaohang on 15/11/18.
  */
-public class IntStack {
+public class IntStack implements Serializable {
 
-    private static final int INIT_SIZE = 10;
+    private static final long serialVersionUID = - 7535273734926642719L;
+    private static final int  INIT_SIZE        = 10;
+    
     private int[] stack;
     private int   top;
 
