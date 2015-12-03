@@ -17,9 +17,7 @@ package cn.yxffcode.easytookit.utils;
 
 import sun.misc.Unsafe;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.nio.Buffer;
 import java.nio.ByteBuffer;
 
 /**
@@ -33,8 +31,6 @@ final class PlatformDependent0 {
     private static final boolean UNALIGNED;
 
     static {
-        ByteBuffer direct = ByteBuffer.allocateDirect(1);
-
         UNSAFE = UnsafeUtils.UNSAFE;
 
         if (UNSAFE == null) {
