@@ -28,7 +28,7 @@ import java.util.regex.PatternSyntaxException;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public final class AsciiString extends ByteString implements CharSequence, Comparable<CharSequence> {
+public final class AsciiString extends BaseByteString implements CharSequence, Comparable<CharSequence> {
 
     private static final char MAX_CHAR_VALUE = 255;
     public static final AsciiString EMPTY_STRING = new AsciiString("");
@@ -63,7 +63,7 @@ public final class AsciiString extends ByteString implements CharSequence, Compa
      */
     private static final ByteStringFactory DEFAULT_FACTORY = new ByteStringFactory() {
         @Override
-        public ByteString newInstance(byte[] value, int start, int length, boolean copy) {
+        public BaseByteString newInstance(byte[] value, int start, int length, boolean copy) {
             return new AsciiString(value, start, length, copy);
         }
     };
@@ -91,7 +91,7 @@ public final class AsciiString extends ByteString implements CharSequence, Compa
         super(value, start, length, copy);
     }
 
-    public AsciiString(ByteString value, boolean copy) {
+    public AsciiString(BaseByteString value, boolean copy) {
         super(value, copy);
     }
 
