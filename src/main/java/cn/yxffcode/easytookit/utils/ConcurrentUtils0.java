@@ -20,7 +20,7 @@ import sun.misc.Unsafe;
 import java.lang.reflect.Method;
 
 /**
- * The {@link ConcurrentUtils} operations which requires access to {@code sun.misc.*}.
+ * 从netty中copy
  */
 final class ConcurrentUtils0 {
 

@@ -16,12 +16,7 @@
 package cn.yxffcode.easytookit.utils;
 
 /**
- * Utility that detects various properties specific to the current runtime
- * environment, such as Java version and the availability of the
- * {@code sun.misc.Unsafe} object.
- * <p/>
- * You can disable the use of {@code sun.misc.Unsafe} if you specify
- * the system property <strong>io.netty.noUnsafe</strong>.
+ * 从netty中copy
  */
 public final class ConcurrentUtils {
     /**

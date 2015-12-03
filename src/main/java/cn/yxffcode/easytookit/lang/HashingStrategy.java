@@ -15,9 +15,6 @@
  */
 package cn.yxffcode.easytookit.lang;
 
-/**
- * Abstraction for hash code generation and equality comparison.
- */
 public interface HashingStrategy<T> {
 
     int hashCode(T obj);

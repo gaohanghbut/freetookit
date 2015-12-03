@@ -2,6 +2,8 @@ package cn.yxffcode.easytookit.collection;
 
 import java.io.Serializable;
 import java.util.AbstractList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -12,6 +14,14 @@ import java.util.Set;
 public class SingleCollection<E> extends AbstractList<E> implements Set<E>, Serializable {
 
     public static <E> Set<E> newSingleSet(E elem) {
+        return new SingleCollection<>(elem);
+    }
+
+    public static <E> List<E> newSingleList(E elem) {
+        return new SingleCollection<>(elem);
+    }
+
+    public static <E> Collection<E> newSingleCollection(E elem) {
         return new SingleCollection<>(elem);
     }
 

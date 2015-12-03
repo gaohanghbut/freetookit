@@ -12,6 +12,9 @@ import java.util.Arrays;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+/**
+ * 从netty里copy而来
+ */
 public class BaseByteString {
     protected interface ByteStringFactory {
         BaseByteString newInstance(byte[] value,

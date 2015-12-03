@@ -1,11 +1,20 @@
 package cn.yxffcode.easytookit.lang;
 
 /**
- * 在分词过程中使用的是int类型的数据,使用面向int类型数据的StringBuilder性能表现更好,
- * 此工具类用于取代{@link StringBuilder}
+ * 使用面向int类型数据的StringBuilder性能表现更好,
+ * 此工具类在只有append(int)的场景下可用于取代{@link StringBuilder}
+ * <pre>
+ *     {@code
+ *          IntArrayStringBuilder appender = new IntArrayStringBuilder();
+ *          try (Reader in = xxx) {
+ *              appender.append(in.read());
+ *          }
+ *          return appender.toString();
+ *     }
+ * </pre>
  * <p/>
  * 支持只读模式下的切片{@link #slice(int, int)},切片表示此StringBuilder的一个部分,
- * 是一个视图,会随着原始StringBuilder的修改而变动
+ * 是一个视图,会随着原始StringBuilder的修改而变动,但不能直接修改一个切片
  *
  * @author gaohang on 15/11/17.
  */
@@ -126,6 +135,9 @@ public class IntArrayStringBuilder {
         if (this == o) {
             return true;
         }
+        if (! getClass().isInstance(o)) {
+            return false;
+        }
         final IntArrayStringBuilder that = (IntArrayStringBuilder) o;
         if (this.length() != that.length()) {
             return false;
@@ -236,11 +248,6 @@ public class IntArrayStringBuilder {
         public IntArrayStringBuilder slice(final int offset,
                                            final int length) {
             return delegate.slice(this.offset + offset, length);
-        }
-
-        @Override
-        public boolean equals(final Object o) {
-            return super.equals(o);
         }
 
     }

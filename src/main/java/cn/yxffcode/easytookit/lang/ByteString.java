@@ -3,6 +3,8 @@ package cn.yxffcode.easytookit.lang;
 import java.nio.charset.Charset;
 
 /**
+ * 更能用的ByteString
+ *
  * @author gaohang on 15/12/3.
  */
 public class ByteString extends BaseByteString {
