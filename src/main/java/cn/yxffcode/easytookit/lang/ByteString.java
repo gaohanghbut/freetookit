@@ -1,7 +1,7 @@
 package cn.yxffcode.easytookit.lang;
 
 import cn.yxffcode.easytookit.io.CharsetUtil;
-import cn.yxffcode.easytookit.utils.PlatformDependent;
+import cn.yxffcode.easytookit.utils.ConcurrentUtils;
 import cn.yxffcode.easytookit.utils.StringUtils;
 
 import java.nio.ByteBuffer;
@@ -526,8 +526,8 @@ public class ByteString {
 
         ByteString other = (ByteString) obj;
         return hashCode() == other.hashCode() &&
-               PlatformDependent.equals(array(), arrayOffset(), arrayOffset() + length(),
-                                        other.array(), other.arrayOffset(), other.arrayOffset() + other.length());
+               ConcurrentUtils.equals(array(), arrayOffset(), arrayOffset() + length(),
+                                      other.array(), other.arrayOffset(), other.arrayOffset() + other.length());
     }
 
     /**

@@ -15,8 +15,6 @@
  */
 package cn.yxffcode.easytookit.utils;
 
-import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
-
 /**
  * Utility that detects various properties specific to the current runtime
  * environment, such as Java version and the availability of the
@@ -25,7 +23,7 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
  * You can disable the use of {@code sun.misc.Unsafe} if you specify
  * the system property <strong>io.netty.noUnsafe</strong>.
  */
-public final class PlatformDependent {
+public final class ConcurrentUtils {
     /**
      * Compare two {@code byte} arrays for equality. For performance reasons no bounds checking on the
      * parameters is performed.
@@ -43,10 +41,10 @@ public final class PlatformDependent {
                                  byte[] bytes2,
                                  int startPos2,
                                  int endPos2) {
-        if (! PlatformDependent0.unalignedAccess()) {
+        if (! ConcurrentUtils0.unalignedAccess()) {
             return safeEquals(bytes1, startPos1, endPos1, bytes2, startPos2, endPos2);
         }
-        return PlatformDependent0.equals(bytes1, startPos1, endPos1, bytes2, startPos2, endPos2);
+        return ConcurrentUtils0.equals(bytes1, startPos1, endPos1, bytes2, startPos2, endPos2);
     }
 
     private static boolean safeEquals(byte[] bytes1,
@@ -69,19 +67,7 @@ public final class PlatformDependent {
         return true;
     }
 
-    public static <U, W> AtomicReferenceFieldUpdater<U, W> newAtomicReferenceFieldUpdater(Class<U> tclass,
-                                                                                          String fieldName) {
-        if (UnsafeUtils.UNSAFE != null) {
-            try {
-                return PlatformDependent0.newAtomicReferenceFieldUpdater(tclass, fieldName);
-            } catch (Throwable ignore) {
-                // ignore
-            }
-        }
-        return null;
-    }
-
-    private PlatformDependent() {
+    private ConcurrentUtils() {
         // only static method supported
     }
 }

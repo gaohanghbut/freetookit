@@ -15,16 +15,14 @@
  */
 package cn.yxffcode.easytookit.utils;
 
-import cn.yxffcode.easytookit.concurrent.UnsafeAtomicReferenceFieldUpdater;
 import sun.misc.Unsafe;
 
 import java.lang.reflect.Method;
-import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 /**
- * The {@link PlatformDependent} operations which requires access to {@code sun.misc.*}.
+ * The {@link ConcurrentUtils} operations which requires access to {@code sun.misc.*}.
  */
-public final class PlatformDependent0 {
+final class ConcurrentUtils0 {
 
     static final         Unsafe UNSAFE;
     private static final long   BYTE_ARRAY_BASE_OFFSET;
@@ -96,13 +94,7 @@ public final class PlatformDependent0 {
         return bytes1[startPos1] == bytes2[startPos2];
     }
 
-    static <U, W> AtomicReferenceFieldUpdater<U, W> newAtomicReferenceFieldUpdater(
-            Class<U> tclass,
-            String fieldName) throws Exception {
-        return new UnsafeAtomicReferenceFieldUpdater<U, W>(UNSAFE, tclass, fieldName);
-    }
-
-    private PlatformDependent0() {
+    private ConcurrentUtils0() {
     }
 
 }
