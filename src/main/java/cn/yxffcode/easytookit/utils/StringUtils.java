@@ -7,6 +7,8 @@ public final class StringUtils {
     private StringUtils() {
     }
 
+    public static final String EMPTY = "";
+
     public static boolean isBlank(String value) {
         int strLen;
         if (value == null || (strLen = value.length()) == 0) {
