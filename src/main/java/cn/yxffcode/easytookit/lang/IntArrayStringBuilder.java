@@ -1,9 +1,11 @@
 package cn.yxffcode.easytookit.lang;
 
 /**
- * 此工具类用于在需要append(int)的场景下取代{@link StringBuilder},可取得更好的性能提升
- * <p>
- * 最初出来在分词器的实现中(https://github.com/gaohanghbut/easyanalyzer)
+ * 在分词过程中使用的是int类型的数据,使用面向int类型数据的StringBuilder性能表现更好,
+ * 此工具类用于取代{@link StringBuilder}
+ * <p/>
+ * 支持只读模式下的切片{@link #slice(int, int)},切片表示此StringBuilder的一个部分,
+ * 是一个视图,会随着原始StringBuilder的修改而变动
  *
  * @author gaohang on 15/11/17.
  */
@@ -69,32 +71,177 @@ public class IntArrayStringBuilder {
 
     public String toString(int off,
                            int len) {
-        return new String(toCharArray(off,
-                                      len));
+        return new String(toCharArray(off, len));
     }
 
     public char[] toCharArray() {
-        return toCharArray(0,
-                           pos);
+        return toCharArray(0, pos);
+    }
+
+    public boolean endWith(IntArrayStringBuilder appender) {
+        int thisLength = length();
+        int thatLength = appender.length();
+        if (thisLength < thatLength) {
+            return false;
+        }
+        if (thisLength == thatLength) {
+            return equals(appender);
+        }
+        for (int i = thatLength - 1, j = thisLength - 1; i >= 0; -- i, -- j) {
+            if (appender.element(i) != element(j)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean startWith(IntArrayStringBuilder appender) {
+        int thisLength = length();
+        int thatLength = appender.length();
+        if (thisLength < thatLength) {
+            return false;
+        }
+        if (thisLength == thatLength) {
+            return equals(appender);
+        }
+        for (int i = 0, j = 0; i < appender.length(); ++ i, ++ j) {
+            if (appender.element(i) != element(j)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public IntArrayStringBuilder slice(int offset,
+                                       int length) {
+        return new SliceStringBuilder(this, offset, length);
+    }
+
+    public IntArrayStringBuilder slice(int offset) {
+        return slice(offset, this.length() - offset);
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        final IntArrayStringBuilder that = (IntArrayStringBuilder) o;
+        if (this.length() != that.length()) {
+            return false;
+        }
+        for (int i = 0; i < length(); i++) {
+            if (this.element(i) != that.element(i)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public char[] toCharArray(int off,
                               int len) {
         char[] chars = new char[len];
         for (int i = off, j = len + off; i < j; i++) {
-            chars[i] = (char) dest[i];
+            chars[i - off] = (char) dest[i];
         }
         return chars;
     }
 
     private void resize() {
         int[] ndest = new int[dest.length * 2];
-        System.arraycopy(dest,
-                         0,
-                         ndest,
-                         0,
-                         pos);
+        System.arraycopy(dest, 0, ndest, 0, pos);
         this.dest = ndest;
     }
 
+    private final class SliceStringBuilder extends IntArrayStringBuilder {
+
+        private final IntArrayStringBuilder delegate;
+        private final int                   offset;
+        private final int                   length;
+
+        private SliceStringBuilder(final IntArrayStringBuilder delegate,
+                                   final int offset,
+                                   final int length) {
+            super(0);
+            this.delegate = delegate;
+            this.offset = offset;
+            this.length = length;
+        }
+
+
+        @Override
+        public char[] toCharArray(final int off,
+                                  final int len) {
+            return super.toCharArray(off + this.offset, len);
+        }
+
+        @Override
+        public IntArrayStringBuilder append(final int c) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public IntArrayStringBuilder append(final int... cs) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public int element(final int index) {
+            return delegate.element(index + this.offset);
+        }
+
+        @Override
+        public void clear() {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public int length() {
+            return this.length;
+        }
+
+        @Override
+        public boolean isEmpty() {
+            return this.length == 0;
+        }
+
+        @Override
+        public boolean isBlank() {
+            for (int i = this.offset, j = this.offset + this.length; i < j; i++) {
+                if (! Character.isWhitespace(delegate.element(i))) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        @Override
+        public String toString() {
+            return delegate.toString(this.offset, this.length);
+        }
+
+        @Override
+        public String toString(final int off,
+                               final int len) {
+            return delegate.toString(this.offset + len, len);
+        }
+
+        @Override
+        public char[] toCharArray() {
+            return delegate.toCharArray(this.offset, this.length);
+        }
+
+
+        @Override
+        public IntArrayStringBuilder slice(final int offset,
+                                           final int length) {
+            return delegate.slice(this.offset + offset, length);
+        }
+
+        @Override
+        public boolean equals(final Object o) {
+            return super.equals(o);
+        }
+
+    }
 }
