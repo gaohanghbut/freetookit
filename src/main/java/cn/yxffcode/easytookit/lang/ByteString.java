@@ -48,11 +48,6 @@ public class ByteString extends BaseByteString {
         return toString(charset, start, end);
     }
 
-    public static void main(String[] args) {
-        ByteString str = new ByteString("厘米库".getBytes());
-        System.out.println(str);
-    }
-
     @Override
     public BaseByteString subSequence(int start,
                                       int end,
