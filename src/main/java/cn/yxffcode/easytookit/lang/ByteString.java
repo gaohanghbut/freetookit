@@ -1,6 +1,7 @@
 package cn.yxffcode.easytookit.lang;
 
 import cn.yxffcode.easytookit.io.CharsetUtil;
+import cn.yxffcode.easytookit.utils.PlatformDependent;
 import cn.yxffcode.easytookit.utils.StringUtils;
 
 import java.nio.ByteBuffer;

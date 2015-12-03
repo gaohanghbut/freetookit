@@ -13,10 +13,8 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package cn.yxffcode.easytookit.lang;
+package cn.yxffcode.easytookit.utils;
 
-import cn.yxffcode.easytookit.utils.StringUtils;
-import cn.yxffcode.easytookit.utils.UnsafeUtils;
 import sun.misc.Unsafe;
 
 import java.lang.reflect.Field;
