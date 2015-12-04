@@ -1,5 +1,6 @@
 package cn.yxffcode.easytookit.spi;
 
+import cn.yxffcode.easytookit.concurrent.DCL;
 import com.google.common.base.Splitter;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Maps;
@@ -69,18 +70,19 @@ public final class ExtensionLoaders {
         }
 
         public List<T> getExtensions() {
-            if (cache == null) {
-                synchronized (this) {
-                    if (cache == null) {
-                        List<T> services = new ArrayList<T>();
-                        for (T service : serviceLoader) {
-                            services.add(service);
-                        }
-                        cache = services;
-                    }
-                }
-            }
+            DCL.create()
+               .check(v -> this.cache != null)
+               .absent(v -> this.cache = doLoad())
+               .done(null);
             return cache;
+        }
+
+        private List<T> doLoad() {
+            List<T> services = new ArrayList<T>();
+            for (T service : serviceLoader) {
+                services.add(service);
+            }
+            return services;
         }
 
         public T getExtension() {
@@ -118,7 +120,7 @@ public final class ExtensionLoaders {
 
         @Override
         public T getExtension(final String name) {
-            return cache.get(name);
+            return getExtensions().get(name);
         }
     }
 }
