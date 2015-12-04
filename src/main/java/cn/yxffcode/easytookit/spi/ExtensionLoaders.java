@@ -1,10 +1,24 @@
 package cn.yxffcode.easytookit.spi;
 
+import com.google.common.base.Splitter;
+import com.google.common.base.Throwables;
+import com.google.common.collect.Maps;
+
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+
+import static cn.yxffcode.easytookit.io.IOStreams.lines;
+import static cn.yxffcode.easytookit.io.IOStreams.toBufferedReader;
+import static cn.yxffcode.easytookit.utils.Reflections.defaultConstruct;
+import static com.google.common.base.Preconditions.checkState;
+import static java.util.Collections.unmodifiableMap;
 
 /**
  * Created by hang.gao on 2015/6/9.
@@ -13,21 +27,34 @@ public final class ExtensionLoaders {
     private ExtensionLoaders() {
     }
 
-    private static final ConcurrentMap<Class<?>, ExtensionLoader<?>> extensionLoaderMap =
-            new ConcurrentHashMap<>();
+    private static final ConcurrentMap<Class<?>, ExtensionLoader<?>>      extensionLoaderMap      = new ConcurrentHashMap<>();
+    private static final ConcurrentMap<Class<?>, NamedExtensionLoader<?>> namedExtensionLoaderMap = new ConcurrentHashMap<>();
 
-    private static final Object extensionMapLock = new Object();
+    private static final Object extensionMapLock      = new Object();
+    private static final Object namedExtensionMapLock = new Object();
 
-    public static <T>ExtensionLoader<T> getExtensionLoader(Class<T> type) {
-        if (!extensionLoaderMap.containsKey(type)) {
+    public static <T> ExtensionLoader<T> getExtensionLoader(Class<T> type) {
+        if (! extensionLoaderMap.containsKey(type)) {
             synchronized (extensionMapLock) {
-                if (!extensionLoaderMap.containsKey(type)) {
-                    extensionLoaderMap.put(type,
-                            new DefaultExtensionLoader<T>(type, Thread.currentThread().getContextClassLoader()));
+                if (! extensionLoaderMap.containsKey(type)) {
+                    extensionLoaderMap.put(type, new DefaultExtensionLoader<T>(type, Thread.currentThread()
+                                                                                           .getContextClassLoader()));
                 }
             }
         }
         return (ExtensionLoader<T>) extensionLoaderMap.get(type);
+    }
+
+    public static <T> NamedExtensionLoader<T> getNamedExtensionLoader(Class<T> type) {
+        if (! namedExtensionLoaderMap.containsKey(type)) {
+            synchronized (namedExtensionMapLock) {
+                if (! namedExtensionLoaderMap.containsKey(type)) {
+                    namedExtensionLoaderMap.put(type, new DefaultNamedExtensionLoader<>(type, Thread.currentThread()
+                                                                                                    .getContextClassLoader()));
+                }
+            }
+        }
+        return (NamedExtensionLoader<T>) namedExtensionLoaderMap.get(type);
     }
 
     private static final class DefaultExtensionLoader<T> implements ExtensionLoader<T> {
@@ -36,7 +63,8 @@ public final class ExtensionLoaders {
 
         private volatile List<T> cache;
 
-        public DefaultExtensionLoader(Class<T> type, ClassLoader classLoader) {
+        public DefaultExtensionLoader(Class<T> type,
+                                      ClassLoader classLoader) {
             serviceLoader = ServiceLoader.load(type, classLoader);
         }
 
@@ -57,6 +85,40 @@ public final class ExtensionLoaders {
 
         public T getExtension() {
             return getExtensions().get(0);
+        }
+    }
+
+    private static final class DefaultNamedExtensionLoader<T> implements NamedExtensionLoader<T> {
+        private static final String   PREFIX              = "META-INF/services/";
+        private static final Splitter NAMED_IMPL_SPLITTER = Splitter.on('=')
+                                                                    .trimResults();
+
+        private final Map<String, T> cache;
+
+        private DefaultNamedExtensionLoader(final Class<T> type,
+                                            final ClassLoader classLoader) {
+            HashMap<String, T> cache = Maps.newHashMap();
+            try (BufferedReader in = toBufferedReader(classLoader.getSystemResourceAsStream(PREFIX + type.getName()))) {
+                for (String line : lines(in)) {
+                    List<String> extension = NAMED_IMPL_SPLITTER.splitToList(line);
+                    checkState(extension.size() == 2, "SPI描述文件格式错误,使用key=value的方式表示, %s", line);
+                    cache.put(extension.get(0), defaultConstruct(type));
+                }
+            } catch (IOException e) {
+                Throwables.propagate(e);
+            }
+            this.cache = unmodifiableMap(cache);
+        }
+
+
+        @Override
+        public Map<String, T> getExtensions() {
+            return cache;
+        }
+
+        @Override
+        public T getExtension(final String name) {
+            return cache.get(name);
         }
     }
 }
