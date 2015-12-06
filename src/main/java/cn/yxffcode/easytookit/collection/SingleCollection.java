@@ -5,10 +5,11 @@ import java.util.AbstractList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
-import java.util.Spliterator;
 
 /**
  * 只包含一个元素的集合
+ * <p/>
+ * FIXME:同时实现List和Set接口也许不好
  *
  * @author gaohang on 15/9/24.
  */
@@ -38,11 +39,6 @@ public class SingleCollection<E> extends AbstractList<E> implements Set<E>, Seri
             throw new IndexOutOfBoundsException();
         }
         return elem;
-    }
-
-    @Override
-    public Spliterator<E> spliterator() {
-        return super.spliterator();
     }
 
     @Override

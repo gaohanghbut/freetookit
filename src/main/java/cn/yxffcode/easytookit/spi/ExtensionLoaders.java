@@ -1,6 +1,8 @@
 package cn.yxffcode.easytookit.spi;
 
 import cn.yxffcode.easytookit.concurrent.DCL;
+import cn.yxffcode.easytookit.lang.Consumer;
+import com.google.common.base.Predicate;
 import com.google.common.base.Splitter;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Maps;
@@ -70,10 +72,24 @@ public final class ExtensionLoaders {
         }
 
         public List<T> getExtensions() {
+//            for jdk8:
+//            DCL.create()
+//               .check(v -> this.cache != null)
+//               .absent(v -> this.cache = doLoad())
+//               .done(null);
             DCL.create()
-               .check(v -> this.cache != null)
-               .absent(v -> this.cache = doLoad())
-               .done(null);
+               .check(new Predicate<Object>() {
+                   @Override
+                   public boolean apply(final Object input) {
+                       return cache != null;
+                   }
+               })
+               .absent(new Consumer<Object>() {
+                   @Override
+                   public void consume(final Object elem) {
+                       cache = doLoad();
+                   }
+               });
             return cache;
         }
 
