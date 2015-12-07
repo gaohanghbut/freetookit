@@ -28,6 +28,10 @@ public class Automaton {
      * 一次转换的宽度
      */
     private static final int TRANSITION_WIDTH = 2;
+    /**
+     * {@link #transitions}数组中,第一个元素用来表示没有转换,所有状态的初始值都指向transition[0]
+     */
+    private static final int TRANSITION_HEAD  = 0;
 
     /**
      * 状态数组,一个状态由两个元素表示,第一个元素表示该状态的出度在{@link #transitions}数组中的起始位置,
@@ -66,7 +70,7 @@ public class Automaton {
         if (states.length <= fromState * STATE_WIDTH) {
             states = grow(states, STATE_WIDTH);
         }
-        if (states[currentState] == 0) {
+        if (states[currentState] == TRANSITION_HEAD) {
             states[currentState] = nextTransition;
         }
         states[currentState + 1]++;
