@@ -89,7 +89,8 @@ public final class ExtensionLoaders {
                    public void consume(final Object elem) {
                        cache = doLoad();
                    }
-               });
+               })
+               .done(null);
             return cache;
         }
 
