@@ -23,4 +23,8 @@ public class StringIntsRef extends AbstractIntsRef {
         return source.charAt(index + offset);
     }
 
+    @Override
+    public String toString() {
+        return source;
+    }
 }

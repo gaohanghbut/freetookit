@@ -18,4 +18,8 @@ public class CharArrayIntsRef extends AbstractIntsRef {
         return source[index + offset];
     }
 
+    @Override
+    public String toString() {
+        return new String(source);
+    }
 }
