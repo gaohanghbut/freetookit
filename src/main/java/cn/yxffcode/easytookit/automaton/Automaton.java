@@ -1,5 +1,6 @@
 package cn.yxffcode.easytookit.automaton;
 
+import cn.yxffcode.easytookit.lang.IntsRef;
 import com.google.common.collect.Lists;
 
 import java.util.ArrayList;

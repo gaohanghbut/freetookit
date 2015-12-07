@@ -1,5 +1,7 @@
 package cn.yxffcode.easytookit.automaton;
 
+import cn.yxffcode.easytookit.collection.IntIterator;
+
 import java.util.BitSet;
 
 import static com.google.common.base.Preconditions.checkNotNull;

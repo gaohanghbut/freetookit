@@ -1,6 +1,4 @@
-package cn.yxffcode.easytookit.automaton;
-
-import cn.yxffcode.easytookit.lang.IntArrayStringBuilder;
+package cn.yxffcode.easytookit.lang;
 
 /**
  * @author gaohang on 15/12/7.

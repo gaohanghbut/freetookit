@@ -1,5 +1,6 @@
 package cn.yxffcode.easytookit.automaton;
 
+import cn.yxffcode.easytookit.lang.StringIntsRef;
 import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;

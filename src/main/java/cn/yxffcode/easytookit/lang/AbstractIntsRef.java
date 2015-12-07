@@ -1,4 +1,4 @@
-package cn.yxffcode.easytookit.automaton;
+package cn.yxffcode.easytookit.lang;
 
 import com.google.common.primitives.Ints;
 
