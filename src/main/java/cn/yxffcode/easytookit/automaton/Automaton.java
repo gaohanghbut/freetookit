@@ -15,6 +15,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class Automaton {
 
+    /**
+     * 表示未知状态,如果不能识别输入,则返回此状态
+     */
     private static final int UNKNOWN_STATE    = - 1;
     /**
      * 起始状态
