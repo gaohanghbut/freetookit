@@ -35,21 +35,13 @@ public class DCL<T> {
     }
 
     public void done(T key) {
-        if (! check(key)) {
+        if (! checker.apply(key)) {
             synchronized (this) {
-                if (! check(key)) {
-                    absent(key);
+                if (! checker.apply(key)) {
+                    consumer.consume(key);
                 }
             }
         }
-    }
-
-    private boolean check(T key) {
-        return checker.apply(key);
-    }
-
-    private void absent(T key) {
-        consumer.consume(key);
     }
 
     public DCL<T> check(Predicate<T> predicate) {
