@@ -36,7 +36,7 @@ public abstract class AbstractAutomaton {
      */
     protected       int[]  states;
     /**
-     * 转换数组,下标与{@link #states}数组相关,表示当前状态,值表示下一个状态,一个转换由数组中的两个元素表示,
+     * 转换数组,下标与{@link #states}数组相关,表示当前状态,值表示下一个状态,一个转换可以由数组中多个
      * 第一个元素表示下一个状态,第二个元素表示节点的输出
      */
     protected       int[]  transitions;
