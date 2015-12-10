@@ -43,6 +43,14 @@ public class IntStack implements IntIterable, Serializable {
         return value;
     }
 
+    public int element(int index) {
+        return stack[index];
+    }
+
+    public int length() {
+        return top;
+    }
+
     public int peak() {
         return stack[top - 1];
     }
@@ -58,7 +66,7 @@ public class IntStack implements IntIterable, Serializable {
 
             @Override
             public boolean hasNext() {
-                return cur < stack.length;
+                return cur < top;
             }
 
             @Override
@@ -66,5 +74,18 @@ public class IntStack implements IntIterable, Serializable {
                 return stack[cur++];
             }
         };
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder appender = new StringBuilder();
+        appender.append("[");
+        for (int i = 0, j = top - 1; i < j; i++) {
+            appender.append(stack[i]).append(',').append(' ');
+        }
+        if (top - 1 >= 0) {
+            appender.append(stack[top - 1]);
+        }
+        return appender.append("]").toString();
     }
 }
