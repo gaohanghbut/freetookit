@@ -9,20 +9,15 @@ import java.util.Properties;
  */
 public class FileSystemPropertiesConfiguration extends AbstractPropertiesConfiguration {
 
-    public static FileSystemPropertiesConfiguration create(String... resources) throws IOException {
-        FileSystemPropertiesConfiguration cfg = new FileSystemPropertiesConfiguration();
-        cfg.loadConfig(resources);
-        return cfg;
-    }
+    private Properties config;
 
     private FileSystemPropertiesConfiguration() {
     }
 
-    private Properties config;
-
-    @Override
-    protected Properties getConfig() {
-        return config;
+    public static FileSystemPropertiesConfiguration create(String... resources) throws IOException {
+        FileSystemPropertiesConfiguration cfg = new FileSystemPropertiesConfiguration();
+        cfg.loadConfig(resources);
+        return cfg;
     }
 
     private void loadConfig(String... resources) throws IOException {
@@ -33,5 +28,10 @@ public class FileSystemPropertiesConfiguration extends AbstractPropertiesConfigu
                 config.load(fis);
             }
         }
+    }
+
+    @Override
+    protected Properties getConfig() {
+        return config;
     }
 }

@@ -75,6 +75,9 @@ public final class CharsetUtil {
     private static final ConcurrentMap<Charset, CharsetEncoder> charsetEncoderCache = Maps.newConcurrentMap();
     private static final ConcurrentMap<Charset, CharsetDecoder> charsetDecoderCache = Maps.newConcurrentMap();
 
+    private CharsetUtil() {
+    }
+
     public static Charset[] values() {
         return CHARSETS;
     }
@@ -127,8 +130,5 @@ public final class CharsetUtil {
         d.onUnmappableCharacter(CodingErrorAction.REPLACE);
         map.put(charset, d);
         return d;
-    }
-
-    private CharsetUtil() {
     }
 }

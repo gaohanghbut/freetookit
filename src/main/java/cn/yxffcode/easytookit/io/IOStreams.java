@@ -25,6 +25,13 @@ public final class IOStreams {
     }
 
     /**
+     * @see #lines(Reader)
+     */
+    public static Iterable<String> lines(InputStream in) {
+        return lines(new InputStreamReader(checkNotNull(in)));
+    }
+
+    /**
      * 按行读取
      * <p/>
      * 使用lazy的读，只有在返回的Iterable对象上迭代一次才会读一行
@@ -91,13 +98,6 @@ public final class IOStreams {
                 };
             }
         };
-    }
-
-    /**
-     * @see #lines(Reader)
-     */
-    public static Iterable<String> lines(InputStream in) {
-        return lines(new InputStreamReader(checkNotNull(in)));
     }
 
     /**

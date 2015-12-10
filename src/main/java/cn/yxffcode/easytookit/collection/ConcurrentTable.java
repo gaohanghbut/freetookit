@@ -38,7 +38,8 @@ public class ConcurrentTable<R, C, V> implements Table<R, C, V> {
 
     @Override
     public boolean contains(Object rowKey,
-                            Object columnKey) {
+                            Object columnKey
+                           ) {
         return delegate.contains(rowKey,
                                  columnKey);
     }
@@ -60,7 +61,8 @@ public class ConcurrentTable<R, C, V> implements Table<R, C, V> {
 
     @Override
     public V get(Object rowKey,
-                 Object columnKey) {
+                 Object columnKey
+                ) {
         return delegate.get(rowKey,
                             columnKey);
     }
@@ -83,7 +85,8 @@ public class ConcurrentTable<R, C, V> implements Table<R, C, V> {
     @Override
     public V put(R rowKey,
                  C columnKey,
-                 V value) {
+                 V value
+                ) {
         synchronized (dataWriteLock) {
             return delegate.put(rowKey,
                                 columnKey,
@@ -100,7 +103,8 @@ public class ConcurrentTable<R, C, V> implements Table<R, C, V> {
 
     @Override
     public V remove(Object rowKey,
-                    Object columnKey) {
+                    Object columnKey
+                   ) {
         synchronized (dataWriteLock) {
             return delegate.remove(rowKey,
                                    columnKey);

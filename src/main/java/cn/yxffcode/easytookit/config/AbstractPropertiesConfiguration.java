@@ -9,6 +9,10 @@ import java.util.Properties;
  * @author gaohang on 15/9/26.
  */
 public abstract class AbstractPropertiesConfiguration implements Configuration {
+    public Properties getProperties() {
+        return getConfig();
+    }
+
     protected abstract Properties getConfig();
 
     @Override
@@ -45,7 +49,8 @@ public abstract class AbstractPropertiesConfiguration implements Configuration {
 
     @Override
     public String getString(String key,
-                            String defaultValue) {
+                            String defaultValue
+                           ) {
         return getConfig().getProperty(key,
                                        defaultValue);
     }
@@ -55,7 +60,5 @@ public abstract class AbstractPropertiesConfiguration implements Configuration {
         return IteratorAdapter.create(getConfig().propertyNames());
     }
 
-    public Properties getProperties() {
-        return getConfig();
-    }
+
 }

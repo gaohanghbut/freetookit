@@ -8,7 +8,8 @@ public class CharArrayIntsRef extends AbstractIntsRef {
 
     protected CharArrayIntsRef(final char[] source,
                                final int offset,
-                               final int length) {
+                               final int length
+                              ) {
         super(offset, length);
         this.source = source;
     }

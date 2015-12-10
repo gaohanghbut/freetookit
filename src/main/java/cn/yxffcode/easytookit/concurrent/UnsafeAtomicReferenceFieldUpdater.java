@@ -27,7 +27,8 @@ public final class UnsafeAtomicReferenceFieldUpdater<U, M> extends AtomicReferen
 
     public UnsafeAtomicReferenceFieldUpdater(Unsafe unsafe,
                                              Class<U> tClass,
-                                             String fieldName) throws NoSuchFieldException {
+                                             String fieldName
+                                            ) throws NoSuchFieldException {
         Field field = tClass.getDeclaredField(fieldName);
         if (! Modifier.isVolatile(field.getModifiers())) {
             throw new IllegalArgumentException("Must be volatile");
@@ -39,26 +40,30 @@ public final class UnsafeAtomicReferenceFieldUpdater<U, M> extends AtomicReferen
     @Override
     public boolean compareAndSet(U obj,
                                  M expect,
-                                 M update) {
+                                 M update
+                                ) {
         return unsafe.compareAndSwapObject(obj, offset, expect, update);
     }
 
     @Override
     public boolean weakCompareAndSet(U obj,
                                      M expect,
-                                     M update) {
+                                     M update
+                                    ) {
         return unsafe.compareAndSwapObject(obj, offset, expect, update);
     }
 
     @Override
     public void set(U obj,
-                    M newValue) {
+                    M newValue
+                   ) {
         unsafe.putObjectVolatile(obj, offset, newValue);
     }
 
     @Override
     public void lazySet(U obj,
-                        M newValue) {
+                        M newValue
+                       ) {
         unsafe.putOrderedObject(obj, offset, newValue);
     }
 

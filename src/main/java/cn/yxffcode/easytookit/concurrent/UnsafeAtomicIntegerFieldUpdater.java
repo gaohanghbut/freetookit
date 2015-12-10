@@ -27,7 +27,8 @@ public final class UnsafeAtomicIntegerFieldUpdater<T> extends AtomicIntegerField
 
     public UnsafeAtomicIntegerFieldUpdater(Unsafe unsafe,
                                            Class<?> tClass,
-                                           String fieldName) throws NoSuchFieldException {
+                                           String fieldName
+                                          ) throws NoSuchFieldException {
         Field field = tClass.getDeclaredField(fieldName);
         if (! Modifier.isVolatile(field.getModifiers())) {
             throw new IllegalArgumentException("Must be volatile");
@@ -39,26 +40,30 @@ public final class UnsafeAtomicIntegerFieldUpdater<T> extends AtomicIntegerField
     @Override
     public boolean compareAndSet(T obj,
                                  int expect,
-                                 int update) {
+                                 int update
+                                ) {
         return unsafe.compareAndSwapInt(obj, offset, expect, update);
     }
 
     @Override
     public boolean weakCompareAndSet(T obj,
                                      int expect,
-                                     int update) {
+                                     int update
+                                    ) {
         return unsafe.compareAndSwapInt(obj, offset, expect, update);
     }
 
     @Override
     public void set(T obj,
-                    int newValue) {
+                    int newValue
+                   ) {
         unsafe.putIntVolatile(obj, offset, newValue);
     }
 
     @Override
     public void lazySet(T obj,
-                        int newValue) {
+                        int newValue
+                       ) {
         unsafe.putOrderedInt(obj, offset, newValue);
     }
 

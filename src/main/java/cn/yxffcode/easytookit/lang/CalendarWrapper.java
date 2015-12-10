@@ -10,6 +10,12 @@ import java.util.TimeZone;
  * @author gaohang on 15/11/29.
  */
 public class CalendarWrapper {
+    private final Calendar delegate;
+
+    private CalendarWrapper(final Calendar delegate) {
+        this.delegate = delegate;
+    }
+
     public static CalendarWrapper getInstance() {
         return new CalendarWrapper(Calendar.getInstance());
     }
@@ -23,14 +29,9 @@ public class CalendarWrapper {
     }
 
     public static CalendarWrapper getInstance(final TimeZone zone,
-                                              final Locale aLocale) {
+                                              final Locale aLocale
+                                             ) {
         return new CalendarWrapper(Calendar.getInstance(zone, aLocale));
-    }
-
-    private final Calendar delegate;
-
-    private CalendarWrapper(final Calendar delegate) {
-        this.delegate = delegate;
     }
 
     /**
@@ -40,7 +41,8 @@ public class CalendarWrapper {
      * @param delta 增加的值
      */
     public void add(DateField field,
-                    int delta) {
+                    int delta
+                   ) {
         delegate.add(field.getCalendarField(), delta);
     }
 }

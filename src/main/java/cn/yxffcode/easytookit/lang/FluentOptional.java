@@ -5,7 +5,7 @@ import com.google.common.base.Optional;
 
 /**
  * 流式的{@link Optional}
- * <p>
+ * <p/>
  * 使用方式:<pre>
  *     {@code
  *          T result = FluentOptional.from(obj)
@@ -22,19 +22,20 @@ import com.google.common.base.Optional;
 public class FluentOptional<T> {
 
     private static final FluentOptional<Object> ABSENT = from(Optional.absent());
+    private final Optional<? extends T> optional;
 
-    public static <T> FluentOptional from(Optional<? extends T> src) {
-        return new FluentOptional(src);
+    public FluentOptional(final Optional<? extends T> optional) {
+        this.optional = optional;
     }
 
     public static <T> FluentOptional from(T obj) {
         return new FluentOptional(Optional.fromNullable(obj));
     }
 
-    private final Optional<? extends T> optional;
-
-    public FluentOptional(final Optional<? extends T> optional) {
-        this.optional = optional;
+    public T or(T def) {
+        return isPresent() ?
+               get() :
+               def;
     }
 
     public boolean isPresent() {
@@ -43,12 +44,6 @@ public class FluentOptional<T> {
 
     public T get() {
         return optional.get();
-    }
-
-    public T or(T def) {
-        return isPresent() ?
-               get() :
-               def;
     }
 
     /**
@@ -63,6 +58,10 @@ public class FluentOptional<T> {
             return (FluentOptional<A>) ABSENT;
         }
         return from(Optional.of(result));
+    }
+
+    public static <T> FluentOptional from(Optional<? extends T> src) {
+        return new FluentOptional(src);
     }
 
 }

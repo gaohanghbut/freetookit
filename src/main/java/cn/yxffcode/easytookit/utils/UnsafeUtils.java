@@ -9,9 +9,6 @@ import java.lang.reflect.Field;
  */
 public final class UnsafeUtils {
 
-    private UnsafeUtils() {
-    }
-
     public static final Unsafe UNSAFE;
 
     static {
@@ -26,5 +23,8 @@ public final class UnsafeUtils {
             unsafe = null;
         }
         UNSAFE = unsafe;
+    }
+
+    private UnsafeUtils() {
     }
 }

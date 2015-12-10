@@ -17,11 +17,6 @@ package cn.yxffcode.easytookit.lang;
 
 public interface HashingStrategy<T> {
 
-    int hashCode(T obj);
-
-    boolean equals(T a,
-                   T b);
-
     @SuppressWarnings("rawtypes")
     HashingStrategy JAVA_HASHER = new HashingStrategy() {
         @Override
@@ -33,8 +28,15 @@ public interface HashingStrategy<T> {
 
         @Override
         public boolean equals(Object a,
-                              Object b) {
+                              Object b
+                             ) {
             return (a == b) || (a != null && a.equals(b));
         }
     };
+
+    int hashCode(T obj);
+
+    boolean equals(T a,
+                   T b
+                  );
 }

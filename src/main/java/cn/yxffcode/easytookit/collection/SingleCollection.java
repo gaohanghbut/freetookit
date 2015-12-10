@@ -15,6 +15,12 @@ import java.util.Set;
  */
 public class SingleCollection<E> extends AbstractList<E> implements Set<E>, Serializable {
 
+    private final E elem;
+
+    private SingleCollection(E elem) {
+        this.elem = elem;
+    }
+
     public static <E> Set<E> newSingleSet(E elem) {
         return new SingleCollection<>(elem);
     }
@@ -25,12 +31,6 @@ public class SingleCollection<E> extends AbstractList<E> implements Set<E>, Seri
 
     public static <E> Collection<E> newSingleCollection(E elem) {
         return new SingleCollection<>(elem);
-    }
-
-    private final E elem;
-
-    private SingleCollection(E elem) {
-        this.elem = elem;
     }
 
     @Override

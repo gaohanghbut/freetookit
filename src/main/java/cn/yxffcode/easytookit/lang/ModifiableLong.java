@@ -32,6 +32,10 @@ public class ModifiableLong extends Number implements Serializable {
         this(0);
     }
 
+    public ModifiableLong(int value) {
+        this.value = value;
+    }
+
     @Override
     public int intValue() {
         return (int) value;
@@ -52,10 +56,6 @@ public class ModifiableLong extends Number implements Serializable {
         return value;
     }
 
-    public ModifiableLong(int value) {
-        this.value = value;
-    }
-
     /**
      * 非线程安全的加1
      */
@@ -68,6 +68,26 @@ public class ModifiableLong extends Number implements Serializable {
      */
     public void atomIncrease() {
         atomAdd(1);
+    }
+
+    private void atomAdd(long delta) {
+        for (; ; ) {
+            long current = value;
+            long next    = current + delta;
+            if (cas(current,
+                    next)) {
+                return;
+            }
+        }
+    }
+
+    private boolean cas(long current,
+                        long next
+                       ) {
+        return UNSAFE.compareAndSwapLong(this,
+                                         VALUE_OFFSET,
+                                         current,
+                                         next);
     }
 
     /**
@@ -89,24 +109,5 @@ public class ModifiableLong extends Number implements Serializable {
                 return;
             }
         }
-    }
-
-    private void atomAdd(long delta) {
-        for (; ; ) {
-            long current = value;
-            long next    = current + delta;
-            if (cas(current,
-                    next)) {
-                return;
-            }
-        }
-    }
-
-    private boolean cas(long current,
-                        long next) {
-        return UNSAFE.compareAndSwapLong(this,
-                                         VALUE_OFFSET,
-                                         current,
-                                         next);
     }
 }

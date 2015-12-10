@@ -13,16 +13,16 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public final class DirectoryWrapper {
 
-    public static DirectoryWrapper wrap(File dir) {
-        checkNotNull(dir);
-        return new DirectoryWrapper(dir);
-    }
-
     private final File dir;
 
     private DirectoryWrapper(final File dir) {
         checkArgument(dir.isDirectory());
         this.dir = dir;
+    }
+
+    public static DirectoryWrapper wrap(File dir) {
+        checkNotNull(dir);
+        return new DirectoryWrapper(dir);
     }
 
     /**

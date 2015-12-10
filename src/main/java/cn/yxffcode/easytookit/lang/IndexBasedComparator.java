@@ -21,7 +21,8 @@ public abstract class IndexBasedComparator<ID, T> implements Comparator<T> {
     }
 
     public IndexBasedComparator(final Iterable<? extends ID> src,
-                                final boolean reverse) {
+                                final boolean reverse
+                               ) {
         this.reverse = reverse;
         indexes = Maps.newHashMap();
         int index = 0;
@@ -33,8 +34,9 @@ public abstract class IndexBasedComparator<ID, T> implements Comparator<T> {
 
     @Override
     public int compare(final T left,
-                       final T right) {
-        if (!reverse) {
+                       final T right
+                      ) {
+        if (! reverse) {
             return indexes.get(getId(left))
                           .compareTo(indexes.get(getId(right)));
         } else {

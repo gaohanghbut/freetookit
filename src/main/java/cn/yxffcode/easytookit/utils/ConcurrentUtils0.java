@@ -54,6 +54,9 @@ final class ConcurrentUtils0 {
         }
     }
 
+    private ConcurrentUtils0() {
+    }
+
     static boolean unalignedAccess() {
         return UNALIGNED;
     }
@@ -63,7 +66,8 @@ final class ConcurrentUtils0 {
                           int endPos1,
                           byte[] bytes2,
                           int startPos2,
-                          int endPos2) {
+                          int endPos2
+                         ) {
         final int len1 = endPos1 - startPos1;
         final int len2 = endPos2 - startPos2;
         if (len1 != len2) {
@@ -92,9 +96,6 @@ final class ConcurrentUtils0 {
                    (remainingBytes == 2 || bytes1[startPos1 + 2] == bytes2[startPos2 + 2]);
         }
         return bytes1[startPos1] == bytes2[startPos2];
-    }
-
-    private ConcurrentUtils0() {
     }
 
 }

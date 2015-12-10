@@ -12,40 +12,42 @@ import java.util.LinkedList;
 
 /**
  * A file system log queue implementation which takes a line as a record.
- * <p>
+ * <p/>
  * Because of the I/O is stateful, the {@link #offer(Object)} method is a synchronized method, if synchronized method
  * affects the performance,io can be rewritten serialized using ExecutorService.
- * <p>
+ * <p/>
  * The {@link #offer(Object)} method is synchronized that it can be invoked concurrently,but the {@link #poll()} method
  * is not thread safe,it can only be invoked serialized.
- * <p>
+ * <p/>
  * When a thread write an object to the log file but another thread read the same file,the read thread main get a error
  * result,to resolve this problem is dependence,so I don't allow read and write a file at the same time.
- * <p>
+ * <p/>
  * It's better to invoke the {@link #rotate()} method before polling all remaining object.
- * <p>
+ * <p/>
  *
  * @author gaohang on 15/9/11.
  */
 public class FSLogQueue<T> implements LogQueue<T> {
 
-    private static final char   ENTITY_DELIMITER      = '\n';
-    private static final char   LOG_FILE_ID_DELIMITER = '_';
+    private static final char ENTITY_DELIMITER      = '\n';
+    private static final char LOG_FILE_ID_DELIMITER = '_';
 
-    private final Codec<T>       codec;
-    private       BufferedWriter out;
-    private       BufferedReader in;
-    private final String         dir;
-    private final String         baseFilename;
+    private final Codec<T> codec;
+    private final String   dir;
+    private final String   baseFilename;
     private final LinkedList<File> logFiles = new LinkedList<>();
+    private BufferedWriter out;
+    private BufferedReader in;
 
     public FSLogQueue(Codec<T> codec,
                       String dir,
-                      final String baseFilename) {
+                      final String baseFilename
+                     ) {
         this(codec, dir, baseFilename, new FilenameFilter() {
             @Override
             public boolean accept(File dir,
-                                  String name) {
+                                  String name
+                                 ) {
                 return true;
             }
         });
@@ -54,7 +56,8 @@ public class FSLogQueue<T> implements LogQueue<T> {
     public FSLogQueue(Codec<T> codec,
                       String dir,
                       final String baseFilename,
-                      FilenameFilter filter) {
+                      FilenameFilter filter
+                     ) {
         this.codec = codec;
         this.dir = dir;
         this.baseFilename = baseFilename;
@@ -75,7 +78,15 @@ public class FSLogQueue<T> implements LogQueue<T> {
         }
     }
 
+    private <E> boolean isNotEmpty(E[] array) {
+        return array != null && array.length != 0;
+    }
+
     @Override
+    public void close() throws IOException {
+        closeReader();
+        closeWriter();
+    }    @Override
     public synchronized void rotate() throws RotateQueueException {
         File file = new File(dir, baseFilename + LOG_FILE_ID_DELIMITER + System.nanoTime());
         if (! file.exists()) {
@@ -97,6 +108,17 @@ public class FSLogQueue<T> implements LogQueue<T> {
         }
     }
 
+    private void closeReader() {
+        if (in != null) {
+            try {
+                in.close();
+            } catch (IOException ignore) {
+            } finally {
+                in = null;
+            }
+        }
+    }
+
     private void closeWriter() {
         if (out != null) {
             try {
@@ -111,6 +133,8 @@ public class FSLogQueue<T> implements LogQueue<T> {
             }
         }
     }
+
+
 
     @Override
     public synchronized void offer(T obj) {
@@ -166,25 +190,5 @@ public class FSLogQueue<T> implements LogQueue<T> {
         }
     }
 
-    private void closeReader() {
-        if (in != null) {
-            try {
-                in.close();
-            } catch (IOException ignore) {
-            } finally {
-                in = null;
-            }
-        }
-    }
-
-    @Override
-    public void close() throws IOException {
-        closeReader();
-        closeWriter();
-    }
-
-    private <E> boolean isNotEmpty(E[] array) {
-        return array != null && array.length != 0;
-    }
 
 }

@@ -9,7 +9,7 @@ public final class Reflections {
     private Reflections() {
     }
 
-    public static <T>T defaultConstruct(Class<T> type) {
+    public static <T> T defaultConstruct(Class<T> type) {
         try {
             return type.newInstance();
         } catch (Exception e) {

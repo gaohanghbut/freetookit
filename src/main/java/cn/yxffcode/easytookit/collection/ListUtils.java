@@ -14,7 +14,8 @@ public final class ListUtils {
 
     public static <E> List<? extends E> subList(List<? extends E> src,
                                                 int offset,
-                                                int length) {
+                                                int length
+                                               ) {
         checkNotNull(src);
         if ((offset == 0 && src.size() <= length) || src.size() == 0) {
             return src;

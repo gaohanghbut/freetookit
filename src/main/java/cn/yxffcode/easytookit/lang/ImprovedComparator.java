@@ -7,5 +7,6 @@ package cn.yxffcode.easytookit.lang;
  */
 public interface ImprovedComparator<T> {
     Compared compare(final T left,
-                     final T right);
+                     final T right
+                    );
 }

@@ -45,13 +45,13 @@ public class IgnoreCaseStringMap<V> extends AbstractMap<String, V> implements Se
     }
 
     @Override
-    public boolean containsKey(final Object key) {
-        return delegate.containsKey(new StringHolder((String) key));
+    public boolean containsValue(final Object value) {
+        return delegate.containsValue(value);
     }
 
     @Override
-    public boolean containsValue(final Object value) {
-        return delegate.containsValue(value);
+    public boolean containsKey(final Object key) {
+        return delegate.containsKey(new StringHolder((String) key));
     }
 
     @Override
@@ -60,7 +60,8 @@ public class IgnoreCaseStringMap<V> extends AbstractMap<String, V> implements Se
     }
 
     public V put(final String key,
-                 final V value) {
+                 final V value
+                ) {
         return delegate.put(new StringHolder(key), value);
     }
 
@@ -101,11 +102,24 @@ public class IgnoreCaseStringMap<V> extends AbstractMap<String, V> implements Se
                (entrySet = new EntrySetWrapper(delegate.entrySet()));
     }
 
+    private void writeObject(java.io.ObjectOutputStream s) throws IOException {
+        s.writeObject(delegate);
+    }
+
+    private void readObject(java.io.ObjectInputStream s) throws IOException, ClassNotFoundException {
+        this.delegate = (Map<StringHolder, V>) s.readObject();
+    }
+
     private static final class StringHolder implements Serializable {
         private final String value;
 
         private StringHolder(final String value) {
             this.value = value;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hashCode(value);
         }
 
         @Override
@@ -118,11 +132,6 @@ public class IgnoreCaseStringMap<V> extends AbstractMap<String, V> implements Se
             }
             final StringHolder that = (StringHolder) o;
             return equalsIgnoreCase(this.value, that.value);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hashCode(value);
         }
     }
 
@@ -138,11 +147,6 @@ public class IgnoreCaseStringMap<V> extends AbstractMap<String, V> implements Se
             return Iterators.transform(delegate.iterator(), StringHolderStringTransformer.INSTANCE);
         }
 
-        @Override
-        public int size() {
-            return delegate.size();
-        }
-
         private enum StringHolderStringTransformer implements Function<StringHolder, String> {
             INSTANCE;
 
@@ -151,6 +155,13 @@ public class IgnoreCaseStringMap<V> extends AbstractMap<String, V> implements Se
                 return input.value;
             }
         }
+
+        @Override
+        public int size() {
+            return delegate.size();
+        }
+
+
     }
 
     private static final class EntrySetWrapper<V> extends AbstractSet<Entry<String, V>> {
@@ -159,16 +170,6 @@ public class IgnoreCaseStringMap<V> extends AbstractMap<String, V> implements Se
 
         private EntrySetWrapper(final Set<Entry<StringHolder, V>> delegate) {
             this.delegate = delegate;
-        }
-
-        @Override
-        public Iterator<Entry<String, V>> iterator() {
-            return Iterators.transform(delegate.iterator(), new EntryTransformer<V>());
-        }
-
-        @Override
-        public int size() {
-            return delegate.size();
         }
 
         private static final class TransformEntry<V> implements Map.Entry<String, V> {
@@ -200,14 +201,18 @@ public class IgnoreCaseStringMap<V> extends AbstractMap<String, V> implements Se
             public Entry<String, V> apply(final Entry<StringHolder, V> input) {
                 return new TransformEntry<V>(input);
             }
+        }        @Override
+        public Iterator<Entry<String, V>> iterator() {
+            return Iterators.transform(delegate.iterator(), new EntryTransformer<V>());
         }
-    }
 
-    private void writeObject(java.io.ObjectOutputStream s) throws IOException {
-        s.writeObject(delegate);
-    }
 
-    private void readObject(java.io.ObjectInputStream s) throws IOException, ClassNotFoundException {
-        this.delegate = (Map<StringHolder, V>) s.readObject();
+
+        @Override
+        public int size() {
+            return delegate.size();
+        }
+
+
     }
 }

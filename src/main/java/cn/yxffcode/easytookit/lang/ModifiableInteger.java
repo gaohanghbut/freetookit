@@ -34,6 +34,10 @@ public class ModifiableInteger extends Number implements Serializable {
         this(0);
     }
 
+    public ModifiableInteger(int value) {
+        this.value = value;
+    }
+
     @Override
     public int intValue() {
         return value;
@@ -54,10 +58,6 @@ public class ModifiableInteger extends Number implements Serializable {
         return value;
     }
 
-    public ModifiableInteger(int value) {
-        this.value = value;
-    }
-
     /**
      * 非线程安全的加1
      */
@@ -72,13 +72,6 @@ public class ModifiableInteger extends Number implements Serializable {
         atomAdd(1);
     }
 
-    /**
-     * 线程安全的减1
-     */
-    public void atomDecrease() {
-        atomAdd(- 1);
-    }
-
     private void atomAdd(int delta) {
         for (; ; ) {
             int current = value;
@@ -90,6 +83,13 @@ public class ModifiableInteger extends Number implements Serializable {
                 break;
             }
         }
+    }
+
+    /**
+     * 线程安全的减1
+     */
+    public void atomDecrease() {
+        atomAdd(- 1);
     }
 
     public int value() {

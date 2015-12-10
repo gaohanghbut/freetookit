@@ -5,12 +5,13 @@ package cn.yxffcode.easytookit.automaton;
  *
  * @author gaohang on 15/12/7.
  */
-public class RangeAutomaton extends AbstractAutomaton {
+public class RangeAutomaton extends Automaton {
     private int currentState;
     private int nextTransition;
 
     private RangeAutomaton(final int stateCount,
-                           final int transitionCount) {
+                           final int transitionCount
+                          ) {
         super(stateCount, transitionCount, 3);
         this.nextTransition = 1;
     }
@@ -18,7 +19,8 @@ public class RangeAutomaton extends AbstractAutomaton {
     private void addTransition(int fromState,
                                int toState,
                                int min,
-                               int max) {
+                               int max
+                              ) {
         if (currentState != fromState * STATE_WIDTH) {
             currentState = fromState * STATE_WIDTH;
         }
@@ -44,7 +46,8 @@ public class RangeAutomaton extends AbstractAutomaton {
 
     @Override
     protected boolean apply(final int off,
-                            final int value) {
+                            final int value
+                           ) {
         int min = transitions[off + 1];
         int max = transitions[off + 2];
         return min <= value && max <= value;
@@ -54,14 +57,16 @@ public class RangeAutomaton extends AbstractAutomaton {
         private final RangeAutomaton automaton;
 
         public Builder(final int stateCount,
-                       final int transitionCount) {
+                       final int transitionCount
+                      ) {
             automaton = new RangeAutomaton(stateCount, transitionCount);
         }
 
         public Builder addTransition(int from,
                                      int to,
                                      int min,
-                                     int max) {
+                                     int max
+                                    ) {
             automaton.addTransition(from, to, min, max);
             return this;
         }

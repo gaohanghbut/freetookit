@@ -33,10 +33,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public final class AsciiString extends BaseByteString implements CharSequence, Comparable<CharSequence> {
 
-    private static final char        MAX_CHAR_VALUE = 255;
-    public static final  AsciiString EMPTY_STRING   = new AsciiString("");
-
-    public static final HashingStrategy<CharSequence> CASE_INSENSITIVE_HASHER =
+    public static final  AsciiString                   EMPTY_STRING            = new AsciiString("");
+    public static final  HashingStrategy<CharSequence> CASE_INSENSITIVE_HASHER =
             new HashingStrategy<CharSequence>() {
                 @Override
                 public int hashCode(CharSequence o) {
@@ -45,11 +43,12 @@ public final class AsciiString extends BaseByteString implements CharSequence, C
 
                 @Override
                 public boolean equals(CharSequence a,
-                                      CharSequence b) {
+                                      CharSequence b
+                                     ) {
                     return AsciiString.contentEqualsIgnoreCase(a, b);
                 }
             };
-    public static final HashingStrategy<CharSequence> CASE_SENSITIVE_HASHER   =
+    public static final  HashingStrategy<CharSequence> CASE_SENSITIVE_HASHER   =
             new HashingStrategy<CharSequence>() {
                 @Override
                 public int hashCode(CharSequence o) {
@@ -58,20 +57,22 @@ public final class AsciiString extends BaseByteString implements CharSequence, C
 
                 @Override
                 public boolean equals(CharSequence a,
-                                      CharSequence b) {
+                                      CharSequence b
+                                     ) {
                     return AsciiString.contentEquals(a, b);
                 }
             };
-
+    private static final char                          MAX_CHAR_VALUE          = 255;
     /**
      * Factory which uses the {@link #AsciiString(byte[], int, int, boolean)} constructor.
      */
-    private static final ByteStringFactory DEFAULT_FACTORY = new ByteStringFactory() {
+    private static final ByteStringFactory             DEFAULT_FACTORY         = new ByteStringFactory() {
         @Override
         public BaseByteString newInstance(byte[] value,
                                           int start,
                                           int length,
-                                          boolean copy) {
+                                          boolean copy
+                                         ) {
             return new AsciiString(value, start, length, copy);
         }
     };
@@ -79,34 +80,27 @@ public final class AsciiString extends BaseByteString implements CharSequence, C
     private String string;
     private int    caseInsensitiveHash;
 
-    /**
-     * Returns an {@link AsciiString} containing the given character sequence. If the given string is already a
-     * {@link AsciiString}, just returns the same instance.
-     */
-    public static AsciiString of(CharSequence string) {
-        return string instanceof AsciiString ?
-               (AsciiString) string :
-               new AsciiString(string);
-    }
-
     public AsciiString(byte[] value) {
         super(value);
     }
 
     public AsciiString(byte[] value,
-                       boolean copy) {
+                       boolean copy
+                      ) {
         super(value, copy);
     }
 
     public AsciiString(byte[] value,
                        int start,
                        int length,
-                       boolean copy) {
+                       boolean copy
+                      ) {
         super(value, start, length, copy);
     }
 
     public AsciiString(BaseByteString value,
-                       boolean copy) {
+                       boolean copy
+                      ) {
         super(value, copy);
     }
 
@@ -117,7 +111,8 @@ public final class AsciiString extends BaseByteString implements CharSequence, C
     public AsciiString(ByteBuffer value,
                        int start,
                        int length,
-                       boolean copy) {
+                       boolean copy
+                      ) {
         super(value, start, length, copy);
     }
 
@@ -127,7 +122,8 @@ public final class AsciiString extends BaseByteString implements CharSequence, C
 
     public AsciiString(char[] value,
                        int start,
-                       int length) {
+                       int length
+                      ) {
         super(length);
         if (start < 0 || start > checkNotNull(value, "value").length - length) {
             throw new IndexOutOfBoundsException("expected: " + "0 <= start(" + start + ") <= start + length(" + length
@@ -139,13 +135,21 @@ public final class AsciiString extends BaseByteString implements CharSequence, C
         }
     }
 
+    private static byte c2b(char c) {
+        if (c > MAX_CHAR_VALUE) {
+            return '?';
+        }
+        return (byte) c;
+    }
+
     public AsciiString(CharSequence value) {
         this(checkNotNull(value, "value"), 0, value.length());
     }
 
     public AsciiString(CharSequence value,
                        int start,
-                       int length) {
+                       int length
+                      ) {
         super(length);
         if (start < 0 || length < 0 || length > checkNotNull(value, "value").length() - start) {
             throw new IndexOutOfBoundsException("expected: " + "0 <= start(" + start + ") <= start + length(" + length
@@ -157,9 +161,252 @@ public final class AsciiString extends BaseByteString implements CharSequence, C
         }
     }
 
-    @Override
-    public char charAt(int index) {
-        return (char) (byteAt(index) & 0xFF);
+    /**
+     * Returns an {@link AsciiString} containing the given character sequence. If the given string is already a
+     * {@link AsciiString}, just returns the same instance.
+     */
+    public static AsciiString of(CharSequence string) {
+        return string instanceof AsciiString ?
+               (AsciiString) string :
+               new AsciiString(string);
+    }
+
+    public static int caseInsensitiveHashCode(CharSequence value) {
+        if (value.getClass() == AsciiString.class) {
+            return ((AsciiString) value).hashCodeCaseInsensitive();
+        }
+
+        int hash = 0;
+        for (int i = 0; i < value.length(); ++ i) {
+            hash = hash * HASH_CODE_PRIME + toLowerCase(value.charAt(i));
+        }
+        return hash;
+    }
+
+    /**
+     * Generate a hash code that will be consistent regardless of ASCII character casing.
+     * <p/>
+     * NOTE: This must be compatible with {@link #caseInsensitiveHashCode(CharSequence)}.
+     */
+    public int hashCodeCaseInsensitive() {
+        int h = caseInsensitiveHash;
+        if (h == 0) {
+            final int end = arrayOffset() + length();
+            for (int i = arrayOffset(); i < end; ++ i) {
+                h = h * HASH_CODE_PRIME + toLowerCase((char) (value[i] & 0xFF));
+            }
+
+            caseInsensitiveHash = h;
+        }
+        return caseInsensitiveHash;
+    }
+
+    private static char toLowerCase(char c) {
+        if ('A' <= c && c <= 'Z') {
+            return (char) (c + 32);
+        }
+        return c;
+    }
+
+    public static int hashCode(CharSequence value) {
+        if (value.getClass() == AsciiString.class) {
+            return ((AsciiString) value).hashCode();
+        }
+
+        int hash = 0;
+        for (int i = 0; i < value.length(); ++ i) {
+            hash = hash * HASH_CODE_PRIME + value.charAt(i);
+        }
+        return hash;
+    }
+
+    /**
+     * Determine if {@code a} contains {@code b} in a case sensitive manner.
+     */
+    public static boolean contains(CharSequence a,
+                                   CharSequence b
+                                  ) {
+        return contains(a, b, DefaultCharEqualityComparator.INSTANCE);
+    }
+
+    private static boolean contains(CharSequence a,
+                                    CharSequence b,
+                                    CharEqualityComparator cmp
+                                   ) {
+        if (a == null || b == null || a.length() < b.length()) {
+            return false;
+        }
+        if (b.length() == 0) {
+            return true;
+        }
+        int bStart = 0;
+        for (int i = 0; i < a.length(); ++ i) {
+            if (cmp.equals(b.charAt(bStart), a.charAt(i))) {
+                // If b is consumed then true.
+                if (++ bStart == b.length()) {
+                    return true;
+                }
+            } else if (a.length() - i < b.length()) {
+                // If there are not enough characters left in a for b to be contained, then false.
+                return false;
+            } else {
+                bStart = 0;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Determine if {@code a} contains {@code b} in a case insensitive manner.
+     */
+    public static boolean containsIgnoreCase(CharSequence a,
+                                             CharSequence b
+                                            ) {
+        return contains(a, b, CaseInsensativeCharEqualityComparator.INSTANCE);
+    }
+
+    /**
+     * Returns {@code true} if both {@link CharSequence}'s are equals when ignore the case. This only supports 8-bit
+     * ASCII.
+     */
+    public static boolean contentEqualsIgnoreCase(CharSequence a,
+                                                  CharSequence b
+                                                 ) {
+        if (a == b) {
+            return true;
+        }
+
+        if (a == null || b == null) {
+            return false;
+        }
+
+        if (a.getClass() == AsciiString.class) {
+            return ((AsciiString) a).contentEqualsIgnoreCase(b);
+        }
+        if (b.getClass() == AsciiString.class) {
+            return ((AsciiString) b).contentEqualsIgnoreCase(a);
+        }
+
+        if (a.length() != b.length()) {
+            return false;
+        }
+        for (int i = 0, j = 0; i < a.length(); ++ i, ++ j) {
+            if (! equalsIgnoreCase(a.charAt(i), b.charAt(j))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Determine if {@code collection} contains {@code value} and using
+     * {@link #contentEqualsIgnoreCase(CharSequence, CharSequence)} to compare values.
+     *
+     * @param collection The collection to look for and equivalent element as {@code value}.
+     * @param value      The value to look for in {@code collection}.
+     *
+     * @return {@code true} if {@code collection} contains {@code value} according to
+     * {@link #contentEqualsIgnoreCase(CharSequence, CharSequence)}. {@code false} otherwise.
+     *
+     * @see #contentEqualsIgnoreCase(CharSequence, CharSequence)
+     */
+    public static boolean containsContentEqualsIgnoreCase(Collection<CharSequence> collection,
+                                                          CharSequence value
+                                                         ) {
+        for (CharSequence v : collection) {
+            if (contentEqualsIgnoreCase(value, v)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Determine if {@code a} contains all of the values in {@code b} using
+     * {@link #contentEqualsIgnoreCase(CharSequence, CharSequence)} to compare values.
+     *
+     * @param a The collection under test.
+     * @param b The values to test for.
+     *
+     * @return {@code true} if {@code a} contains all of the values in {@code b} using
+     * {@link #contentEqualsIgnoreCase(CharSequence, CharSequence)} to compare values. {@code false} otherwise.
+     *
+     * @see #contentEqualsIgnoreCase(CharSequence, CharSequence)
+     */
+    public static boolean containsAllContentEqualsIgnoreCase(Collection<CharSequence> a,
+                                                             Collection<CharSequence> b
+                                                            ) {
+        for (CharSequence v : b) {
+            if (! containsContentEqualsIgnoreCase(a, v)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Returns {@code true} if the content of both {@link CharSequence}'s are equals. This only supports 8-bit ASCII.
+     */
+    public static boolean contentEquals(CharSequence a,
+                                        CharSequence b
+                                       ) {
+        if (a == b) {
+            return true;
+        }
+
+        if (a == null || b == null) {
+            return false;
+        }
+
+        if (a.getClass() == AsciiString.class) {
+            return ((AsciiString) a).contentEquals(b);
+        }
+
+        if (b.getClass() == AsciiString.class) {
+            return ((AsciiString) b).contentEquals(a);
+        }
+
+        if (a.length() != b.length()) {
+            return false;
+        }
+        for (int i = 0; i < a.length(); ++ i) {
+            if (a.charAt(i) != b.charAt(i)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Compares a {@code CharSequence} to this {@code String} to determine if their contents are equal.
+     *
+     * @param a the character sequence to compare to.
+     *
+     * @return {@code true} if equal, otherwise {@code false}
+     */
+    public boolean contentEquals(CharSequence a) {
+        if (this == a) {
+            return true;
+        }
+        if (a instanceof AsciiString) {
+            return equals(a);
+        }
+
+        if (a.length() != length()) {
+            return false;
+        }
+        for (int i = arrayOffset(), j = 0; j < a.length(); ++ i, ++ j) {
+            if ((char) (value[i] & 0xFF) != a.charAt(j)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private static boolean equalsIgnoreCase(byte a,
+                                            byte b
+                                           ) {
+        return a == b || toLowerCase(a) == toLowerCase(b);
     }
 
     @Override
@@ -170,9 +417,30 @@ public final class AsciiString extends BaseByteString implements CharSequence, C
     }
 
     @Override
+    public AsciiString subSequence(int start) {
+        return subSequence(start, length());
+    }
+
+    @Override
+    public AsciiString subSequence(int start,
+                                   int end
+                                  ) {
+        return subSequence(start, end, true);
+    }
+
+    @Override
+    public AsciiString subSequence(int start,
+                                   int end,
+                                   boolean copy
+                                  ) {
+        return (AsciiString) super.subSequence(start, end, copy, DEFAULT_FACTORY);
+    }
+
+    @Override
     public String toString(Charset charset,
                            int start,
-                           int end) {
+                           int end
+                          ) {
         if (start == 0 && end == length()) {
             if (string == null) {
                 string = super.toString(charset, start, end);
@@ -272,6 +540,50 @@ public final class AsciiString extends BaseByteString implements CharSequence, C
     }
 
     /**
+     * Compares the specified string to this string and compares the specified range of characters to determine if they
+     * are the same.
+     *
+     * @param thisStart the starting offset in this string.
+     * @param string    the string to compare.
+     * @param start     the starting offset in the specified string.
+     * @param length    the number of characters to compare.
+     *
+     * @return {@code true} if the ranges of characters are equal, {@code false} otherwise
+     *
+     * @throws NullPointerException if {@code string} is {@code null}.
+     */
+    public boolean regionMatches(int thisStart,
+                                 CharSequence string,
+                                 int start,
+                                 int length
+                                ) {
+        if (string == null) {
+            throw new NullPointerException("string");
+        }
+
+        if (start < 0 || string.length() - start < length) {
+            return false;
+        }
+
+        final int thisLen = length();
+        if (thisStart < 0 || thisLen - thisStart < length) {
+            return false;
+        }
+
+        if (length <= 0) {
+            return true;
+        }
+
+        final int thatEnd = start + length;
+        for (int i = start, j = thisStart + arrayOffset(); i < thatEnd; i++, j++) {
+            if ((char) (value[j] & 0xFF) != string.charAt(i)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
      * Compares the specified string to this string ignoring the case of the characters and returns true if they are
      * equal.
      *
@@ -317,7 +629,8 @@ public final class AsciiString extends BaseByteString implements CharSequence, C
      * @return a character array containing the characters of this string.
      */
     public char[] toCharArray(int start,
-                              int end) {
+                              int end
+                             ) {
         int length = end - start;
         if (length == 0) {
             return EmptyArrays.EMPTY_CHARS;
@@ -346,7 +659,8 @@ public final class AsciiString extends BaseByteString implements CharSequence, C
     public void copy(int srcIdx,
                      char[] dst,
                      int dstIdx,
-                     int length) {
+                     int length
+                    ) {
         if (dst == null) {
             throw new NullPointerException("dst");
         }
@@ -359,95 +673,6 @@ public final class AsciiString extends BaseByteString implements CharSequence, C
         final int dstEnd = dstIdx + length;
         for (int i = dstIdx, j = srcIdx + arrayOffset(); i < dstEnd; i++, j++) {
             dst[i] = (char) (value[j] & 0xFF);
-        }
-    }
-
-    @Override
-    public AsciiString subSequence(int start) {
-        return subSequence(start, length());
-    }
-
-    @Override
-    public AsciiString subSequence(int start,
-                                   int end) {
-        return subSequence(start, end, true);
-    }
-
-    @Override
-    public AsciiString subSequence(int start,
-                                   int end,
-                                   boolean copy) {
-        return (AsciiString) super.subSequence(start, end, copy, DEFAULT_FACTORY);
-    }
-
-    /**
-     * Searches in this string for the first index of the specified string. The search for the string starts at the
-     * beginning and moves towards the end of this string.
-     *
-     * @param string the string to find.
-     *
-     * @return the index of the first character of the specified string in this string, -1 if the specified string is
-     * not a substring.
-     *
-     * @throws NullPointerException if {@code string} is {@code null}.
-     */
-    public int indexOf(CharSequence string) {
-        return indexOf(string, 0);
-    }
-
-    /**
-     * Searches in this string for the index of the specified string. The search for the string starts at the specified
-     * offset and moves towards the end of this string.
-     *
-     * @param subString the string to find.
-     * @param start     the starting offset.
-     *
-     * @return the index of the first character of the specified string in this string, -1 if the specified string is
-     * not a substring.
-     *
-     * @throws NullPointerException if {@code subString} is {@code null}.
-     */
-    public int indexOf(CharSequence subString,
-                       int start) {
-        if (start < 0) {
-            start = 0;
-        }
-
-        final int thisLen = length();
-
-        int subCount = subString.length();
-        if (subCount <= 0) {
-            return start < thisLen ?
-                   start :
-                   thisLen;
-        }
-        if (subCount > thisLen - start) {
-            return - 1;
-        }
-
-        final char firstChar = subString.charAt(0);
-        if (firstChar > MAX_CHAR_VALUE) {
-            return - 1;
-        }
-        ByteProcessor IndexOfVisitor = new ByteProcessor.IndexOfProcessor((byte) firstChar);
-        try {
-            for (; ; ) {
-                int i = forEachByte(start, thisLen - start, IndexOfVisitor);
-                if (i == - 1 || subCount + i > thisLen) {
-                    return - 1; // handles subCount > count || start >= count
-                }
-                int o1 = i, o2 = 0;
-                while (++ o2 < subCount && (char) (value[++ o1 + arrayOffset()] & 0xFF) == subString.charAt(o2)) {
-                    // Intentionally empty
-                }
-                if (o2 == subCount) {
-                    return i;
-                }
-                start = i + 1;
-            }
-        } catch (Exception e) {
-            Throwables.propagate(e);
-            return - 1;
         }
     }
 
@@ -480,7 +705,8 @@ public final class AsciiString extends BaseByteString implements CharSequence, C
      * @throws NullPointerException if {@code subString} is {@code null}.
      */
     public int lastIndexOf(CharSequence subString,
-                           int start) {
+                           int start
+                          ) {
         final int thisLen  = length();
         final int subCount = subString.length();
 
@@ -525,49 +751,6 @@ public final class AsciiString extends BaseByteString implements CharSequence, C
 
     /**
      * Compares the specified string to this string and compares the specified range of characters to determine if they
-     * are the same.
-     *
-     * @param thisStart the starting offset in this string.
-     * @param string    the string to compare.
-     * @param start     the starting offset in the specified string.
-     * @param length    the number of characters to compare.
-     *
-     * @return {@code true} if the ranges of characters are equal, {@code false} otherwise
-     *
-     * @throws NullPointerException if {@code string} is {@code null}.
-     */
-    public boolean regionMatches(int thisStart,
-                                 CharSequence string,
-                                 int start,
-                                 int length) {
-        if (string == null) {
-            throw new NullPointerException("string");
-        }
-
-        if (start < 0 || string.length() - start < length) {
-            return false;
-        }
-
-        final int thisLen = length();
-        if (thisStart < 0 || thisLen - thisStart < length) {
-            return false;
-        }
-
-        if (length <= 0) {
-            return true;
-        }
-
-        final int thatEnd = start + length;
-        for (int i = start, j = thisStart + arrayOffset(); i < thatEnd; i++, j++) {
-            if ((char) (value[j] & 0xFF) != string.charAt(i)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Compares the specified string to this string and compares the specified range of characters to determine if they
      * are the same. When ignoreCase is true, the case of the characters is ignored during the comparison.
      *
      * @param ignoreCase specifies if case should be ignored.
@@ -584,7 +767,8 @@ public final class AsciiString extends BaseByteString implements CharSequence, C
                                  int thisStart,
                                  CharSequence string,
                                  int start,
-                                 int length) {
+                                 int length
+                                ) {
         if (! ignoreCase) {
             return regionMatches(thisStart, string, start, length);
         }
@@ -611,6 +795,12 @@ public final class AsciiString extends BaseByteString implements CharSequence, C
         return true;
     }
 
+    private static boolean equalsIgnoreCase(char a,
+                                            char b
+                                           ) {
+        return a == b || toLowerCase(a) == toLowerCase(b);
+    }
+
     /**
      * Copies this string replacing occurrences of the specified character with another character.
      *
@@ -620,7 +810,8 @@ public final class AsciiString extends BaseByteString implements CharSequence, C
      * @return a new string with occurrences of oldChar replaced by newChar.
      */
     public AsciiString replace(char oldChar,
-                               char newChar) {
+                               char newChar
+                              ) {
         if (oldChar > MAX_CHAR_VALUE) {
             return this;
         }
@@ -676,7 +867,8 @@ public final class AsciiString extends BaseByteString implements CharSequence, C
      * @throws NullPointerException if {@code prefix} is {@code null}.
      */
     public boolean startsWith(CharSequence prefix,
-                              int start) {
+                              int start
+                             ) {
         return regionMatches(start, prefix, 0, prefix.length());
     }
 
@@ -710,6 +902,13 @@ public final class AsciiString extends BaseByteString implements CharSequence, C
         return new AsciiString(newValue, false);
     }
 
+    private static byte toLowerCase(byte b) {
+        if ('A' <= b && b <= 'Z') {
+            return (byte) (b + 32);
+        }
+        return b;
+    }
+
     /**
      * Converts the characters in this string to uppercase, using the default Locale.
      *
@@ -740,6 +939,13 @@ public final class AsciiString extends BaseByteString implements CharSequence, C
         return new AsciiString(newValue, false);
     }
 
+    private static byte toUpperCase(byte b) {
+        if ('a' <= b && b <= 'z') {
+            return (byte) (b - 32);
+        }
+        return b;
+    }
+
     /**
      * Copies this string removing white space characters from the beginning and end of the string.
      *
@@ -758,32 +964,6 @@ public final class AsciiString extends BaseByteString implements CharSequence, C
             return this;
         }
         return new AsciiString(value, start, end - start + 1, false);
-    }
-
-    /**
-     * Compares a {@code CharSequence} to this {@code String} to determine if their contents are equal.
-     *
-     * @param a the character sequence to compare to.
-     *
-     * @return {@code true} if equal, otherwise {@code false}
-     */
-    public boolean contentEquals(CharSequence a) {
-        if (this == a) {
-            return true;
-        }
-        if (a instanceof AsciiString) {
-            return equals(a);
-        }
-
-        if (a.length() != length()) {
-            return false;
-        }
-        for (int i = arrayOffset(), j = 0; j < a.length(); ++ i, ++ j) {
-            if ((char) (value[i] & 0xFF) != a.charAt(j)) {
-                return false;
-            }
-        }
-        return true;
     }
 
     /**
@@ -814,9 +994,18 @@ public final class AsciiString extends BaseByteString implements CharSequence, C
      * @see Pattern#split(CharSequence, int)
      */
     public AsciiString[] split(String expr,
-                               int max) {
+                               int max
+                              ) {
         return toAsciiStringArray(Pattern.compile(expr)
                                          .split(this, max));
+    }
+
+    private static AsciiString[] toAsciiStringArray(String[] jdkResult) {
+        AsciiString[] res = new AsciiString[jdkResult.length];
+        for (int i = 0; i < jdkResult.length; i++) {
+            res[i] = new AsciiString(jdkResult[i]);
+        }
+        return res;
     }
 
     /**
@@ -860,178 +1049,9 @@ public final class AsciiString extends BaseByteString implements CharSequence, C
         return res.toArray(new AsciiString[res.size()]);
     }
 
-    /**
-     * Generate a hash code that will be consistent regardless of ASCII character casing.
-     * <p/>
-     * NOTE: This must be compatible with {@link #caseInsensitiveHashCode(CharSequence)}.
-     */
-    public int hashCodeCaseInsensitive() {
-        int h = caseInsensitiveHash;
-        if (h == 0) {
-            final int end = arrayOffset() + length();
-            for (int i = arrayOffset(); i < end; ++ i) {
-                h = h * HASH_CODE_PRIME + toLowerCase((char) (value[i] & 0xFF));
-            }
-
-            caseInsensitiveHash = h;
-        }
-        return caseInsensitiveHash;
-    }
-
-    public static int caseInsensitiveHashCode(CharSequence value) {
-        if (value.getClass() == AsciiString.class) {
-            return ((AsciiString) value).hashCodeCaseInsensitive();
-        }
-
-        int hash = 0;
-        for (int i = 0; i < value.length(); ++ i) {
-            hash = hash * HASH_CODE_PRIME + toLowerCase(value.charAt(i));
-        }
-        return hash;
-    }
-
-    public static int hashCode(CharSequence value) {
-        if (value.getClass() == AsciiString.class) {
-            return ((AsciiString) value).hashCode();
-        }
-
-        int hash = 0;
-        for (int i = 0; i < value.length(); ++ i) {
-            hash = hash * HASH_CODE_PRIME + value.charAt(i);
-        }
-        return hash;
-    }
-
-    /**
-     * Determine if {@code a} contains {@code b} in a case sensitive manner.
-     */
-    public static boolean contains(CharSequence a,
-                                   CharSequence b) {
-        return contains(a, b, DefaultCharEqualityComparator.INSTANCE);
-    }
-
-    /**
-     * Determine if {@code a} contains {@code b} in a case insensitive manner.
-     */
-    public static boolean containsIgnoreCase(CharSequence a,
-                                             CharSequence b) {
-        return contains(a, b, CaseInsensativeCharEqualityComparator.INSTANCE);
-    }
-
-    /**
-     * Returns {@code true} if both {@link CharSequence}'s are equals when ignore the case. This only supports 8-bit
-     * ASCII.
-     */
-    public static boolean contentEqualsIgnoreCase(CharSequence a,
-                                                  CharSequence b) {
-        if (a == b) {
-            return true;
-        }
-
-        if (a == null || b == null) {
-            return false;
-        }
-
-        if (a.getClass() == AsciiString.class) {
-            return ((AsciiString) a).contentEqualsIgnoreCase(b);
-        }
-        if (b.getClass() == AsciiString.class) {
-            return ((AsciiString) b).contentEqualsIgnoreCase(a);
-        }
-
-        if (a.length() != b.length()) {
-            return false;
-        }
-        for (int i = 0, j = 0; i < a.length(); ++ i, ++ j) {
-            if (! equalsIgnoreCase(a.charAt(i), b.charAt(j))) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Determine if {@code collection} contains {@code value} and using
-     * {@link #contentEqualsIgnoreCase(CharSequence, CharSequence)} to compare values.
-     *
-     * @param collection The collection to look for and equivalent element as {@code value}.
-     * @param value      The value to look for in {@code collection}.
-     *
-     * @return {@code true} if {@code collection} contains {@code value} according to
-     * {@link #contentEqualsIgnoreCase(CharSequence, CharSequence)}. {@code false} otherwise.
-     *
-     * @see #contentEqualsIgnoreCase(CharSequence, CharSequence)
-     */
-    public static boolean containsContentEqualsIgnoreCase(Collection<CharSequence> collection,
-                                                          CharSequence value) {
-        for (CharSequence v : collection) {
-            if (contentEqualsIgnoreCase(value, v)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Determine if {@code a} contains all of the values in {@code b} using
-     * {@link #contentEqualsIgnoreCase(CharSequence, CharSequence)} to compare values.
-     *
-     * @param a The collection under test.
-     * @param b The values to test for.
-     *
-     * @return {@code true} if {@code a} contains all of the values in {@code b} using
-     * {@link #contentEqualsIgnoreCase(CharSequence, CharSequence)} to compare values. {@code false} otherwise.
-     *
-     * @see #contentEqualsIgnoreCase(CharSequence, CharSequence)
-     */
-    public static boolean containsAllContentEqualsIgnoreCase(Collection<CharSequence> a,
-                                                             Collection<CharSequence> b) {
-        for (CharSequence v : b) {
-            if (! containsContentEqualsIgnoreCase(a, v)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Returns {@code true} if the content of both {@link CharSequence}'s are equals. This only supports 8-bit ASCII.
-     */
-    public static boolean contentEquals(CharSequence a,
-                                        CharSequence b) {
-        if (a == b) {
-            return true;
-        }
-
-        if (a == null || b == null) {
-            return false;
-        }
-
-        if (a.getClass() == AsciiString.class) {
-            return ((AsciiString) a).contentEquals(b);
-        }
-
-        if (b.getClass() == AsciiString.class) {
-            return ((AsciiString) b).contentEquals(a);
-        }
-
-        if (a.length() != b.length()) {
-            return false;
-        }
-        for (int i = 0; i < a.length(); ++ i) {
-            if (a.charAt(i) != b.charAt(i)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private static AsciiString[] toAsciiStringArray(String[] jdkResult) {
-        AsciiString[] res = new AsciiString[jdkResult.length];
-        for (int i = 0; i < jdkResult.length; i++) {
-            res[i] = new AsciiString(jdkResult[i]);
-        }
-        return res;
+    @Override
+    public char charAt(int index) {
+        return (char) (byteAt(index) & 0xFF);
     }
 
     /**
@@ -1048,9 +1068,82 @@ public final class AsciiString extends BaseByteString implements CharSequence, C
         return indexOf(cs) >= 0;
     }
 
+    /**
+     * Searches in this string for the first index of the specified string. The search for the string starts at the
+     * beginning and moves towards the end of this string.
+     *
+     * @param string the string to find.
+     *
+     * @return the index of the first character of the specified string in this string, -1 if the specified string is
+     * not a substring.
+     *
+     * @throws NullPointerException if {@code string} is {@code null}.
+     */
+    public int indexOf(CharSequence string) {
+        return indexOf(string, 0);
+    }
+
+    /**
+     * Searches in this string for the index of the specified string. The search for the string starts at the specified
+     * offset and moves towards the end of this string.
+     *
+     * @param subString the string to find.
+     * @param start     the starting offset.
+     *
+     * @return the index of the first character of the specified string in this string, -1 if the specified string is
+     * not a substring.
+     *
+     * @throws NullPointerException if {@code subString} is {@code null}.
+     */
+    public int indexOf(CharSequence subString,
+                       int start
+                      ) {
+        if (start < 0) {
+            start = 0;
+        }
+
+        final int thisLen = length();
+
+        int subCount = subString.length();
+        if (subCount <= 0) {
+            return start < thisLen ?
+                   start :
+                   thisLen;
+        }
+        if (subCount > thisLen - start) {
+            return - 1;
+        }
+
+        final char firstChar = subString.charAt(0);
+        if (firstChar > MAX_CHAR_VALUE) {
+            return - 1;
+        }
+        ByteProcessor IndexOfVisitor = new ByteProcessor.IndexOfProcessor((byte) firstChar);
+        try {
+            for (; ; ) {
+                int i = forEachByte(start, thisLen - start, IndexOfVisitor);
+                if (i == - 1 || subCount + i > thisLen) {
+                    return - 1; // handles subCount > count || start >= count
+                }
+                int o1 = i, o2 = 0;
+                while (++ o2 < subCount && (char) (value[++ o1 + arrayOffset()] & 0xFF) == subString.charAt(o2)) {
+                    // Intentionally empty
+                }
+                if (o2 == subCount) {
+                    return i;
+                }
+                start = i + 1;
+            }
+        } catch (Exception e) {
+            Throwables.propagate(e);
+            return - 1;
+        }
+    }
+
     private interface CharEqualityComparator {
         boolean equals(char a,
-                       char b);
+                       char b
+                      );
     }
 
     private static final class DefaultCharEqualityComparator implements CharEqualityComparator {
@@ -1061,7 +1154,8 @@ public final class AsciiString extends BaseByteString implements CharSequence, C
 
         @Override
         public boolean equals(char a,
-                              char b) {
+                              char b
+                             ) {
             return a == b;
         }
     }
@@ -1074,72 +1168,9 @@ public final class AsciiString extends BaseByteString implements CharSequence, C
 
         @Override
         public boolean equals(char a,
-                              char b) {
+                              char b
+                             ) {
             return equalsIgnoreCase(a, b);
         }
-    }
-
-    private static boolean contains(CharSequence a,
-                                    CharSequence b,
-                                    CharEqualityComparator cmp) {
-        if (a == null || b == null || a.length() < b.length()) {
-            return false;
-        }
-        if (b.length() == 0) {
-            return true;
-        }
-        int bStart = 0;
-        for (int i = 0; i < a.length(); ++ i) {
-            if (cmp.equals(b.charAt(bStart), a.charAt(i))) {
-                // If b is consumed then true.
-                if (++ bStart == b.length()) {
-                    return true;
-                }
-            } else if (a.length() - i < b.length()) {
-                // If there are not enough characters left in a for b to be contained, then false.
-                return false;
-            } else {
-                bStart = 0;
-            }
-        }
-        return false;
-    }
-
-    private static boolean equalsIgnoreCase(byte a,
-                                            byte b) {
-        return a == b || toLowerCase(a) == toLowerCase(b);
-    }
-
-    private static boolean equalsIgnoreCase(char a,
-                                            char b) {
-        return a == b || toLowerCase(a) == toLowerCase(b);
-    }
-
-    private static byte toLowerCase(byte b) {
-        if ('A' <= b && b <= 'Z') {
-            return (byte) (b + 32);
-        }
-        return b;
-    }
-
-    private static char toLowerCase(char c) {
-        if ('A' <= c && c <= 'Z') {
-            return (char) (c + 32);
-        }
-        return c;
-    }
-
-    private static byte toUpperCase(byte b) {
-        if ('a' <= b && b <= 'z') {
-            return (byte) (b - 32);
-        }
-        return b;
-    }
-
-    private static byte c2b(char c) {
-        if (c > MAX_CHAR_VALUE) {
-            return '?';
-        }
-        return (byte) c;
     }
 }

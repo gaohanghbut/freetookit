@@ -19,6 +19,10 @@ package cn.yxffcode.easytookit.utils;
  * 从netty中copy
  */
 public final class ConcurrentUtils {
+    private ConcurrentUtils() {
+        // only static method supported
+    }
+
     /**
      * Compare two {@code byte} arrays for equality. For performance reasons no bounds checking on the
      * parameters is performed.
@@ -35,7 +39,8 @@ public final class ConcurrentUtils {
                                  int endPos1,
                                  byte[] bytes2,
                                  int startPos2,
-                                 int endPos2) {
+                                 int endPos2
+                                ) {
         if (! ConcurrentUtils0.unalignedAccess()) {
             return safeEquals(bytes1, startPos1, endPos1, bytes2, startPos2, endPos2);
         }
@@ -47,7 +52,8 @@ public final class ConcurrentUtils {
                                       int endPos1,
                                       byte[] bytes2,
                                       int startPos2,
-                                      int endPos2) {
+                                      int endPos2
+                                     ) {
         final int len1 = endPos1 - startPos1;
         final int len2 = endPos2 - startPos2;
         if (len1 != len2) {
@@ -60,9 +66,5 @@ public final class ConcurrentUtils {
             }
         }
         return true;
-    }
-
-    private ConcurrentUtils() {
-        // only static method supported
     }
 }

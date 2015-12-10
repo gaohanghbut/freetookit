@@ -24,14 +24,14 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class DCL<T> {
 
-    public static <T> DCL<T> create() {
-        return new DCL<>();
-    }
-
     private Predicate<T> checker = Predicates.alwaysTrue();
     private Consumer<T> consumer;
 
     private DCL() {
+    }
+
+    public static <T> DCL<T> create() {
+        return new DCL<>();
     }
 
     public void done(T key) {

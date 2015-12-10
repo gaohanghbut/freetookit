@@ -21,9 +21,6 @@ package cn.yxffcode.easytookit.utils;
  */
 public final class EmptyArrays {
 
-    private EmptyArrays() {
-    }
-
     public static final byte[]     EMPTY_BYTES    = new byte[0];
     public static final char[]     EMPTY_CHARS    = new char[0];
     public static final boolean[]  EMPTY_BOOLEANS = new boolean[0];
@@ -35,5 +32,8 @@ public final class EmptyArrays {
     public static final Object[]   EMPTY_OBJECTS  = new Object[0];
     public static final Class<?>[] EMPTY_CLASSES  = new Class[0];
     public static final String[]   EMPTY_STRINGS  = new String[0];
+
+    private EmptyArrays() {
+    }
 
 }

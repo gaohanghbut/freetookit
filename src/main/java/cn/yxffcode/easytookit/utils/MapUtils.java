@@ -12,7 +12,8 @@ public abstract class MapUtils {
     }
 
     public static boolean safeContainsKey(Map<?, ?> map,
-                                          Object key) {
+                                          Object key
+                                         ) {
         checkNotNull(map);
         try {
             return map.containsKey(key);
@@ -24,7 +25,8 @@ public abstract class MapUtils {
     }
 
     public static <V> V safeRemove(Map<?, V> map,
-                                   Object key) {
+                                   Object key
+                                  ) {
         checkNotNull(map);
         try {
             return map.remove(key);
@@ -36,7 +38,8 @@ public abstract class MapUtils {
     }
 
     public static <V> V safeGet(Map<?, V> map,
-                                Object key) {
+                                Object key
+                               ) {
         checkNotNull(map);
         try {
             return map.get(key);

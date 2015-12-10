@@ -1,15 +1,17 @@
 package cn.yxffcode.easytookit.collection;
 
+import cn.yxffcode.easytookit.lang.IntIterable;
+
 import java.io.Serializable;
 
 /**
  * @author gaohang on 15/11/18.
  */
-public class IntStack implements Serializable {
+public class IntStack implements IntIterable, Serializable {
 
     private static final long serialVersionUID = - 7535273734926642719L;
     private static final int  INIT_SIZE        = 10;
-    
+
     private int[] stack;
     private int   top;
 
@@ -47,5 +49,22 @@ public class IntStack implements Serializable {
 
     public boolean isEmpty() {
         return top == 0;
+    }
+
+    @Override
+    public IntIterator iterator() {
+        return new IntIterator() {
+            private int cur;
+
+            @Override
+            public boolean hasNext() {
+                return cur < stack.length;
+            }
+
+            @Override
+            public int next() {
+                return stack[cur++];
+            }
+        };
     }
 }

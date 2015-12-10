@@ -13,14 +13,10 @@ public abstract class AbstractIntsRef implements IntsRef {
     protected final int length;
 
     protected AbstractIntsRef(final int offset,
-                              final int length) {
+                              final int length
+                             ) {
         this.offset = offset;
         this.length = length;
-    }
-
-    @Override
-    public int length() {
-        return length;
     }
 
     @Override
@@ -34,6 +30,11 @@ public abstract class AbstractIntsRef implements IntsRef {
         }
         //前缀完全相等,则长度大的更大
         return Ints.compare(this.length(), o.length());
+    }
+
+    @Override
+    public int length() {
+        return length;
     }
 
 }

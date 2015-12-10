@@ -11,20 +11,15 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class GenericPropertiesConfiguration extends AbstractPropertiesConfiguration {
 
-    public static GenericPropertiesConfiguration create(InputStream... inputStreams) throws IOException {
-        checkNotNull(inputStreams);
-        GenericPropertiesConfiguration config = new GenericPropertiesConfiguration();
-        config.init(inputStreams);
-        return config;
-    }
-
     private Properties config;
 
     private GenericPropertiesConfiguration() {
     }
 
-    @Override
-    protected Properties getConfig() {
+    public static GenericPropertiesConfiguration create(InputStream... inputStreams) throws IOException {
+        checkNotNull(inputStreams);
+        GenericPropertiesConfiguration config = new GenericPropertiesConfiguration();
+        config.init(inputStreams);
         return config;
     }
 
@@ -33,5 +28,10 @@ public class GenericPropertiesConfiguration extends AbstractPropertiesConfigurat
         for (InputStream inputStream : inputStreams) {
             config.load(inputStream);
         }
+    }
+
+    @Override
+    protected Properties getConfig() {
+        return config;
     }
 }

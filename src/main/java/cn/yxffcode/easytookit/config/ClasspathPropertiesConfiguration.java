@@ -9,20 +9,15 @@ import java.util.Properties;
  */
 public class ClasspathPropertiesConfiguration extends AbstractPropertiesConfiguration {
 
-    public static ClasspathPropertiesConfiguration create(String... resources) throws IOException {
-        ClasspathPropertiesConfiguration cfg = new ClasspathPropertiesConfiguration();
-        cfg.loadConfig(resources);
-        return cfg;
-    }
+    private Properties config;
 
     private ClasspathPropertiesConfiguration() {
     }
 
-    private Properties config;
-
-    @Override
-    protected Properties getConfig() {
-        return config;
+    public static ClasspathPropertiesConfiguration create(String... resources) throws IOException {
+        ClasspathPropertiesConfiguration cfg = new ClasspathPropertiesConfiguration();
+        cfg.loadConfig(resources);
+        return cfg;
     }
 
     private void loadConfig(String... resources) throws IOException {
@@ -33,5 +28,10 @@ public class ClasspathPropertiesConfiguration extends AbstractPropertiesConfigur
                 config.load(fis);
             }
         }
+    }
+
+    @Override
+    protected Properties getConfig() {
+        return config;
     }
 }

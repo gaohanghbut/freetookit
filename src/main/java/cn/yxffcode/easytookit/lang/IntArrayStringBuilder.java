@@ -39,6 +39,12 @@ public class IntArrayStringBuilder {
         return this;
     }
 
+    private void resize() {
+        int[] ndest = new int[dest.length * 2];
+        System.arraycopy(dest, 0, ndest, 0, pos);
+        this.dest = ndest;
+    }
+
     public IntArrayStringBuilder append(int... cs) {
         if (pos + cs.length > dest.length) {
             resize();
@@ -49,16 +55,8 @@ public class IntArrayStringBuilder {
         return this;
     }
 
-    public int element(int index) {
-        return dest[index];
-    }
-
     public void clear() {
         pos = 0;
-    }
-
-    public int length() {
-        return pos;
     }
 
     public boolean isEmpty() {
@@ -74,17 +72,20 @@ public class IntArrayStringBuilder {
         return true;
     }
 
-    public String toString() {
-        return new String(toCharArray());
-    }
-
     public String toString(int off,
-                           int len) {
+                           int len
+                          ) {
         return new String(toCharArray(off, len));
     }
 
-    public char[] toCharArray() {
-        return toCharArray(0, pos);
+    public char[] toCharArray(int off,
+                              int len
+                             ) {
+        char[] chars = new char[len];
+        for (int i = off, j = len + off; i < j; i++) {
+            chars[i - off] = (char) dest[i];
+        }
+        return chars;
     }
 
     public boolean endWith(IntArrayStringBuilder appender) {
@@ -104,30 +105,8 @@ public class IntArrayStringBuilder {
         return true;
     }
 
-    public boolean startWith(IntArrayStringBuilder appender) {
-        int thisLength = length();
-        int thatLength = appender.length();
-        if (thisLength < thatLength) {
-            return false;
-        }
-        if (thisLength == thatLength) {
-            return equals(appender);
-        }
-        for (int i = 0, j = 0; i < appender.length(); ++ i, ++ j) {
-            if (appender.element(i) != element(j)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public IntArrayStringBuilder slice(int offset,
-                                       int length) {
-        return new SliceStringBuilder(this, offset, length);
-    }
-
-    public IntArrayStringBuilder slice(int offset) {
-        return slice(offset, this.length() - offset);
+    public int length() {
+        return pos;
     }
 
     @Override
@@ -150,19 +129,43 @@ public class IntArrayStringBuilder {
         return true;
     }
 
-    public char[] toCharArray(int off,
-                              int len) {
-        char[] chars = new char[len];
-        for (int i = off, j = len + off; i < j; i++) {
-            chars[i - off] = (char) dest[i];
-        }
-        return chars;
+    public int element(int index) {
+        return dest[index];
     }
 
-    private void resize() {
-        int[] ndest = new int[dest.length * 2];
-        System.arraycopy(dest, 0, ndest, 0, pos);
-        this.dest = ndest;
+    public String toString() {
+        return new String(toCharArray());
+    }
+
+    public char[] toCharArray() {
+        return toCharArray(0, pos);
+    }
+
+    public boolean startWith(IntArrayStringBuilder appender) {
+        int thisLength = length();
+        int thatLength = appender.length();
+        if (thisLength < thatLength) {
+            return false;
+        }
+        if (thisLength == thatLength) {
+            return equals(appender);
+        }
+        for (int i = 0, j = 0; i < appender.length(); ++ i, ++ j) {
+            if (appender.element(i) != element(j)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public IntArrayStringBuilder slice(int offset) {
+        return slice(offset, this.length() - offset);
+    }
+
+    public IntArrayStringBuilder slice(int offset,
+                                       int length
+                                      ) {
+        return new SliceStringBuilder(this, offset, length);
     }
 
     private final class SliceStringBuilder extends IntArrayStringBuilder {
@@ -173,18 +176,12 @@ public class IntArrayStringBuilder {
 
         private SliceStringBuilder(final IntArrayStringBuilder delegate,
                                    final int offset,
-                                   final int length) {
+                                   final int length
+                                  ) {
             super(0);
             this.delegate = delegate;
             this.offset = offset;
             this.length = length;
-        }
-
-
-        @Override
-        public char[] toCharArray(final int off,
-                                  final int len) {
-            return super.toCharArray(off + this.offset, len);
         }
 
         @Override
@@ -198,18 +195,8 @@ public class IntArrayStringBuilder {
         }
 
         @Override
-        public int element(final int index) {
-            return delegate.element(index + this.offset);
-        }
-
-        @Override
         public void clear() {
             throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public int length() {
-            return this.length;
         }
 
         @Override
@@ -228,14 +215,25 @@ public class IntArrayStringBuilder {
         }
 
         @Override
-        public String toString() {
-            return delegate.toString(this.offset, this.length);
+        public String toString(final int off,
+                               final int len
+                              ) {
+            return delegate.toString(this.offset + len, len);
         }
 
         @Override
-        public String toString(final int off,
-                               final int len) {
-            return delegate.toString(this.offset + len, len);
+        public int length() {
+            return this.length;
+        }
+
+        @Override
+        public int element(final int index) {
+            return delegate.element(index + this.offset);
+        }
+
+        @Override
+        public String toString() {
+            return delegate.toString(this.offset, this.length);
         }
 
         @Override
@@ -243,10 +241,17 @@ public class IntArrayStringBuilder {
             return delegate.toCharArray(this.offset, this.length);
         }
 
+        @Override
+        public char[] toCharArray(final int off,
+                                  final int len
+                                 ) {
+            return super.toCharArray(off + this.offset, len);
+        }
 
         @Override
         public IntArrayStringBuilder slice(final int offset,
-                                           final int length) {
+                                           final int length
+                                          ) {
             return delegate.slice(this.offset + offset, length);
         }
 

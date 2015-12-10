@@ -24,16 +24,21 @@ import java.util.concurrent.ConcurrentMap;
 
 public final class ConcurrentSet<E> extends AbstractSet<E> implements Serializable {
 
-    public static <E> ConcurrentSet<E> create() {
-        return new ConcurrentSet<>();
-    }
-
     private static final long serialVersionUID = - 6761513279741915432L;
-
     private final ConcurrentMap<E, Boolean> map;
 
     private ConcurrentSet() {
         map = Maps.newConcurrentMap();
+    }
+
+    public static <E> ConcurrentSet<E> create() {
+        return new ConcurrentSet<>();
+    }
+
+    @Override
+    public Iterator<E> iterator() {
+        return map.keySet()
+                  .iterator();
     }
 
     @Override
@@ -59,11 +64,5 @@ public final class ConcurrentSet<E> extends AbstractSet<E> implements Serializab
     @Override
     public void clear() {
         map.clear();
-    }
-
-    @Override
-    public Iterator<E> iterator() {
-        return map.keySet()
-                  .iterator();
     }
 }

@@ -4,10 +4,10 @@ package cn.yxffcode.easytookit.utils;
  * @author gaohang on 15/9/12.
  */
 public final class StringUtils {
+    public static final String EMPTY = "";
+
     private StringUtils() {
     }
-
-    public static final String EMPTY = "";
 
     public static boolean isBlank(String value) {
         int strLen;

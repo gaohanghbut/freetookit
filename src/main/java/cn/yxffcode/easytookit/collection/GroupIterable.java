@@ -9,14 +9,14 @@ import java.util.Iterator;
  */
 public class GroupIterable<E> implements Iterable<E> {
 
-    public static <E> GroupIterable<E> create(Iterable<? extends Iterable<? extends E>> src) {
-        return new GroupIterable<>(src);
-    }
-
     private final Iterable<? extends Iterable<? extends E>> src;
 
     protected GroupIterable(Iterable<? extends Iterable<? extends E>> src) {
         this.src = src;
+    }
+
+    public static <E> GroupIterable<E> create(Iterable<? extends Iterable<? extends E>> src) {
+        return new GroupIterable<>(src);
     }
 
     @Override

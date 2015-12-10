@@ -18,7 +18,8 @@ public class NamedThreadFactory implements ThreadFactory {
     private final boolean       daemon;
 
     public NamedThreadFactory(final String threadName,
-                              final boolean daemon) {
+                              final boolean daemon
+                             ) {
         this.threadName = threadName;
         this.daemon = daemon;
         this.threadSuffix = new AtomicInteger();
@@ -37,9 +38,9 @@ public class NamedThreadFactory implements ThreadFactory {
                               r,
                               namePrefix + threadNumber.getAndIncrement(),
                               0);
-        if (daemon && !t.isDaemon()) {
+        if (daemon && ! t.isDaemon()) {
             t.setDaemon(true);
-        } else if (!daemon && t.isDaemon()) {
+        } else if (! daemon && t.isDaemon()) {
             t.setDaemon(false);
         }
         if (t.getPriority() != Thread.NORM_PRIORITY) {

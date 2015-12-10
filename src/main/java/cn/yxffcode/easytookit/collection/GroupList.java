@@ -12,19 +12,18 @@ import static com.google.common.base.Preconditions.checkArgument;
  */
 public class GroupList<E> extends AbstractList<E> {
 
-    public static <T> GroupList<T> create(List<? extends T>... lists) {
-        return new GroupList<>(lists);
-    }
-
     private List<? extends E>[] lists;
-
-    private int size;
+    private int                 size;
 
     private GroupList(List<? extends E>... lists) {
         this.lists = lists;
         for (List<? extends E> list : lists) {
             size += list.size();
         }
+    }
+
+    public static <T> GroupList<T> create(List<? extends T>... lists) {
+        return new GroupList<>(lists);
     }
 
     @Override

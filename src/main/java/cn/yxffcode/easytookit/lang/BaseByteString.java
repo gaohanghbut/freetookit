@@ -16,25 +16,18 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * 从netty里copy而来
  */
 public class BaseByteString {
-    protected interface ByteStringFactory {
-        BaseByteString newInstance(byte[] value,
-                                   int start,
-                                   int length,
-                                   boolean copy);
-    }
-
+    public static final    BaseByteString    EMPTY_STRING    = new BaseByteString(0);
+    protected static final int               HASH_CODE_PRIME = 31;
     private static final   ByteStringFactory DEFAULT_FACTORY = new ByteStringFactory() {
         @Override
         public BaseByteString newInstance(byte[] value,
                                           int start,
                                           int length,
-                                          boolean copy) {
+                                          boolean copy
+                                         ) {
             return new BaseByteString(value, start, length, copy);
         }
     };
-    public static final    BaseByteString    EMPTY_STRING    = new BaseByteString(0);
-    protected static final int               HASH_CODE_PRIME = 31;
-
     protected final byte[] value;
     private final   int    offset;
     private final   int    length;
@@ -51,14 +44,16 @@ public class BaseByteString {
     }
 
     public BaseByteString(byte[] value,
-                          boolean copy) {
+                          boolean copy
+                         ) {
         this(value, 0, checkNotNull(value, "value").length, copy);
     }
 
     public BaseByteString(byte[] value,
                           int start,
                           int length,
-                          boolean copy) {
+                          boolean copy
+                         ) {
         if (copy) {
             this.value = Arrays.copyOfRange(value, start, start + length);
             this.offset = 0;
@@ -75,7 +70,8 @@ public class BaseByteString {
     }
 
     public BaseByteString(BaseByteString value,
-                          boolean copy) {
+                          boolean copy
+                         ) {
         checkNotNull(value, "value");
         this.length = value.length();
         this.hash = value.hash;
@@ -89,19 +85,33 @@ public class BaseByteString {
         }
     }
 
+    public final int length() {
+        return length;
+    }
+
+    public final byte[] array() {
+        return value;
+    }
+
+    public final int arrayOffset() {
+        return offset;
+    }
+
     public BaseByteString(ByteBuffer value) {
         this(value, true);
     }
 
     public BaseByteString(ByteBuffer value,
-                          boolean copy) {
+                          boolean copy
+                         ) {
         this(value, value.position(), checkNotNull(value, "value").remaining(), copy);
     }
 
     public BaseByteString(ByteBuffer value,
                           int start,
                           int length,
-                          boolean copy) {
+                          boolean copy
+                         ) {
         if (start < 0 || length > checkNotNull(value, "value").capacity() - start) {
             throw new IndexOutOfBoundsException("expected: " + "0 <= start(" + start + ") <= start + length(" + length
                                                 + ") <= " + "value.capacity(" + value.capacity() + ')');
@@ -129,14 +139,16 @@ public class BaseByteString {
     }
 
     public BaseByteString(char[] value,
-                          Charset charset) {
+                          Charset charset
+                         ) {
         this(value, charset, 0, checkNotNull(value, "value").length);
     }
 
     public BaseByteString(char[] value,
                           Charset charset,
                           int start,
-                          int length) {
+                          int length
+                         ) {
         if (start < 0 || length > checkNotNull(value, "value").length - start) {
             throw new IndexOutOfBoundsException("expected: " + "0 <= start(" + start + ") <= start + length(" + length
                                                 + ") <= " + "length(" + length + ')');
@@ -153,14 +165,16 @@ public class BaseByteString {
     }
 
     public BaseByteString(CharSequence value,
-                          Charset charset) {
+                          Charset charset
+                         ) {
         this(value, charset, 0, checkNotNull(value, "value").length());
     }
 
     public BaseByteString(CharSequence value,
                           Charset charset,
                           int start,
-                          int length) {
+                          int length
+                         ) {
         if (start < 0 || length > checkNotNull(value, "value").length() - start) {
             throw new IndexOutOfBoundsException("expected: " + "0 <= start(" + start + ") <= start + length(" + length
                                                 + ") <= " + "length(" + value.length() + ')');
@@ -184,20 +198,10 @@ public class BaseByteString {
         return forEachByte0(0, length(), visitor);
     }
 
-    public final int forEachByte(int index,
-                                 int length,
-                                 ByteProcessor visitor) throws Exception {
-        if (index < 0 || length > length() - index) {
-            throw new IndexOutOfBoundsException("expected: " + "0 <= index(" + index + ") <= start + length(" + length
-                                                + ") <= " + "length(" + length() + ')');
-        }
-
-        return forEachByte0(index, length, visitor);
-    }
-
     private int forEachByte0(int index,
                              int length,
-                             ByteProcessor visitor) throws Exception {
+                             ByteProcessor visitor
+                            ) throws Exception {
         final int len = offset + length;
         for (int i = offset + index; i < len; ++ i) {
             if (! visitor.process(value[i])) {
@@ -207,24 +211,26 @@ public class BaseByteString {
         return - 1;
     }
 
-    public final int forEachByteDesc(ByteProcessor visitor) throws Exception {
-        return forEachByteDesc0(0, length(), visitor);
-    }
-
-    public final int forEachByteDesc(int index,
-                                     int length,
-                                     ByteProcessor visitor) throws Exception {
+    public final int forEachByte(int index,
+                                 int length,
+                                 ByteProcessor visitor
+                                ) throws Exception {
         if (index < 0 || length > length() - index) {
             throw new IndexOutOfBoundsException("expected: " + "0 <= index(" + index + ") <= start + length(" + length
                                                 + ") <= " + "length(" + length() + ')');
         }
 
-        return forEachByteDesc0(index, length, visitor);
+        return forEachByte0(index, length, visitor);
+    }
+
+    public final int forEachByteDesc(ByteProcessor visitor) throws Exception {
+        return forEachByteDesc0(0, length(), visitor);
     }
 
     private int forEachByteDesc0(int index,
                                  int length,
-                                 ByteProcessor visitor) throws Exception {
+                                 ByteProcessor visitor
+                                ) throws Exception {
         final int end = offset + index;
         for (int i = offset + index + length - 1; i >= end; -- i) {
             if (! visitor.process(value[i])) {
@@ -232,6 +238,18 @@ public class BaseByteString {
             }
         }
         return - 1;
+    }
+
+    public final int forEachByteDesc(int index,
+                                     int length,
+                                     ByteProcessor visitor
+                                    ) throws Exception {
+        if (index < 0 || length > length() - index) {
+            throw new IndexOutOfBoundsException("expected: " + "0 <= index(" + index + ") <= start + length(" + length
+                                                + ") <= " + "length(" + length() + ')');
+        }
+
+        return forEachByteDesc0(index, length, visitor);
     }
 
     public final byte byteAt(int index) {
@@ -247,20 +265,8 @@ public class BaseByteString {
         return length == 0;
     }
 
-    public final int length() {
-        return length;
-    }
-
     public void arrayChanged() {
         hash = 0;
-    }
-
-    public final byte[] array() {
-        return value;
-    }
-
-    public final int arrayOffset() {
-        return offset;
     }
 
     public final boolean isEntireArrayUsed() {
@@ -272,14 +278,16 @@ public class BaseByteString {
     }
 
     public final byte[] toByteArray(int start,
-                                    int end) {
+                                    int end
+                                   ) {
         return Arrays.copyOfRange(value, start + offset, end + offset);
     }
 
     public final void copy(int srcIdx,
                            byte[] dst,
                            int dstIdx,
-                           int length) {
+                           int length
+                          ) {
         if (srcIdx < 0 || length > length() - srcIdx) {
             throw new IndexOutOfBoundsException("expected: " + "0 <= srcIdx(" + srcIdx + ") <= srcIdx + length("
                                                 + length + ") <= srcLen(" + length() + ')');
@@ -288,7 +296,22 @@ public class BaseByteString {
         System.arraycopy(value, srcIdx + offset, checkNotNull(dst, "dst"), dstIdx, length);
     }
 
-    @Override
+    public BaseByteString subSequence(int start) {
+        return subSequence(start, length());
+    }
+
+    public BaseByteString subSequence(int start,
+                                      int end
+                                     ) {
+        return subSequence(start, end, true);
+    }
+
+    public BaseByteString subSequence(int start,
+                                      int end,
+                                      boolean copy
+                                     ) {
+        return subSequence(start, end, copy, DEFAULT_FACTORY);
+    }    @Override
     public int hashCode() {
         int h = hash;
         if (h == 0) {
@@ -302,25 +325,11 @@ public class BaseByteString {
         return hash;
     }
 
-    public BaseByteString subSequence(int start) {
-        return subSequence(start, length());
-    }
-
-    public BaseByteString subSequence(int start,
-                                      int end) {
-        return subSequence(start, end, true);
-    }
-
-    public BaseByteString subSequence(int start,
-                                      int end,
-                                      boolean copy) {
-        return subSequence(start, end, copy, DEFAULT_FACTORY);
-    }
-
     protected BaseByteString subSequence(int start,
                                          int end,
                                          boolean copy,
-                                         ByteStringFactory factory) {
+                                         ByteStringFactory factory
+                                        ) {
         if (start < 0 || start > end || end > length()) {
             throw new IndexOutOfBoundsException("expected: 0 <= start(" + start + ") <= end (" + end + ") <= length("
                                                 + length() + ')');
@@ -346,13 +355,15 @@ public class BaseByteString {
     }
 
     public final int parseAsciiInt(int start,
-                                   int end) {
+                                   int end
+                                  ) {
         return parseAsciiInt(start, end, 10);
     }
 
     public final int parseAsciiInt(int start,
                                    int end,
-                                   int radix) {
+                                   int radix
+                                  ) {
         if (radix < Character.MIN_RADIX || radix > Character.MAX_RADIX) {
             throw new NumberFormatException();
         }
@@ -373,7 +384,8 @@ public class BaseByteString {
     private int parseAsciiInt(int start,
                               int end,
                               int radix,
-                              boolean negative) {
+                              boolean negative
+                             ) {
         int max        = Integer.MIN_VALUE / radix;
         int result     = 0;
         int currOffset = start;
@@ -409,13 +421,15 @@ public class BaseByteString {
     }
 
     public final long parseAsciiLong(int start,
-                                     int end) {
+                                     int end
+                                    ) {
         return parseAsciiLong(start, end, 10);
     }
 
     public final long parseAsciiLong(int start,
                                      int end,
-                                     int radix) {
+                                     int radix
+                                    ) {
         if (radix < Character.MIN_RADIX || radix > Character.MAX_RADIX) {
             throw new NumberFormatException();
         }
@@ -436,7 +450,8 @@ public class BaseByteString {
     private long parseAsciiLong(int start,
                                 int end,
                                 int radix,
-                                boolean negative) {
+                                boolean negative
+                               ) {
         long max        = Long.MIN_VALUE / radix;
         long result     = 0;
         int  currOffset = start;
@@ -485,13 +500,15 @@ public class BaseByteString {
     }
 
     public final short parseAsciiShort(int start,
-                                       int end) {
+                                       int end
+                                      ) {
         return parseAsciiShort(start, end, 10);
     }
 
     public final short parseAsciiShort(int start,
                                        int end,
-                                       int radix) {
+                                       int radix
+                                      ) {
         int   intValue = parseAsciiInt(start, end, radix);
         short result   = (short) intValue;
         if (result != intValue) {
@@ -505,8 +522,41 @@ public class BaseByteString {
     }
 
     public final float parseAsciiFloat(int start,
-                                       int end) {
+                                       int end
+                                      ) {
         return Float.parseFloat(toString(start, end));
+    }
+
+    /**
+     * Translates the [{@code start}, {@code end}) range of this byte string to a {@link String}.
+     *
+     * @see {@link #toString(Charset, int, int)}
+     */
+    public String toString(int start,
+                           int end
+                          ) {
+        return toString(CharsetUtil.ISO_8859_1, start, end);
+    }
+
+    /**
+     * Translates the [{@code start}, {@code end}) range of this byte string to a {@link String}
+     * using the {@code charset} encoding.
+     */
+    public String toString(Charset charset,
+                           int start,
+                           int end
+                          ) {
+        int length = end - start;
+        if (length == 0) {
+            return StringUtils.EMPTY;
+        }
+
+        if (start < 0 || length > length() - start) {
+            throw new IndexOutOfBoundsException("expected: " + "0 <= start(" + start + ") <= srcIdx + length("
+                                                + length + ") <= srcLen(" + length() + ')');
+        }
+
+        return new String(value, start + offset, length, charset);
     }
 
     public final double parseAsciiDouble() {
@@ -514,8 +564,26 @@ public class BaseByteString {
     }
 
     public final double parseAsciiDouble(int start,
-                                         int end) {
+                                         int end
+                                        ) {
         return Double.parseDouble(toString(start, end));
+    }
+
+    /**
+     * Translates the entire byte string to a {@link String} using the {@code charset} encoding.
+     *
+     * @see {@link #toString(Charset, int, int)}
+     */
+    public final String toString(Charset charset) {
+        return toString(charset, 0, length());
+    }
+
+    protected interface ByteStringFactory {
+        BaseByteString newInstance(byte[] value,
+                                   int start,
+                                   int length,
+                                   boolean copy
+                                  );
     }
 
     @Override
@@ -533,6 +601,8 @@ public class BaseByteString {
                                       other.array(), other.arrayOffset(), other.arrayOffset() + other.length());
     }
 
+
+
     /**
      * Translates the entire byte string to a {@link String}.
      *
@@ -543,42 +613,5 @@ public class BaseByteString {
         return toString(0, length());
     }
 
-    /**
-     * Translates the entire byte string to a {@link String} using the {@code charset} encoding.
-     *
-     * @see {@link #toString(Charset, int, int)}
-     */
-    public final String toString(Charset charset) {
-        return toString(charset, 0, length());
-    }
 
-    /**
-     * Translates the [{@code start}, {@code end}) range of this byte string to a {@link String}.
-     *
-     * @see {@link #toString(Charset, int, int)}
-     */
-    public String toString(int start,
-                           int end) {
-        return toString(CharsetUtil.ISO_8859_1, start, end);
-    }
-
-    /**
-     * Translates the [{@code start}, {@code end}) range of this byte string to a {@link String}
-     * using the {@code charset} encoding.
-     */
-    public String toString(Charset charset,
-                           int start,
-                           int end) {
-        int length = end - start;
-        if (length == 0) {
-            return StringUtils.EMPTY;
-        }
-
-        if (start < 0 || length > length() - start) {
-            throw new IndexOutOfBoundsException("expected: " + "0 <= start(" + start + ") <= srcIdx + length("
-                                                + length + ") <= srcLen(" + length() + ')');
-        }
-
-        return new String(value, start + offset, length, charset);
-    }
 }

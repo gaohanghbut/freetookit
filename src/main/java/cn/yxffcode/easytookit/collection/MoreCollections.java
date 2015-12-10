@@ -14,15 +14,15 @@ import java.util.TreeSet;
  * @author gaohang on 15/8/12.
  */
 public final class MoreCollections {
-    private MoreCollections() {
-    }
-
     private static final SortedSet<Object> EMPTY_SORTED_SET = new TreeSet<Object>() {
         @Override
         public boolean add(Object o) {
             throw new UnsupportedOperationException("Immutable set");
         }
     };
+
+    private MoreCollections() {
+    }
 
     /**
      * 创建一个基于{@link java.util.concurrent.ConcurrentMap}的{@link Table}， {@link Table}无法保证外层{@link Table#put(Object,
