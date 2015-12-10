@@ -4,6 +4,7 @@ import cn.yxffcode.easytookit.collection.IntIterator;
 import cn.yxffcode.easytookit.collection.IntStack;
 import cn.yxffcode.easytookit.lang.IntsRef;
 import cn.yxffcode.easytookit.lang.StringIntsRef;
+import com.google.common.base.Function;
 import com.sun.istack.internal.NotNull;
 
 import static cn.yxffcode.easytookit.utils.ArrayUtils.grow;
@@ -27,20 +28,33 @@ public class DoubleArrayTrie implements Dictionary {
      */
     private static final int NONE            = 0;
 
-    private int[] base;
-    private int[] check;
-
-    private DoubleArrayTrie() {
-        this.base = new int[INIT_ARRAY_SIZE];
-        this.check = new int[INIT_ARRAY_SIZE];
-    }
-
     public static DoubleArrayTrie create(Iterable<String> words) {
-        DoubleArrayTrie trie = new DoubleArrayTrie();
+        DoubleArrayTrie trie = new DoubleArrayTrie(DefaultIntsRefCreator.INSTANCE);
         for (String word : words) {
             trie.add(word);
         }
         return trie;
+    }
+
+    public static DoubleArrayTrie create(Iterable<String> words,
+                                         Function<String, IntsRef> intsRefTransformer) {
+        DoubleArrayTrie trie = new DoubleArrayTrie(intsRefTransformer);
+        for (String word : words) {
+            trie.add(word);
+        }
+        return trie;
+    }
+
+    private int[] base;
+
+    private int[] check;
+
+    private final Function<String, IntsRef> intsRefTransformer;
+
+    private DoubleArrayTrie(final Function<String, IntsRef> intsRefTransformer) {
+        this.intsRefTransformer = intsRefTransformer;
+        this.base = new int[INIT_ARRAY_SIZE];
+        this.check = new int[INIT_ARRAY_SIZE];
     }
 
     /**
@@ -48,7 +62,7 @@ public class DoubleArrayTrie implements Dictionary {
      */
     public void add(@NotNull String word) {
         checkNotNull(word);
-        IntsRef intsRef = new StringIntsRef(word + END_INPUT);
+        IntsRef intsRef = checkNotNull(intsRefTransformer.apply(word + END_INPUT));
         for (int i = 0, j = intsRef.length(), s = INIT_STATE; i < j; i++) {
             if (s >= base.length) {
                 base = grow(base, s * 2);
@@ -72,9 +86,8 @@ public class DoubleArrayTrie implements Dictionary {
                 base:
                 for (; ; b++) {//b表示新的base[s]
                     for (IntIterator iterator = children.iterator(); iterator.hasNext(); ) {
-                        int child = iterator.next();
                         //t = base[s] + c,则c = t - base[s],此时t是child
-                        int c  = child;
+                        int c  = iterator.next();
                         int nt = b + c;
                         if (nt >= check.length) {
                             check = grow(check, nt * 2);
@@ -114,7 +127,7 @@ public class DoubleArrayTrie implements Dictionary {
     @Override
     public boolean match(@NotNull String word) {
         checkNotNull(word);
-        StringIntsRef intsRef = new StringIntsRef(word + END_INPUT);
+        IntsRef intsRef = checkNotNull(intsRefTransformer.apply(word + END_INPUT));
         for (int i = 0, j = intsRef.length(), s = INIT_STATE; i < j; i++) {
             if (s >= base.length) {
                 return false;
@@ -136,4 +149,12 @@ public class DoubleArrayTrie implements Dictionary {
         return true;
     }
 
+    private enum DefaultIntsRefCreator implements Function<String, IntsRef> {
+        INSTANCE;
+
+        @Override
+        public IntsRef apply(final String input) {
+            return new StringIntsRef(input);
+        }
+    }
 }

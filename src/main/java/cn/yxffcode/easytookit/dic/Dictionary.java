@@ -1,5 +1,7 @@
 package cn.yxffcode.easytookit.dic;
 
+import com.sun.istack.internal.NotNull;
+
 /**
  * 字典的实现
  *
@@ -7,5 +9,5 @@ package cn.yxffcode.easytookit.dic;
  */
 public interface Dictionary {
 
-    boolean match(String word);
+    boolean match(@NotNull  String word);
 }
