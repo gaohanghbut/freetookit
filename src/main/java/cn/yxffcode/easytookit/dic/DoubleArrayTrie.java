@@ -75,7 +75,7 @@ public class DoubleArrayTrie implements Dictionary {
             if (check[t] != NONE && check[t] != s) {
                 //冲突,需要重新分配base[s]
                 IntStack children = new IntStack();
-                for (int k = 0; k < check.length; k++) {
+                for (int k = base[s]; k < check.length; k++) {
                     int e = check[k];
                     if (e == s) {
                         children.push(k - base[s]);
