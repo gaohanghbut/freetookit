@@ -68,7 +68,10 @@ public class DoubleArrayTrie implements Dictionary {
                 base = grow(base, s * 2);
             }
             int elem = intsRef.element(i);
-            int t    = base[s] + elem;
+            if (elem <= 0) {
+                continue;
+            }
+            int t = base[s] + elem;
             if (t >= check.length) {
                 check = grow(check, t * 2);
             }
@@ -154,7 +157,58 @@ public class DoubleArrayTrie implements Dictionary {
 
         @Override
         public IntsRef apply(final String input) {
-            return new StringIntsRef(input);
+            return new IntsRefWrapper(new StringIntsRef(input));
+        }
+    }
+
+    private static final class IntsRefWrapper implements IntsRef {
+        /**
+         * 中文字符的起始数字
+         */
+        private static final int CN_CHAR_FIRST = 19968;
+        /**
+         * 中文字符的最大字符数字
+         */
+        private static final int CN_CHAR_LAST  = 171941;
+
+        private static final int END_INPUT_VALUE  = 1;
+        private static final int DIGIT_START      = 2;
+        private static final int LOW_CASE_START   = 12;
+        private static final int UPPER_CASE_START = 38;
+        private static final int CN_CHAR_START    = 74;
+
+        private final IntsRef delegate;
+
+        private IntsRefWrapper(final IntsRef delegate) {
+            this.delegate = delegate;
+        }
+
+        @Override
+        public int element(final int index) {
+            int elem = delegate.element(index);
+            if (elem >= 'a' && elem <= 'z') {
+                return LOW_CASE_START + (elem - 'a');
+            } else if (elem >= 'A' && elem <= 'Z') {
+                return UPPER_CASE_START + (elem - 'A');
+            } else if (elem >= CN_CHAR_FIRST && elem <= CN_CHAR_LAST) {
+                return CN_CHAR_START + (elem - CN_CHAR_FIRST);
+            } else if (elem >= '0' && elem <= '9') {
+                return DIGIT_START + (elem - '0');
+            } else if (elem == '#') {
+                return END_INPUT_VALUE;
+            }
+            //不接受此字符
+            return - 1;
+        }
+
+        @Override
+        public int length() {
+            return delegate.length();
+        }
+
+        @Override
+        public int compareTo(final IntsRef o) {
+            return delegate.compareTo(o);
         }
     }
 }
