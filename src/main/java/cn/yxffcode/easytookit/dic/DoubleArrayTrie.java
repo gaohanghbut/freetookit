@@ -5,7 +5,6 @@ import cn.yxffcode.easytookit.collection.IntStack;
 import cn.yxffcode.easytookit.lang.IntsRef;
 import cn.yxffcode.easytookit.lang.StringIntsRef;
 import com.google.common.base.Function;
-import com.sun.istack.internal.NotNull;
 
 import static cn.yxffcode.easytookit.utils.ArrayUtils.grow;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -60,7 +59,7 @@ public class DoubleArrayTrie implements Dictionary {
     /**
      * 添加一个词条
      */
-    public void add(@NotNull String word) {
+    public void add(String word) {
         checkNotNull(word);
         IntsRef intsRef = checkNotNull(intsRefTransformer.apply(word + END_INPUT));
         for (int i = 0, j = intsRef.length(), s = INIT_STATE; i < j; i++) {
@@ -128,7 +127,7 @@ public class DoubleArrayTrie implements Dictionary {
     }
 
     @Override
-    public boolean match(@NotNull String word) {
+    public boolean match(String word) {
         checkNotNull(word);
         IntsRef intsRef = checkNotNull(intsRefTransformer.apply(word + END_INPUT));
         for (int i = 0, j = intsRef.length(), s = INIT_STATE; i < j; i++) {
