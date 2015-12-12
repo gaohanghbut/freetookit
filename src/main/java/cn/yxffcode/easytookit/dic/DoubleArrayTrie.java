@@ -10,11 +10,45 @@ import static cn.yxffcode.easytookit.utils.ArrayUtils.grow;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * 双数组字典树,使用字节数组实现
+ * 双数组字典树,使用int数组实现
  * <p/>
  * 实现原理:
  * base[s] + c = t;
  * check[t] = s;
+ * <p/>
+ * 1.base与check是两个平行的数组,数组的下标表示状态
+ * 2.base数组与check数组表示节点之间的父子关系
+ * 3.base[s]的值表示状态s的子节点在check数组中的起始下标(但起始下标不一定存的是s的子节点)
+ * 4.check[t]表示状态t的父节点状态
+ * 4.输入c后,状态由s转成t,新的状态,那么check[t]=s,状态s增加一个子节点base[s] + c且满足关系t = base[s] + c
+ * <p/>
+ * 创建过程:
+ * base数组的起始值都为0,初始状态为1,check数组的初始值为0,表示没有父节点
+ * 输入字符c,则t = base[s] + c,检查check[t]的值,如果check[t]==s,则表示此字符在公共前缀中,状态转换成t,如果check[t]==0
+ * 表示t这个状态还没有被加入到字典中,则check[t]=s,状态转换成t,如果check[t]!=0且check[t]!=s,则表示check[t]已经被其它状态
+ * 占用,那么修改base[s]的值为b,使修改前,所有的check[b + m]=0(check数组元素没有被其它节点占用)
+ * 假设s状态后有输入为n,那么修改后check[b+n] = check[base[s] + n],base[b + n] = base[base[s] + n],然后修改base[s]+n
+ * 的所有子节点,使用其check值为b+n.
+ *
+ * base       check
+ * -------    -------
+ * |     |    |     |
+ * -------    -------
+ * |     |s   |     | s
+ * -------    -------
+ * |     |t   |  s  | t
+ * -------    -------
+ * |     |    |     |
+ * -------    -------
+ * |     |    |  t  | m
+ * -------    -------
+ * |     |    |     |
+ * -------    -------
+ * |     |    |     |
+ * -------    -------
+ * 如果b=1,则base[s]由0变为1,那么t的值则变成t+1,那么check[t+1]=check[t],check[t]=0
+ *                            base[t]变成base[t+1],base[t+1]=base[t]
+ *                            t的子节点m也发生变动check[m]=t+1
  *
  * @author gaohang on 15/12/9.
  */
