@@ -48,19 +48,14 @@ public abstract class Automaton {
      */
     protected       BitSet accept;
 
-    protected Automaton(final int stateCount,
-                        final int transitionCount,
-                        final int transitionWidth
-                       ) {
+    protected Automaton(final int stateCount, final int transitionCount, final int transitionWidth) {
         this.transitionWidth = transitionWidth;
         this.states = new int[STATE_WIDTH * stateCount + STATE_WIDTH];
         this.transitions = new int[this.transitionWidth * transitionCount + this.transitionWidth];
         this.accept = new BitSet(stateCount);
     }
 
-    protected final int[] grow(int[] src,
-                               int growSize
-                              ) {
+    protected final int[] grow(int[] src, int growSize) {
         int[] tmp = new int[src.length + growSize];
         System.arraycopy(src, 0, tmp, 0, src.length);
         return tmp;
@@ -101,9 +96,7 @@ public abstract class Automaton {
         return INIT_STATE;
     }
 
-    public final int step(int current,
-                          int value
-                         ) {
+    public final int step(int current, int value) {
         int pos = current * 2;
         for (int off = states[pos], end = states[pos + 1] * transitionWidth + off;
              off < end; off += transitionWidth) {
@@ -122,9 +115,7 @@ public abstract class Automaton {
         return accept.get(state);
     }
 
-    protected abstract boolean apply(final int off,
-                                     final int value
-                                    );
+    protected abstract boolean apply(final int off, final int value);
 
     public final boolean run(final String word) {
         checkNotNull(word);

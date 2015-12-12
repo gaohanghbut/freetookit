@@ -12,7 +12,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * <pre>
  *     {@code
  *          private Map<String, Object> cache = xxx;
- *          private DCL<String> dcl = DCL.<String>create().check(key -> cache.containsKey(key)).absent(new Object());
+ *          private DCL<String> dcl = DCL.<String>create()
+ *                                       .check(key -> cache.containsKey(key))
+ *                                       .absent(key -> {//create Object});
  *
  *          public Object getInstance(String key) {
  *              return dcl.done(key);

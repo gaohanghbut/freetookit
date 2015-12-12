@@ -22,6 +22,7 @@ import static cn.yxffcode.easytookit.utils.StringUtils.equalsIgnoreCase;
  *
  * @author gaohang on 15/12/2.
  */
+@Deprecated
 public class IgnoreCaseStringMap<V> extends AbstractMap<String, V> implements Serializable, Cloneable {
 
     private static final long serialVersionUID = - 5567524254918911681L;
@@ -59,9 +60,7 @@ public class IgnoreCaseStringMap<V> extends AbstractMap<String, V> implements Se
         return delegate.get(new StringHolder((String) key));
     }
 
-    public V put(final String key,
-                 final V value
-                ) {
+    public V put(final String key, final V value) {
         return delegate.put(new StringHolder(key), value);
     }
 
@@ -83,10 +82,7 @@ public class IgnoreCaseStringMap<V> extends AbstractMap<String, V> implements Se
 
     @Override
     public Set<String> keySet() {
-        Set<String> keySet = this.keySet;
-        return keySet != null ?
-               keySet :
-               (this.keySet = new KeySetWrapper(delegate.keySet()));
+        return this.keySet != null ? this.keySet : (this.keySet = new KeySetWrapper(delegate.keySet()));
     }
 
     @Override
@@ -96,10 +92,7 @@ public class IgnoreCaseStringMap<V> extends AbstractMap<String, V> implements Se
 
     @Override
     public Set<Entry<String, V>> entrySet() {
-        Set<Entry<String, V>> es = this.entrySet;
-        return es != null ?
-               es :
-               (entrySet = new EntrySetWrapper(delegate.entrySet()));
+        return this.entrySet != null ? this.entrySet : (entrySet = new EntrySetWrapper(delegate.entrySet()));
     }
 
     private void writeObject(java.io.ObjectOutputStream s) throws IOException {
@@ -201,11 +194,12 @@ public class IgnoreCaseStringMap<V> extends AbstractMap<String, V> implements Se
             public Entry<String, V> apply(final Entry<StringHolder, V> input) {
                 return new TransformEntry<V>(input);
             }
-        }        @Override
+        }
+
+        @Override
         public Iterator<Entry<String, V>> iterator() {
             return Iterators.transform(delegate.iterator(), new EntryTransformer<V>());
         }
-
 
 
         @Override

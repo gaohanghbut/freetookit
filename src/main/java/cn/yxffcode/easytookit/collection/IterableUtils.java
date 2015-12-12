@@ -31,20 +31,14 @@ public final class IterableUtils {
     }
 
     public static <K, V> Map<K, V> nullToEmpty(Map<K, V> src) {
-        return src == null ?
-               Collections.<K, V>emptyMap() :
-               src;
+        return src == null ? Collections.<K, V>emptyMap() : src;
     }
 
     /**
      * 将一个{@link Iterable}对象转换成n个大小为subSize的集合
      */
-    public static <T> List<List<T>> split(Iterable<? extends T> src,
-                                          int subSize
-                                         ) {
-        return split(src,
-                     subSize,
-                     new ArrayListSupplier<T>());
+    public static <T> List<List<T>> split(Iterable<? extends T> src, int subSize) {
+        return split(src, subSize, new ArrayListSupplier<T>());
     }
 
     /**
@@ -52,8 +46,7 @@ public final class IterableUtils {
      */
     public static <T, C extends Collection<T>> List<C> split(Iterable<? extends T> src,
                                                              int subSize,
-                                                             Supplier<C> supplier
-                                                            ) {
+                                                             Supplier<C> supplier) {
 
         checkNotNull(src);
         checkArgument(subSize > 0);

@@ -11,7 +11,7 @@ public enum Compared {
      */
     GREATER {
         @Override
-        public int getComparetorResult() {
+        public int getComparatorResult() {
             return 1;
         }
     },
@@ -20,7 +20,7 @@ public enum Compared {
      */
     EQUAL {
         @Override
-        public int getComparetorResult() {
+        public int getComparatorResult() {
             return 0;
         }
     },
@@ -29,10 +29,10 @@ public enum Compared {
      */
     SMALLER {
         @Override
-        public int getComparetorResult() {
+        public int getComparatorResult() {
             return - 1;
         }
     };
 
-    public abstract int getComparetorResult();
+    public abstract int getComparatorResult();
 }

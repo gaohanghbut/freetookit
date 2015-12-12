@@ -22,9 +22,11 @@ import java.util.AbstractSet;
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentMap;
 
+/**
+ * @author gaohang
+ */
 public final class ConcurrentSet<E> extends AbstractSet<E> implements Serializable {
 
-    private static final long serialVersionUID = - 6761513279741915432L;
     private final ConcurrentMap<E, Boolean> map;
 
     private ConcurrentSet() {
@@ -37,8 +39,7 @@ public final class ConcurrentSet<E> extends AbstractSet<E> implements Serializab
 
     @Override
     public Iterator<E> iterator() {
-        return map.keySet()
-                  .iterator();
+        return map.keySet().iterator();
     }
 
     @Override

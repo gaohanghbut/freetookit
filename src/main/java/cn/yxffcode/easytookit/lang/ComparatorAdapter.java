@@ -20,6 +20,6 @@ public class ComparatorAdapter<T> implements Comparator<T> {
                        final T right
                       ) {
         return delegate.compare(left, right)
-                       .getComparetorResult();
+                       .getComparatorResult();
     }
 }

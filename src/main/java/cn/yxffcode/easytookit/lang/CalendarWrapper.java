@@ -28,9 +28,7 @@ public class CalendarWrapper {
         return new CalendarWrapper(Calendar.getInstance(aLocale));
     }
 
-    public static CalendarWrapper getInstance(final TimeZone zone,
-                                              final Locale aLocale
-                                             ) {
+    public static CalendarWrapper getInstance(final TimeZone zone, final Locale aLocale) {
         return new CalendarWrapper(Calendar.getInstance(zone, aLocale));
     }
 
@@ -40,9 +38,7 @@ public class CalendarWrapper {
      * @param field 需要加的域
      * @param delta 增加的值
      */
-    public void add(DateField field,
-                    int delta
-                   ) {
+    public void add(DateField field, int delta) {
         delegate.add(field.getCalendarField(), delta);
     }
 }

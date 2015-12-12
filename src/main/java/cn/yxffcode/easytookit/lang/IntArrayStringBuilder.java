@@ -72,15 +72,11 @@ public class IntArrayStringBuilder {
         return true;
     }
 
-    public String toString(int off,
-                           int len
-                          ) {
+    public String toString(int off,int len) {
         return new String(toCharArray(off, len));
     }
 
-    public char[] toCharArray(int off,
-                              int len
-                             ) {
+    public char[] toCharArray(int off, int len) {
         char[] chars = new char[len];
         for (int i = off, j = len + off; i < j; i++) {
             chars[i - off] = (char) dest[i];
@@ -176,8 +172,7 @@ public class IntArrayStringBuilder {
 
         private SliceStringBuilder(final IntArrayStringBuilder delegate,
                                    final int offset,
-                                   final int length
-                                  ) {
+                                   final int length) {
             super(0);
             this.delegate = delegate;
             this.offset = offset;
@@ -215,9 +210,7 @@ public class IntArrayStringBuilder {
         }
 
         @Override
-        public String toString(final int off,
-                               final int len
-                              ) {
+        public String toString(final int off, final int len) {
             return delegate.toString(this.offset + len, len);
         }
 
@@ -242,16 +235,12 @@ public class IntArrayStringBuilder {
         }
 
         @Override
-        public char[] toCharArray(final int off,
-                                  final int len
-                                 ) {
+        public char[] toCharArray(final int off, final int len) {
             return super.toCharArray(off + this.offset, len);
         }
 
         @Override
-        public IntArrayStringBuilder slice(final int offset,
-                                           final int length
-                                          ) {
+        public IntArrayStringBuilder slice(final int offset, final int length) {
             return delegate.slice(this.offset + offset, length);
         }
 

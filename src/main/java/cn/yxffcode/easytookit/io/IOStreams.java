@@ -38,15 +38,15 @@ public final class IOStreams {
      * <p/>
      * 当读取的文件比较大时，不合适一次将事个文件的行读入内存，需要逐行读并处理。在使用guava的CharStreams时比较繁锁，例如：
      * <pre>
-     *      CharStreams.readLine(reader, new LineProcessor<Void>() {
+     *      CharStreams.readLine(reader, new LineProcessor<T>() {
      *          public boolean processLine(String line) throws IOException {
      *              if (line ....) {
      *                  return false;//不需要再继续读
      *              }
      *              ...
      *          }
-     *          public Void getResult() {
-     *              return null;
+     *          public T getResult() {
+     *              return xxx;
      *          }
      *      });
      * </pre>

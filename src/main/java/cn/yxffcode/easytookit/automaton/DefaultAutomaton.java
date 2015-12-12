@@ -20,17 +20,12 @@ public class DefaultAutomaton extends Automaton {
     private int nextTransition;
     private int currentState;
 
-    protected DefaultAutomaton(final int stateCount,
-                               final int transitionCount
-                              ) {
+    protected DefaultAutomaton(final int stateCount, final int transitionCount) {
         super(stateCount, transitionCount, 2);
         this.nextTransition = 1;
     }
 
-    private void addTransition(int fromState,
-                               int toState,
-                               int value
-                              ) {
+    private void addTransition(int fromState, int toState, int value) {
         if (currentState != fromState * STATE_WIDTH) {
             currentState = fromState * STATE_WIDTH;
         }
@@ -40,6 +35,7 @@ public class DefaultAutomaton extends Automaton {
         if (states[currentState] == TRANSITION_HEAD) {
             states[currentState] = nextTransition;
         }
+        //连续的两个元素表示同一个状态,所以使用currentState + 1
         states[currentState + 1]++;
 
         if (transitions.length <= nextTransition) {
@@ -50,9 +46,7 @@ public class DefaultAutomaton extends Automaton {
     }
 
     @Override
-    protected boolean apply(final int off,
-                            final int value
-                           ) {
+    protected boolean apply(final int off, final int value) {
         return transitions[off + 1] == value;
     }
 
@@ -114,16 +108,11 @@ public class DefaultAutomaton extends Automaton {
     public static final class SimpleBuilder {
         private final DefaultAutomaton automaton;
 
-        public SimpleBuilder(final int stateCount,
-                             final int transitionCount
-                            ) {
+        public SimpleBuilder(final int stateCount, final int transitionCount) {
             automaton = new DefaultAutomaton(stateCount, transitionCount);
         }
 
-        public SimpleBuilder addTransition(int from,
-                                           int to,
-                                           int value
-                                          ) {
+        public SimpleBuilder addTransition(int from, int to, int value) {
             automaton.addTransition(from, to, value);
             return this;
         }

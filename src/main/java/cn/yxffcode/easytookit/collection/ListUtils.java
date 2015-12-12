@@ -26,10 +26,8 @@ public final class ListUtils {
             return Collections.emptyList();
         }
         if (length + offset >= src.size()) {
-            return src.subList(offset,
-                               src.size());
+            return src.subList(offset, src.size());
         }
-        return src.subList(offset,
-                           length + offset);
+        return src.subList(offset, length + offset);
     }
 }

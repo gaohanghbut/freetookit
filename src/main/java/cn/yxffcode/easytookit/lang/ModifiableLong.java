@@ -81,13 +81,8 @@ public class ModifiableLong extends Number implements Serializable {
         }
     }
 
-    private boolean cas(long current,
-                        long next
-                       ) {
-        return UNSAFE.compareAndSwapLong(this,
-                                         VALUE_OFFSET,
-                                         current,
-                                         next);
+    private boolean cas(long current, long next) {
+        return UNSAFE.compareAndSwapLong(this, VALUE_OFFSET, current, next);
     }
 
     /**

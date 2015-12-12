@@ -3,7 +3,6 @@ package cn.yxffcode.easytookit.dic;
 import cn.yxffcode.easytookit.automaton.Automaton;
 import cn.yxffcode.easytookit.automaton.DefaultAutomaton;
 import cn.yxffcode.easytookit.lang.StringIntsRef;
-import com.sun.istack.internal.NotNull;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -14,7 +13,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class AutomationDictionary implements Dictionary {
 
-    public static AutomationDictionary create(@NotNull Iterable<String> words) {
+    public static AutomationDictionary create(Iterable<String> words) {
         checkNotNull(words);
 
         DefaultAutomaton.DictionaryBuilder builder = new DefaultAutomaton.DictionaryBuilder();
@@ -31,8 +30,23 @@ public class AutomationDictionary implements Dictionary {
     }
 
     @Override
-    public boolean match(@NotNull final String word) {
+    public boolean match(final String word) {
         checkNotNull(word);
         return automaton.run(word);
+    }
+
+    @Override
+    public int startState() {
+        return Automaton.start();
+    }
+
+    @Override
+    public int nextState(final int state, final int input) {
+        return automaton.step(state, input);
+    }
+
+    @Override
+    public boolean isWordEnded(final int state) {
+        return automaton.isFinished(state);
     }
 }

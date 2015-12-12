@@ -33,9 +33,7 @@ public class FluentOptional<T> {
     }
 
     public T or(T def) {
-        return isPresent() ?
-               get() :
-               def;
+        return isPresent() ? get() : def;
     }
 
     public boolean isPresent() {

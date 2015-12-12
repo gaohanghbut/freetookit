@@ -10,10 +10,7 @@ public class IntArrayIntsRef extends AbstractIntsRef {
         this(word, 0, word.length);
     }
 
-    public IntArrayIntsRef(final int[] source,
-                           final int offset,
-                           final int length
-                          ) {
+    public IntArrayIntsRef(final int[] source, final int offset, final int length) {
         super(offset, length);
         this.source = source;
     }

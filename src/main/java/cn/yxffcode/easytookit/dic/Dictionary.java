@@ -1,7 +1,5 @@
 package cn.yxffcode.easytookit.dic;
 
-import com.sun.istack.internal.NotNull;
-
 /**
  * 字典的实现
  *
@@ -9,5 +7,21 @@ import com.sun.istack.internal.NotNull;
  */
 public interface Dictionary {
 
-    boolean match(@NotNull  String word);
+    boolean match(String word);
+
+    /**
+     * 起始状态
+     */
+    int startState();
+
+    /**
+     * 状态的转换
+     */
+    int nextState(int state, int input);
+
+    /**
+     * 当前状态是否表示一个词的结尾
+     */
+    boolean isWordEnded(int state);
+
 }

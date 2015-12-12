@@ -76,10 +76,7 @@ public class ModifiableInteger extends Number implements Serializable {
         for (; ; ) {
             int current = value;
             int next    = current + delta;
-            if (UNSAFE.compareAndSwapInt(this,
-                                         VALUE_OFFSET,
-                                         current,
-                                         next)) {
+            if (UNSAFE.compareAndSwapInt(this, VALUE_OFFSET, current, next)) {
                 break;
             }
         }

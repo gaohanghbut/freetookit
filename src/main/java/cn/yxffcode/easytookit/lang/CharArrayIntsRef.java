@@ -6,10 +6,7 @@ package cn.yxffcode.easytookit.lang;
 public class CharArrayIntsRef extends AbstractIntsRef {
     private final char[] source;
 
-    protected CharArrayIntsRef(final char[] source,
-                               final int offset,
-                               final int length
-                              ) {
+    protected CharArrayIntsRef(final char[] source, final int offset, final int length) {
         super(offset, length);
         this.source = source;
     }

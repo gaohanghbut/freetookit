@@ -9,18 +9,12 @@ public class RangeAutomaton extends Automaton {
     private int currentState;
     private int nextTransition;
 
-    private RangeAutomaton(final int stateCount,
-                           final int transitionCount
-                          ) {
+    private RangeAutomaton(final int stateCount, final int transitionCount) {
         super(stateCount, transitionCount, 3);
         this.nextTransition = 1;
     }
 
-    private void addTransition(int fromState,
-                               int toState,
-                               int min,
-                               int max
-                              ) {
+    private void addTransition(int fromState, int toState, int min, int max) {
         if (currentState != fromState * STATE_WIDTH) {
             currentState = fromState * STATE_WIDTH;
         }
@@ -45,9 +39,7 @@ public class RangeAutomaton extends Automaton {
     }
 
     @Override
-    protected boolean apply(final int off,
-                            final int value
-                           ) {
+    protected boolean apply(final int off, final int value) {
         int min = transitions[off + 1];
         int max = transitions[off + 2];
         return min <= value && max <= value;
@@ -56,17 +48,11 @@ public class RangeAutomaton extends Automaton {
     public static final class Builder {
         private final RangeAutomaton automaton;
 
-        public Builder(final int stateCount,
-                       final int transitionCount
-                      ) {
+        public Builder(final int stateCount, final int transitionCount) {
             automaton = new RangeAutomaton(stateCount, transitionCount);
         }
 
-        public Builder addTransition(int from,
-                                     int to,
-                                     int min,
-                                     int max
-                                    ) {
+        public Builder addTransition(int from, int to, int min, int max) {
             automaton.addTransition(from, to, min, max);
             return this;
         }
