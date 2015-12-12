@@ -49,6 +49,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * 如果b=1,则base[s]由0变为1,那么t的值则变成t+1,那么check[t+1]=check[t],check[t]=0
  *                            base[t]变成base[t+1],base[t+1]=base[t]
  *                            t的子节点m也发生变动check[m]=t+1
+ *                            最后base[s]=1
  *
  * @author gaohang on 15/12/9.
  */
