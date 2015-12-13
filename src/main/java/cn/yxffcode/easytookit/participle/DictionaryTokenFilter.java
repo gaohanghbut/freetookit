@@ -8,15 +8,15 @@ import cn.yxffcode.easytookit.lang.StringIntsRef;
 import java.util.Iterator;
 
 /**
- * 基于词典的最短匹配分词
+ * 基于词典的最短匹配过虑出关键词
  *
  * @author gaohang on 15/12/12.
  */
-public class DictionaryTokenizer implements WordTokenizer {
+public class DictionaryTokenFilter implements WordTokenFilter {
 
     private final Dictionary dictionary;
 
-    public DictionaryTokenizer(final Dictionary dictionary) {
+    public DictionaryTokenFilter(final Dictionary dictionary) {
         this.dictionary = dictionary;
     }
 
