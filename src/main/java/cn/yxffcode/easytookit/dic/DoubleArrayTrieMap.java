@@ -36,14 +36,15 @@ public class DoubleArrayTrieMap<V> extends DoubleArrayTrie {
     IntSequence intSequence = new StringIntSequence(key + END_INPUT);
     int s = startState();
     for (int i = 0, j = intSequence.length(); i < j; i++) {
-      int c = getAlphabetTransformer().wrap(intSequence.element(i));
+      int c = intSequence.element(i);
       int t = nextState(s, c);
       if (t == NO_SUCH_STATE) {
         return null;
       }
       s = t;
     }
-    return isWordEnded(s) ? (V) values[s] : null;
+    //不需要担心数组越界,如果会发生数组越界,则key的匹配不会成功
+    return (V) values[s];
   }
 
 }
