@@ -91,7 +91,7 @@ public final class CharsetUtil {
     }
 
     Map<Charset, CharsetEncoder> map = charsetEncoderCache;
-    CharsetEncoder               e   = map.get(charset);
+    CharsetEncoder e = map.get(charset);
     if (e != null) {
       e.reset();
       e.onMalformedInput(CodingErrorAction.REPLACE);
@@ -116,7 +116,7 @@ public final class CharsetUtil {
     }
 
     Map<Charset, CharsetDecoder> map = charsetDecoderCache;
-    CharsetDecoder               d   = map.get(charset);
+    CharsetDecoder d = map.get(charset);
     if (d != null) {
       d.reset();
       d.onMalformedInput(CodingErrorAction.REPLACE);

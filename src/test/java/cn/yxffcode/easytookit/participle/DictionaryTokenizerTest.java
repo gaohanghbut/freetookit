@@ -17,10 +17,10 @@ public class DictionaryTokenizerTest {
 
   @Test
   public void test() {
-    List<String>          words     = Arrays.asList("湖北", "工业", "大学");
-    DoubleArrayTrie       dic       = DoubleArrayTrie.create(words);
+    List<String> words = Arrays.asList("湖北", "工业", "大学");
+    DoubleArrayTrie dic = DoubleArrayTrie.create(words);
     DictionaryTokenFilter tokenizer = new DictionaryTokenFilter(dic);
-    ArrayList<String>     tokens    = Lists.newArrayList(tokenizer.token("湖北工业大学"));
+    ArrayList<String> tokens = Lists.newArrayList(tokenizer.token("湖北工业大学"));
     assertEquals(words, tokens);
   }
 }

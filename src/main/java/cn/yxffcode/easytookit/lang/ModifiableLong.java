@@ -73,7 +73,7 @@ public class ModifiableLong extends Number implements Serializable {
   private void atomAdd(long delta) {
     for (; ; ) {
       long current = value;
-      long next    = current + delta;
+      long next = current + delta;
       if (cas(current,
               next)) {
         return;

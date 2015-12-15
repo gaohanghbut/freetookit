@@ -97,6 +97,21 @@ public class FSLogQueue<T> implements LogQueue<T> {
         in = null;
       }
     }
+  }
+
+  private void closeWriter() {
+    if (out != null) {
+      try {
+        out.flush();
+      } catch (IOException ignore) {
+      } finally {
+        try {
+          out.close();
+        } catch (IOException ignore) {
+        }
+        out = null;
+      }
+    }
   }  @Override
   public synchronized void rotate() throws RotateQueueException {
     File file = new File(dir, baseFilename + LOG_FILE_ID_DELIMITER + System.nanoTime());
@@ -116,21 +131,6 @@ public class FSLogQueue<T> implements LogQueue<T> {
       out = new BufferedWriter(new FileWriter(file));
     } catch (IOException e) {
       throw new RotateQueueException(e);
-    }
-  }
-
-  private void closeWriter() {
-    if (out != null) {
-      try {
-        out.flush();
-      } catch (IOException ignore) {
-      } finally {
-        try {
-          out.close();
-        } catch (IOException ignore) {
-        }
-        out = null;
-      }
     }
   }
 

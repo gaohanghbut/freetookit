@@ -75,7 +75,7 @@ public class ModifiableInteger extends Number implements Serializable {
   private void atomAdd(int delta) {
     for (; ; ) {
       int current = value;
-      int next    = current + delta;
+      int next = current + delta;
       if (UNSAFE.compareAndSwapInt(this, VALUE_OFFSET, current, next)) {
         break;
       }

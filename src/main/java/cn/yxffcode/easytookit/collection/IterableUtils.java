@@ -52,9 +52,9 @@ public final class IterableUtils {
     checkArgument(subSize > 0);
     checkNotNull(supplier);
 
-    int     count  = 0;
+    int count = 0;
     List<C> result = Lists.newArrayList();
-    C       list   = supplier.get();
+    C list = supplier.get();
     for (T t : src) {
       list.add(t);
       if (++ count == subSize) {

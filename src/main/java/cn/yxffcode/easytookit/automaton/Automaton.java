@@ -82,7 +82,7 @@ public abstract class Automaton {
     checkNotNull(values);
     int state = start();
     while (values.hasNext()) {
-      int input     = values.next();
+      int input = values.next();
       int nextState = step(state, input);
       if (nextState == unknown()) {
         return false;

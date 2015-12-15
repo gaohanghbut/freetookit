@@ -66,8 +66,8 @@ public class DefaultAutomaton extends Automaton {
       int start = DefaultAutomaton.start();
       outer:
       for (int i = 0, j = ref.length(); i < j; i++) {
-        List<Integer> trans   = transitions.get(start);
-        int           element = ref.element(i);
+        List<Integer> trans = transitions.get(start);
+        int element = ref.element(i);
         for (int k = 0; k < trans.size(); k += 2) {
           if (element == trans.get(k)) {
             start = trans.get(k + 1);
