@@ -15,6 +15,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * 实现原理:
  * base[s] + c = t;
  * check[t] = s;
+ * c表示当前输入字符,s和t表示输入c之前和之后的状态
  * <p/>
  * 1.base与check是两个平行的数组,数组的下标表示状态
  * 2.base数组与check数组表示节点之间的父子关系
@@ -73,6 +74,10 @@ public class DoubleArrayTrie implements Dictionary {
    * 默认的check值
    */
   private static final int  NONE            = 0;
+
+  /**
+   * 对字母表做转换,缩小内存的使用量
+   */
   private final AlphabetTransformer alphabetTransformer;
   private       int[]               base;
   private       int[]               check;
@@ -124,6 +129,7 @@ public class DoubleArrayTrie implements Dictionary {
           for (IntIterator iterator = children.iterator(); iterator.hasNext(); ) {
             //t = base[s] + c,则c = t - base[s],此时t是child
             int c = iterator.next();
+            //b是新的base[s],则nt输入c后新的状态
             int nt = b + c;
             if (nt >= check.length) {
               check = grow(check, nt * 2);
@@ -212,7 +218,7 @@ public class DoubleArrayTrie implements Dictionary {
     return nextState(state, END_INPUT) != alphabetTransformer.unwrap(NO_SUCH_STATE);
   }
 
-  public enum DefaultAlphabetTransformer implements AlphabetTransformer {
+  private enum DefaultAlphabetTransformer implements AlphabetTransformer {
     INSTANCE;
     /**
      * 中文字符的起始数字
