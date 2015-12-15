@@ -2,7 +2,7 @@ package cn.yxffcode.easytookit.dic;
 
 import cn.yxffcode.easytookit.automaton.Automaton;
 import cn.yxffcode.easytookit.automaton.DefaultAutomaton;
-import cn.yxffcode.easytookit.lang.StringIntsRef;
+import cn.yxffcode.easytookit.lang.StringIntSequence;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -24,7 +24,7 @@ public class AutomationDictionary implements Dictionary {
 
     DefaultAutomaton.DictionaryBuilder builder = new DefaultAutomaton.DictionaryBuilder();
     for (String word : words) {
-      builder.addWord(new StringIntsRef(word));
+      builder.addWord(new StringIntSequence(word));
     }
     return new AutomationDictionary(builder.build());
   }

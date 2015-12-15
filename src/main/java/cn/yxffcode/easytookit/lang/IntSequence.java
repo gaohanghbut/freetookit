@@ -5,7 +5,7 @@ package cn.yxffcode.easytookit.lang;
  *
  * @author gaohang on 15/12/7.
  */
-public interface IntsRef extends Comparable<IntsRef> {
+public interface IntSequence extends Comparable<IntSequence> {
   int element(int index);
 
   int length();

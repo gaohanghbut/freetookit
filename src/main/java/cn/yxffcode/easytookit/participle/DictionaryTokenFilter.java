@@ -3,7 +3,7 @@ package cn.yxffcode.easytookit.participle;
 import cn.yxffcode.easytookit.collection.ImmutableIterator;
 import cn.yxffcode.easytookit.dic.Dictionary;
 import cn.yxffcode.easytookit.lang.IntArrayStringBuilder;
-import cn.yxffcode.easytookit.lang.StringIntsRef;
+import cn.yxffcode.easytookit.lang.StringIntSequence;
 
 import java.util.Iterator;
 
@@ -25,14 +25,14 @@ public class DictionaryTokenFilter implements WordTokenFilter {
     return new ImmutableIterator<String>() {
 
       private IntArrayStringBuilder appender;
-      private StringIntsRef intsRef;
+      private StringIntSequence intsRef;
       private int cur;
 
       @Override
       public boolean hasNext() {
         if (appender == null) {
           appender = new IntArrayStringBuilder();
-          intsRef = new StringIntsRef(sentence);
+          intsRef = new StringIntSequence(sentence);
         } else {
           appender.clear();
         }

@@ -3,10 +3,10 @@ package cn.yxffcode.easytookit.lang;
 /**
  * @author gaohang on 15/12/7.
  */
-public class CharArrayIntsRef extends AbstractIntsRef {
+public class CharArrayIntSequence extends AbstractIntSequence {
   private final char[] source;
 
-  protected CharArrayIntsRef(final char[] source, final int offset, final int length) {
+  protected CharArrayIntSequence(final char[] source, final int offset, final int length) {
     super(offset, length);
     this.source = source;
   }

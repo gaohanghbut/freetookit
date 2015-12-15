@@ -1,6 +1,6 @@
 package cn.yxffcode.easytookit.automaton;
 
-import cn.yxffcode.easytookit.lang.StringIntsRef;
+import cn.yxffcode.easytookit.lang.StringIntSequence;
 import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;
@@ -13,14 +13,14 @@ public class DefaultAutomatonTest {
 
   @Test
   public void testAutomaton() {
-    DefaultAutomaton automaton = new DefaultAutomaton.DictionaryBuilder().addWord(new StringIntsRef("hello"))
-                                                                         .addWord(new StringIntsRef("helle"))
-                                                                         .addWord(new StringIntsRef("halle"))
-                                                                         .addWord(new StringIntsRef("halla"))
-                                                                         .addWord(new StringIntsRef("hallb"))
-                                                                         .addWord(new StringIntsRef("abc"))
-                                                                         .addWord(new StringIntsRef("dkk"))
-                                                                         .addWord(new StringIntsRef("dkkk"))
+    DefaultAutomaton automaton = new DefaultAutomaton.DictionaryBuilder().addWord(new StringIntSequence("hello"))
+                                                                         .addWord(new StringIntSequence("helle"))
+                                                                         .addWord(new StringIntSequence("halle"))
+                                                                         .addWord(new StringIntSequence("halla"))
+                                                                         .addWord(new StringIntSequence("hallb"))
+                                                                         .addWord(new StringIntSequence("abc"))
+                                                                         .addWord(new StringIntSequence("dkk"))
+                                                                         .addWord(new StringIntSequence("dkkk"))
                                                                          .build();
     assertTrue(automaton.run("hello"));
     assertTrue(automaton.run("helle"));

@@ -1,6 +1,6 @@
 package cn.yxffcode.easytookit.automaton;
 
-import cn.yxffcode.easytookit.lang.IntsRef;
+import cn.yxffcode.easytookit.lang.IntSequence;
 import com.google.common.collect.Lists;
 
 import java.util.ArrayList;
@@ -62,7 +62,7 @@ public class DefaultAutomaton extends Automaton {
       transitions.add(new ArrayList<Integer>());
     }
 
-    public DictionaryBuilder addWord(IntsRef ref) {
+    public DictionaryBuilder addWord(IntSequence ref) {
       int start = DefaultAutomaton.start();
       outer:
       for (int i = 0, j = ref.length(); i < j; i++) {

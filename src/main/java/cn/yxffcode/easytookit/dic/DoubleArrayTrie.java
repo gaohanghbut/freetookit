@@ -2,8 +2,8 @@ package cn.yxffcode.easytookit.dic;
 
 import cn.yxffcode.easytookit.collection.IntIterator;
 import cn.yxffcode.easytookit.collection.IntStack;
-import cn.yxffcode.easytookit.lang.IntsRef;
-import cn.yxffcode.easytookit.lang.StringIntsRef;
+import cn.yxffcode.easytookit.lang.IntSequence;
+import cn.yxffcode.easytookit.lang.StringIntSequence;
 import cn.yxffcode.easytookit.participle.AlphabetTransformer;
 
 import static cn.yxffcode.easytookit.utils.ArrayUtils.grow;
@@ -101,12 +101,12 @@ public class DoubleArrayTrie implements Dictionary {
    */
   public void add(String word) {
     checkNotNull(word);
-    IntsRef intsRef = new StringIntsRef(word + END_INPUT);
-    for (int i = 0, j = intsRef.length(), s = INIT_STATE; i < j; i++) {
+    IntSequence intSequence = new StringIntSequence(word + END_INPUT);
+    for (int i = 0, j = intSequence.length(), s = INIT_STATE; i < j; i++) {
       if (s >= base.length) {
         base = grow(base, s * 2);
       }
-      int elem = alphabetTransformer.wrap(intsRef.element(i));
+      int elem = alphabetTransformer.wrap(intSequence.element(i));
       if (elem <= 0) {
         continue;
       }
@@ -177,12 +177,12 @@ public class DoubleArrayTrie implements Dictionary {
   @Override
   public boolean match(String word) {
     checkNotNull(word);
-    IntsRef intsRef = new StringIntsRef(word + END_INPUT);
-    for (int i = 0, j = intsRef.length(), s = INIT_STATE; i < j; i++) {
+    IntSequence intSequence = new StringIntSequence(word + END_INPUT);
+    for (int i = 0, j = intSequence.length(), s = INIT_STATE; i < j; i++) {
       if (s >= base.length) {
         return false;
       }
-      int c = alphabetTransformer.wrap(intsRef.element(i));
+      int c = alphabetTransformer.wrap(intSequence.element(i));
       int t = base[s] + c;
       if (t >= check.length) {
         return false;
