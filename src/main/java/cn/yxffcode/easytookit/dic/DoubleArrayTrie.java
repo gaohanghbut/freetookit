@@ -119,7 +119,7 @@ public class DoubleArrayTrie implements Dictionary {
           }
         }
         int b = 1;
-        base:
+        loop:
         for (; ; b++) {//b表示新的base[s]
           for (IntIterator iterator = children.iterator(); iterator.hasNext(); ) {
             //t = base[s] + c,则c = t - base[s],此时t是child
@@ -129,7 +129,7 @@ public class DoubleArrayTrie implements Dictionary {
               check = grow(check, nt * 2);
             }
             if (check[nt] != NONE) {
-              continue base;
+              continue loop;
             }
           }
           if (check[b + elem] == NONE) {
