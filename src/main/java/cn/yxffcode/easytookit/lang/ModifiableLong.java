@@ -11,8 +11,8 @@ import java.io.Serializable;
  */
 public class ModifiableLong extends Number implements Serializable {
 
-  private static final long   serialVersionUID = 1478723535778680295L;
-  private static final Unsafe UNSAFE           = UnsafeUtils.UNSAFE;
+  private static final long serialVersionUID = 1478723535778680295L;
+  private static final Unsafe UNSAFE = UnsafeUtils.UNSAFE;
 
   private static final long VALUE_OFFSET;
 
@@ -60,7 +60,7 @@ public class ModifiableLong extends Number implements Serializable {
    * 非线程安全的加1
    */
   public long increaseAndGet() {
-    return ++ value;
+    return ++value;
   }
 
   /**
@@ -89,7 +89,7 @@ public class ModifiableLong extends Number implements Serializable {
    * 线程安全的减1
    */
   public void atomDecrease() {
-    atomAdd(- 1);
+    atomAdd(-1);
   }
 
   public long value() {

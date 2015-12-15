@@ -56,7 +56,7 @@ public class DefaultAutomaton extends Automaton {
 
   public static final class DictionaryBuilder {
     private List<List<Integer>> transitions = Lists.newArrayList();
-    private BitSet              accept      = new BitSet();
+    private BitSet accept = new BitSet();
 
     {
       transitions.add(new ArrayList<Integer>());

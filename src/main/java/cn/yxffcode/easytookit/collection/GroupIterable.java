@@ -27,7 +27,7 @@ public class GroupIterable<E> implements Iterable<E> {
   class InnerIterator extends ImmutableIterator<E> {
 
     private Iterator<? extends Iterable<? extends E>> iterator;
-    private Iterator<? extends E>                     cur;
+    private Iterator<? extends E> cur;
 
     @Override
     public boolean hasNext() {
@@ -40,7 +40,7 @@ public class GroupIterable<E> implements Iterable<E> {
       while (true) {
         if (iterator.hasNext()) {
           cur = iterator.next()
-                        .iterator();
+                  .iterator();
         } else {
           return false;
         }

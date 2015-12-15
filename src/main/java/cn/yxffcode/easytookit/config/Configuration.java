@@ -16,7 +16,7 @@ public interface Configuration {
 
   String getString(String key,
                    String defaultValue
-                  );
+  );
 
   Iterator<?> propertyNames();
 

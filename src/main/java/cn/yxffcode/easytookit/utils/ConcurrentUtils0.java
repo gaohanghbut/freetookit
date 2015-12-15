@@ -24,8 +24,8 @@ import java.lang.reflect.Method;
  */
 final class ConcurrentUtils0 {
 
-  static final         Unsafe UNSAFE;
-  private static final long   BYTE_ARRAY_BASE_OFFSET;
+  static final Unsafe UNSAFE;
+  private static final long BYTE_ARRAY_BASE_OFFSET;
 
   private static final boolean UNALIGNED;
 
@@ -33,7 +33,7 @@ final class ConcurrentUtils0 {
     UNSAFE = UnsafeUtils.UNSAFE;
 
     if (UNSAFE == null) {
-      BYTE_ARRAY_BASE_OFFSET = - 1;
+      BYTE_ARRAY_BASE_OFFSET = -1;
       UNALIGNED = false;
     } else {
       BYTE_ARRAY_BASE_OFFSET = UNSAFE.arrayBaseOffset(byte[].class);
@@ -67,7 +67,7 @@ final class ConcurrentUtils0 {
                         byte[] bytes2,
                         int startPos2,
                         int endPos2
-                       ) {
+  ) {
     final int len1 = endPos1 - startPos1;
     final int len2 = endPos2 - startPos2;
     if (len1 != len2) {

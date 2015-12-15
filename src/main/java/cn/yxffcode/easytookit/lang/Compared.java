@@ -30,7 +30,7 @@ public enum Compared {
   SMALLER {
     @Override
     public int getComparatorResult() {
-      return - 1;
+      return -1;
     }
   };
 

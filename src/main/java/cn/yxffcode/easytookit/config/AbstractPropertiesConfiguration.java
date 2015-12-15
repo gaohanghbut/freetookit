@@ -50,9 +50,9 @@ public abstract class AbstractPropertiesConfiguration implements Configuration {
   @Override
   public String getString(String key,
                           String defaultValue
-                         ) {
+  ) {
     return getConfig().getProperty(key,
-                                   defaultValue);
+            defaultValue);
   }
 
   @Override

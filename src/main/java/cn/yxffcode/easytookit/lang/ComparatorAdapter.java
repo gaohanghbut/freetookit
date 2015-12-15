@@ -18,8 +18,8 @@ public class ComparatorAdapter<T> implements Comparator<T> {
   @Override
   public int compare(final T left,
                      final T right
-                    ) {
+  ) {
     return delegate.compare(left, right)
-                   .getComparatorResult();
+            .getComparatorResult();
   }
 }

@@ -9,11 +9,11 @@ import java.io.Serializable;
  */
 public class IntStack implements IntIterable, Serializable {
 
-  private static final long serialVersionUID = - 7535273734926642719L;
-  private static final int  INIT_SIZE        = 10;
+  private static final long serialVersionUID = -7535273734926642719L;
+  private static final int INIT_SIZE = 10;
 
   private int[] stack;
-  private int   top;
+  private int top;
 
   public IntStack() {
     this(INIT_SIZE);
@@ -26,11 +26,7 @@ public class IntStack implements IntIterable, Serializable {
   public void push(int value) {
     if (top == stack.length) {
       int[] desc = new int[stack.length * 2];
-      System.arraycopy(stack,
-                       0,
-                       desc,
-                       0,
-                       top);
+      System.arraycopy(stack, 0, desc, 0, top);
       this.stack = desc;
     }
 

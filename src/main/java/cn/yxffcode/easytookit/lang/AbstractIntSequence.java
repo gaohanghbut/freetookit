@@ -14,7 +14,7 @@ public abstract class AbstractIntSequence implements IntSequence {
 
   protected AbstractIntSequence(final int offset,
                                 final int length
-                               ) {
+  ) {
     this.offset = offset;
     this.length = length;
   }

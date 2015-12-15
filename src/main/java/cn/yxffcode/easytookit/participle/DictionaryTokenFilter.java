@@ -42,7 +42,7 @@ public class DictionaryTokenFilter implements WordTokenFilter {
         while (cur < len) {
           int c = intsRef.element(cur++);
           int next = dictionary.nextState(state, c);
-          if (next == - 1) {
+          if (next == -1) {
             appender.clear();
             state = dictionary.startState();
             continue;

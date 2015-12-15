@@ -1,13 +1,6 @@
 package cn.yxffcode.easytookit.logqueue;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.FilenameFilter;
-import java.io.IOException;
+import java.io.*;
 import java.util.LinkedList;
 
 /**
@@ -29,12 +22,12 @@ import java.util.LinkedList;
  */
 public class FSLogQueue<T> implements LogQueue<T> {
 
-  private static final char ENTITY_DELIMITER      = '\n';
+  private static final char ENTITY_DELIMITER = '\n';
   private static final char LOG_FILE_ID_DELIMITER = '_';
 
   private final Codec<T> codec;
-  private final String   dir;
-  private final String   baseFilename;
+  private final String dir;
+  private final String baseFilename;
   private final LinkedList<File> logFiles = new LinkedList<>();
   private BufferedWriter out;
   private BufferedReader in;
@@ -42,12 +35,12 @@ public class FSLogQueue<T> implements LogQueue<T> {
   public FSLogQueue(Codec<T> codec,
                     String dir,
                     final String baseFilename
-                   ) {
+  ) {
     this(codec, dir, baseFilename, new FilenameFilter() {
       @Override
       public boolean accept(File dir,
                             String name
-                           ) {
+      ) {
         return true;
       }
     });
@@ -57,12 +50,12 @@ public class FSLogQueue<T> implements LogQueue<T> {
                     String dir,
                     final String baseFilename,
                     FilenameFilter filter
-                   ) {
+  ) {
     this.codec = codec;
     this.dir = dir;
     this.baseFilename = baseFilename;
     File file = new File(dir);
-    if (! file.exists()) {
+    if (!file.exists()) {
       file.mkdirs();
     }
     File[] files = file.listFiles(filter);
@@ -70,7 +63,7 @@ public class FSLogQueue<T> implements LogQueue<T> {
       for (File f : files) {
         String name = f.getName();
 //                int index = name.lastIndexOf(LOG_FILE_ID_DELIMITER);
-        if (! name.contains(baseFilename)) {
+        if (!name.contains(baseFilename)) {
           continue;
         }
         logFiles.add(f);
@@ -112,10 +105,12 @@ public class FSLogQueue<T> implements LogQueue<T> {
         out = null;
       }
     }
-  }  @Override
+  }
+
+  @Override
   public synchronized void rotate() throws RotateQueueException {
     File file = new File(dir, baseFilename + LOG_FILE_ID_DELIMITER + System.nanoTime());
-    if (! file.exists()) {
+    if (!file.exists()) {
       try {
         file.createNewFile();
       } catch (IOException e) {
@@ -133,8 +128,6 @@ public class FSLogQueue<T> implements LogQueue<T> {
       throw new RotateQueueException(e);
     }
   }
-
-
 
 
   @Override

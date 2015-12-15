@@ -13,7 +13,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 public class GroupList<E> extends AbstractList<E> {
 
   private List<? extends E>[] lists;
-  private int                 size;
+  private int size;
 
   private GroupList(List<? extends E>... lists) {
     this.lists = lists;

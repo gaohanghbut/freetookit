@@ -30,12 +30,12 @@ public final class MoreCollections {
    */
   public static <R, C, V> Table<R, C, V> newConcurrentMapBasedTable() {
     return Tables.newCustomTable(Maps.<R, Map<C, V>>newConcurrentMap(),
-                                 new Supplier<Map<C, V>>() {
-                                   @Override
-                                   public Map<C, V> get() {
-                                     return Maps.newConcurrentMap();
-                                   }
-                                 });
+            new Supplier<Map<C, V>>() {
+              @Override
+              public Map<C, V> get() {
+                return Maps.newConcurrentMap();
+              }
+            });
   }
 
   public static <E> List<E> group(List<E>... lists) {

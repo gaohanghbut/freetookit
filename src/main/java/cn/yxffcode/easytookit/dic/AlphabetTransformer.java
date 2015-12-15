@@ -1,4 +1,4 @@
-package cn.yxffcode.easytookit.participle;
+package cn.yxffcode.easytookit.dic;
 
 /**
  * @author gaohang on 15/12/12.

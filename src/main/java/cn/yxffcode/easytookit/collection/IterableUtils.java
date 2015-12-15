@@ -3,12 +3,7 @@ package cn.yxffcode.easytookit.collection;
 import com.google.common.base.Supplier;
 import com.google.common.collect.Lists;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -44,8 +39,7 @@ public final class IterableUtils {
   /**
    * 将一个{@link Iterable}对象转换成n个大小为subSize的集合
    */
-  public static <T, C extends Collection<T>> List<C> split(Iterable<? extends T> src,
-                                                           int subSize,
+  public static <T, C extends Collection<T>> List<C> split(Iterable<? extends T> src, int subSize,
                                                            Supplier<C> supplier) {
 
     checkNotNull(src);
@@ -57,7 +51,7 @@ public final class IterableUtils {
     C list = supplier.get();
     for (T t : src) {
       list.add(t);
-      if (++ count == subSize) {
+      if (++count == subSize) {
         result.add(list);
         list = supplier.get();
         count = 0;

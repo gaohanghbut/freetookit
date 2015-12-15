@@ -26,8 +26,8 @@ public class ConcurrentTable<R, C, V> implements Table<R, C, V> {
 
   private static final long serialVersionUID = 8050987423067929531L;
 
-  private Table<R, C, V> delegate      = MoreCollections.newConcurrentMapBasedTable();
-  private Object         dataWriteLock = new Object();
+  private Table<R, C, V> delegate = MoreCollections.newConcurrentMapBasedTable();
+  private Object dataWriteLock = new Object();
 
   public ConcurrentTable() {
   }
@@ -39,9 +39,9 @@ public class ConcurrentTable<R, C, V> implements Table<R, C, V> {
   @Override
   public boolean contains(Object rowKey,
                           Object columnKey
-                         ) {
+  ) {
     return delegate.contains(rowKey,
-                             columnKey);
+            columnKey);
   }
 
   @Override
@@ -62,9 +62,9 @@ public class ConcurrentTable<R, C, V> implements Table<R, C, V> {
   @Override
   public V get(Object rowKey,
                Object columnKey
-              ) {
+  ) {
     return delegate.get(rowKey,
-                        columnKey);
+            columnKey);
   }
 
   @Override
@@ -86,11 +86,11 @@ public class ConcurrentTable<R, C, V> implements Table<R, C, V> {
   public V put(R rowKey,
                C columnKey,
                V value
-              ) {
+  ) {
     synchronized (dataWriteLock) {
       return delegate.put(rowKey,
-                          columnKey,
-                          value);
+              columnKey,
+              value);
     }
   }
 
@@ -104,10 +104,10 @@ public class ConcurrentTable<R, C, V> implements Table<R, C, V> {
   @Override
   public V remove(Object rowKey,
                   Object columnKey
-                 ) {
+  ) {
     synchronized (dataWriteLock) {
       return delegate.remove(rowKey,
-                             columnKey);
+              columnKey);
     }
   }
 

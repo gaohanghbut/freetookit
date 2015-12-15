@@ -9,11 +9,7 @@ import com.google.common.collect.Maps;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.ServiceLoader;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -27,20 +23,20 @@ import static java.util.Collections.unmodifiableMap;
  * Created by hang.gao on 2015/6/9.
  */
 public final class ExtensionLoaders {
-  private static final ConcurrentMap<Class<?>, ExtensionLoader<?>>      extensionLoaderMap      = new ConcurrentHashMap<>();
+  private static final ConcurrentMap<Class<?>, ExtensionLoader<?>> extensionLoaderMap = new ConcurrentHashMap<>();
   private static final ConcurrentMap<Class<?>, NamedExtensionLoader<?>> namedExtensionLoaderMap = new ConcurrentHashMap<>();
-  private static final Object                                           extensionMapLock        = new Object();
-  private static final Object                                           namedExtensionMapLock   = new Object();
+  private static final Object extensionMapLock = new Object();
+  private static final Object namedExtensionMapLock = new Object();
 
   private ExtensionLoaders() {
   }
 
   public static <T> ExtensionLoader<T> getExtensionLoader(Class<T> type) {
-    if (! extensionLoaderMap.containsKey(type)) {
+    if (!extensionLoaderMap.containsKey(type)) {
       synchronized (extensionMapLock) {
-        if (! extensionLoaderMap.containsKey(type)) {
+        if (!extensionLoaderMap.containsKey(type)) {
           extensionLoaderMap.put(type, new DefaultExtensionLoader<T>(type, Thread.currentThread()
-                                                                                 .getContextClassLoader()));
+                  .getContextClassLoader()));
         }
       }
     }
@@ -48,11 +44,11 @@ public final class ExtensionLoaders {
   }
 
   public static <T> NamedExtensionLoader<T> getNamedExtensionLoader(Class<T> type) {
-    if (! namedExtensionLoaderMap.containsKey(type)) {
+    if (!namedExtensionLoaderMap.containsKey(type)) {
       synchronized (namedExtensionMapLock) {
-        if (! namedExtensionLoaderMap.containsKey(type)) {
+        if (!namedExtensionLoaderMap.containsKey(type)) {
           namedExtensionLoaderMap.put(type, new DefaultNamedExtensionLoader<>(type, Thread.currentThread()
-                                                                                          .getContextClassLoader()));
+                  .getContextClassLoader()));
         }
       }
     }
@@ -67,7 +63,7 @@ public final class ExtensionLoaders {
 
     public DefaultExtensionLoader(Class<T> type,
                                   ClassLoader classLoader
-                                 ) {
+    ) {
       serviceLoader = ServiceLoader.load(type, classLoader);
     }
 
@@ -78,19 +74,19 @@ public final class ExtensionLoaders {
 //               .absent(v -> this.cache = doLoad())
 //               .done(null);
       DCL.create()
-         .check(new Predicate<Object>() {
-           @Override
-           public boolean apply(final Object input) {
-             return cache != null;
-           }
-         })
-         .absent(new Consumer<Object>() {
-           @Override
-           public void consume(final Object elem) {
-             cache = doLoad();
-           }
-         })
-         .done(null);
+              .check(new Predicate<Object>() {
+                @Override
+                public boolean apply(final Object input) {
+                  return cache != null;
+                }
+              })
+              .absent(new Consumer<Object>() {
+                @Override
+                public void consume(final Object elem) {
+                  cache = doLoad();
+                }
+              })
+              .done(null);
       return cache;
     }
 
@@ -108,15 +104,15 @@ public final class ExtensionLoaders {
   }
 
   private static final class DefaultNamedExtensionLoader<T> implements NamedExtensionLoader<T> {
-    private static final String   PREFIX              = "META-INF/services/";
+    private static final String PREFIX = "META-INF/services/";
     private static final Splitter NAMED_IMPL_SPLITTER = Splitter.on('=')
-                                                                .trimResults();
+            .trimResults();
 
     private final Map<String, T> cache;
 
     private DefaultNamedExtensionLoader(final Class<T> type,
                                         final ClassLoader classLoader
-                                       ) {
+    ) {
       HashMap<String, T> cache = Maps.newHashMap();
       try (BufferedReader in = toBufferedReader(classLoader.getSystemResourceAsStream(PREFIX + type.getName()))) {
         for (String line : lines(in)) {

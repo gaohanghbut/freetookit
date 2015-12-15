@@ -32,6 +32,10 @@ public class FluentOptional<T> {
     return new FluentOptional(Optional.fromNullable(obj));
   }
 
+  public static <T> FluentOptional from(Optional<? extends T> src) {
+    return new FluentOptional(src);
+  }
+
   public T or(T def) {
     return isPresent() ? get() : def;
   }
@@ -48,7 +52,7 @@ public class FluentOptional<T> {
    * 将此Optional传递,表示一次方法调用
    */
   public <A> FluentOptional<A> flow(Function<T, A> function) {
-    if (! isPresent()) {
+    if (!isPresent()) {
       return (FluentOptional<A>) ABSENT;
     }
     A result = function.apply(get());
@@ -56,10 +60,6 @@ public class FluentOptional<T> {
       return (FluentOptional<A>) ABSENT;
     }
     return from(Optional.of(result));
-  }
-
-  public static <T> FluentOptional from(Optional<? extends T> src) {
-    return new FluentOptional(src);
   }
 
 }

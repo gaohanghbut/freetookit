@@ -40,8 +40,8 @@ public final class ConcurrentUtils {
                                byte[] bytes2,
                                int startPos2,
                                int endPos2
-                              ) {
-    if (! ConcurrentUtils0.unalignedAccess()) {
+  ) {
+    if (!ConcurrentUtils0.unalignedAccess()) {
       return safeEquals(bytes1, startPos1, endPos1, bytes2, startPos2, endPos2);
     }
     return ConcurrentUtils0.equals(bytes1, startPos1, endPos1, bytes2, startPos2, endPos2);
@@ -53,14 +53,14 @@ public final class ConcurrentUtils {
                                     byte[] bytes2,
                                     int startPos2,
                                     int endPos2
-                                   ) {
+  ) {
     final int len1 = endPos1 - startPos1;
     final int len2 = endPos2 - startPos2;
     if (len1 != len2) {
       return false;
     }
     final int end = startPos1 + len1;
-    for (int i = startPos1, j = startPos2; i < end; ++ i, ++ j) {
+    for (int i = startPos1, j = startPos2; i < end; ++i, ++j) {
       if (bytes1[i] != bytes2[j]) {
         return false;
       }

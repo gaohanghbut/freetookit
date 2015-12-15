@@ -21,7 +21,7 @@ package cn.yxffcode.easytookit.lang;
 public class IntArrayStringBuilder {
 
   private int[] dest;
-  private int   pos;
+  private int pos;
 
   public IntArrayStringBuilder() {
     this(10);
@@ -65,7 +65,7 @@ public class IntArrayStringBuilder {
 
   public boolean isBlank() {
     for (int i = 0; i < pos; i++) {
-      if (! Character.isWhitespace(dest[i])) {
+      if (!Character.isWhitespace(dest[i])) {
         return false;
       }
     }
@@ -93,7 +93,7 @@ public class IntArrayStringBuilder {
     if (thisLength == thatLength) {
       return equals(appender);
     }
-    for (int i = thatLength - 1, j = thisLength - 1; i >= 0; -- i, -- j) {
+    for (int i = thatLength - 1, j = thisLength - 1; i >= 0; --i, --j) {
       if (appender.element(i) != element(j)) {
         return false;
       }
@@ -110,7 +110,7 @@ public class IntArrayStringBuilder {
     if (this == o) {
       return true;
     }
-    if (! getClass().isInstance(o)) {
+    if (!getClass().isInstance(o)) {
       return false;
     }
     final IntArrayStringBuilder that = (IntArrayStringBuilder) o;
@@ -146,7 +146,7 @@ public class IntArrayStringBuilder {
     if (thisLength == thatLength) {
       return equals(appender);
     }
-    for (int i = 0, j = 0; i < appender.length(); ++ i, ++ j) {
+    for (int i = 0, j = 0; i < appender.length(); ++i, ++j) {
       if (appender.element(i) != element(j)) {
         return false;
       }
@@ -160,15 +160,15 @@ public class IntArrayStringBuilder {
 
   public IntArrayStringBuilder slice(int offset,
                                      int length
-                                    ) {
+  ) {
     return new SliceStringBuilder(this, offset, length);
   }
 
   private final class SliceStringBuilder extends IntArrayStringBuilder {
 
     private final IntArrayStringBuilder delegate;
-    private final int                   offset;
-    private final int                   length;
+    private final int offset;
+    private final int length;
 
     private SliceStringBuilder(final IntArrayStringBuilder delegate,
                                final int offset,
@@ -202,7 +202,7 @@ public class IntArrayStringBuilder {
     @Override
     public boolean isBlank() {
       for (int i = this.offset, j = this.offset + this.length; i < j; i++) {
-        if (! Character.isWhitespace(delegate.element(i))) {
+        if (!Character.isWhitespace(delegate.element(i))) {
           return false;
         }
       }

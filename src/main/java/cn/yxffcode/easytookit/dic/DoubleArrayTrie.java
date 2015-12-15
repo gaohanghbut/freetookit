@@ -4,7 +4,8 @@ import cn.yxffcode.easytookit.collection.IntIterator;
 import cn.yxffcode.easytookit.collection.IntStack;
 import cn.yxffcode.easytookit.lang.IntSequence;
 import cn.yxffcode.easytookit.lang.StringIntSequence;
-import cn.yxffcode.easytookit.participle.AlphabetTransformer;
+
+import java.util.Collections;
 
 import static cn.yxffcode.easytookit.utils.ArrayUtils.grow;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -61,31 +62,39 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author gaohang on 15/12/9.
  */
 public class DoubleArrayTrie implements Dictionary {
-  private static final int  INIT_ARRAY_SIZE = 50;
-  private static final int  INIT_STATE      = 1;
-  private static final char END_INPUT       = '#';
+  public static final char END_INPUT = '#';
   /**
    * 表示已经没有后续状态了
    *
    * @see #nextState(int, int)
    */
-  private static final int  NO_SUCH_STATE   = - 1;
+  public static final int NO_SUCH_STATE = -1;
+  private static final int INIT_ARRAY_SIZE = 50;
+  private static final int INIT_STATE = 1;
   /**
    * 默认的check值
    */
-  private static final int  NONE            = 0;
+  private static final int NONE = 0;
 
   /**
    * 对字母表做转换,缩小内存的使用量
    */
   private final AlphabetTransformer alphabetTransformer;
-  private       int[]               base;
-  private       int[]               check;
+  private int[] base;
+  private int[] check;
 
-  private DoubleArrayTrie(final AlphabetTransformer alphabetTransformer) {
+  DoubleArrayTrie() {
+    this(DefaultAlphabetTransformer.INSTANCE);
+  }
+
+  DoubleArrayTrie(final AlphabetTransformer alphabetTransformer) {
     this.alphabetTransformer = alphabetTransformer;
     this.base = new int[INIT_ARRAY_SIZE];
     this.check = new int[INIT_ARRAY_SIZE];
+  }
+
+  public static DoubleArrayTrie create() {
+    return create(Collections.<String>emptyList());
   }
 
   public static DoubleArrayTrie create(Iterable<String> words) {
@@ -96,13 +105,28 @@ public class DoubleArrayTrie implements Dictionary {
     return trie;
   }
 
+  public static DoubleArrayTrie create(Iterable<String> words, AlphabetTransformer transformer) {
+    DoubleArrayTrie trie = new DoubleArrayTrie(transformer);
+    for (String word : words) {
+      trie.add(word);
+    }
+    return trie;
+  }
+
+  public AlphabetTransformer getAlphabetTransformer() {
+    return alphabetTransformer;
+  }
+
   /**
    * 添加一个词条
+   *
+   * @return 结束状态
    */
-  public void add(String word) {
+  public int add(String word) {
     checkNotNull(word);
     IntSequence intSequence = new StringIntSequence(word + END_INPUT);
-    for (int i = 0, j = intSequence.length(), s = INIT_STATE; i < j; i++) {
+    int s = INIT_STATE;
+    for (int i = 0, j = intSequence.length(); i < j; i++) {
       if (s >= base.length) {
         base = grow(base, s * 2);
       }
@@ -164,14 +188,7 @@ public class DoubleArrayTrie implements Dictionary {
       check[t] = s;
       s = t;
     }
-  }
-
-  public static DoubleArrayTrie create(Iterable<String> words, AlphabetTransformer transformer) {
-    DoubleArrayTrie trie = new DoubleArrayTrie(transformer);
-    for (String word : words) {
-      trie.add(word);
-    }
-    return trie;
+    return s;
   }
 
   @Override
@@ -223,23 +240,23 @@ public class DoubleArrayTrie implements Dictionary {
     /**
      * 中文字符的起始数字
      */
-    private static final int CN_CHAR_FIRST    = 19968;
+    private static final int CN_CHAR_FIRST = 19968;
     /**
      * 中文字符的最大字符数字
      */
-    private static final int CN_CHAR_LAST     = 171941;
+    private static final int CN_CHAR_LAST = 171941;
     /**
      * 结束符的int值
      */
-    private static final int END_INPUT_VALUE  = 1;
+    private static final int END_INPUT_VALUE = 1;
     /**
      * 数字起始
      */
-    private static final int DIGIT_START      = 2;
+    private static final int DIGIT_START = 2;
     /**
      * 小写字符起始
      */
-    private static final int LOW_CASE_START   = 12;
+    private static final int LOW_CASE_START = 12;
     /**
      * 大写字符起始
      */
@@ -247,7 +264,7 @@ public class DoubleArrayTrie implements Dictionary {
     /**
      * 汉字起始
      */
-    private static final int CN_CHAR_START    = 74;
+    private static final int CN_CHAR_START = 74;
 
     public int wrap(final int elem) {
       if (elem >= 'a' && elem <= 'z') {
@@ -262,7 +279,7 @@ public class DoubleArrayTrie implements Dictionary {
         return END_INPUT_VALUE;
       }
       //不接受此字符
-      return - 1;
+      return -1;
     }
 
     public int unwrap(int c) {

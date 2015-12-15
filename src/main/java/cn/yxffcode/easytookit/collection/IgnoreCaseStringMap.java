@@ -6,13 +6,7 @@ import com.google.common.collect.Iterators;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.AbstractMap;
-import java.util.AbstractSet;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static cn.yxffcode.easytookit.utils.StringUtils.equalsIgnoreCase;
 
@@ -25,10 +19,10 @@ import static cn.yxffcode.easytookit.utils.StringUtils.equalsIgnoreCase;
 @Deprecated
 public class IgnoreCaseStringMap<V> extends AbstractMap<String, V> implements Serializable, Cloneable {
 
-  private static final long serialVersionUID = - 5567524254918911681L;
+  private static final long serialVersionUID = -5567524254918911681L;
 
-  private Map<StringHolder, V>  delegate;
-  private Set<String>           keySet;
+  private Map<StringHolder, V> delegate;
+  private Set<String> keySet;
   private Set<Entry<String, V>> entrySet;
 
   public IgnoreCaseStringMap() {
@@ -140,6 +134,11 @@ public class IgnoreCaseStringMap<V> extends AbstractMap<String, V> implements Se
       return Iterators.transform(delegate.iterator(), StringHolderStringTransformer.INSTANCE);
     }
 
+    @Override
+    public int size() {
+      return delegate.size();
+    }
+
     private enum StringHolderStringTransformer implements Function<StringHolder, String> {
       INSTANCE;
 
@@ -147,11 +146,6 @@ public class IgnoreCaseStringMap<V> extends AbstractMap<String, V> implements Se
       public String apply(final StringHolder input) {
         return input.value;
       }
-    }
-
-    @Override
-    public int size() {
-      return delegate.size();
     }
 
 
@@ -163,6 +157,16 @@ public class IgnoreCaseStringMap<V> extends AbstractMap<String, V> implements Se
 
     private EntrySetWrapper(final Set<Entry<StringHolder, V>> delegate) {
       this.delegate = delegate;
+    }
+
+    @Override
+    public Iterator<Entry<String, V>> iterator() {
+      return Iterators.transform(delegate.iterator(), new EntryTransformer<V>());
+    }
+
+    @Override
+    public int size() {
+      return delegate.size();
     }
 
     private static final class TransformEntry<V> implements Map.Entry<String, V> {
@@ -194,17 +198,6 @@ public class IgnoreCaseStringMap<V> extends AbstractMap<String, V> implements Se
       public Entry<String, V> apply(final Entry<StringHolder, V> input) {
         return new TransformEntry<V>(input);
       }
-    }
-
-    @Override
-    public Iterator<Entry<String, V>> iterator() {
-      return Iterators.transform(delegate.iterator(), new EntryTransformer<V>());
-    }
-
-
-    @Override
-    public int size() {
-      return delegate.size();
     }
 
 

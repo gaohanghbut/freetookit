@@ -12,10 +12,7 @@ public final class ListUtils {
   private ListUtils() {
   }
 
-  public static <E> List<? extends E> subList(List<? extends E> src,
-                                              int offset,
-                                              int length
-                                             ) {
+  public static <E> List<? extends E> subList(List<? extends E> src, int offset, int length) {
     checkNotNull(src);
     if ((offset == 0 && src.size() <= length) || src.size() == 0) {
       return src;

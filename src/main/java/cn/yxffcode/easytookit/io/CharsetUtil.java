@@ -62,7 +62,7 @@ public final class CharsetUtil {
    */
   public static final Charset US_ASCII = Charset.forName("US-ASCII");
 
-  private static final Charset[] CHARSETS = new Charset[] {
+  private static final Charset[] CHARSETS = new Charset[]{
           UTF_16,
           UTF_16BE,
           UTF_16LE,

@@ -3,14 +3,7 @@ package cn.yxffcode.easytookit.io;
 import cn.yxffcode.easytookit.collection.ImmutableIterator;
 import cn.yxffcode.easytookit.lang.CloseableIterable;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
+import java.io.*;
 import java.util.Iterator;
 
 import static com.google.common.base.Preconditions.checkNotNull;

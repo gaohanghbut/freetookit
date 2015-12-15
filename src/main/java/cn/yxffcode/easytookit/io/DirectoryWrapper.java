@@ -36,7 +36,7 @@ public final class DirectoryWrapper {
     LinkedList<File> stack = new LinkedList<>();
     stack.add(dir);
     boolean success = true;//只要有一个文件或者目录删除失败，则为false
-    while (! stack.isEmpty()) {
+    while (!stack.isEmpty()) {
       File first = stack.removeFirst();
       if (first.isFile()) {
         success = success && first.delete();

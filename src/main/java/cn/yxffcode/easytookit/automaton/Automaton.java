@@ -16,7 +16,7 @@ public abstract class Automaton {
   /**
    * 状态的宽度,表示一个状态占{@link #states}数组中的元素个数
    */
-  protected static final int STATE_WIDTH     = 2;
+  protected static final int STATE_WIDTH = 2;
   /**
    * {@link #transitions}数组中,第一个元素用来表示没有转换,所有状态的初始值都指向transition[0]
    */
@@ -24,35 +24,43 @@ public abstract class Automaton {
   /**
    * 表示未知状态,如果不能识别输入,则返回此状态
    */
-  private static final   int UNKNOWN_STATE   = - 1;
+  private static final int UNKNOWN_STATE = -1;
   /**
    * 起始状态
    */
-  private static final   int INIT_STATE      = 0;
+  private static final int INIT_STATE = 0;
   /**
    * 一次转换的宽度
    */
-  protected final int    transitionWidth;
+  protected final int transitionWidth;
   /**
    * 状态数组,一个状态由两个元素表示,第一个元素表示该状态的出度在{@link #transitions}数组中的起始位置,
    * 第二个元素表示状态的出度的数量
    */
-  protected       int[]  states;
+  protected int[] states;
   /**
    * 转换数组,下标与{@link #states}数组相关,表示当前状态,值表示下一个状态,一个转换可以由数组中多个
    * 第一个元素表示下一个状态,第二个元素表示节点的输出
    */
-  protected       int[]  transitions;
+  protected int[] transitions;
   /**
    * 是否是终止状态,使用bitset取代数组
    */
-  protected       BitSet accept;
+  protected BitSet accept;
 
   protected Automaton(final int stateCount, final int transitionCount, final int transitionWidth) {
     this.transitionWidth = transitionWidth;
     this.states = new int[STATE_WIDTH * stateCount + STATE_WIDTH];
     this.transitions = new int[this.transitionWidth * transitionCount + this.transitionWidth];
     this.accept = new BitSet(stateCount);
+  }
+
+  public static int start() {
+    return INIT_STATE;
+  }
+
+  public static int unknown() {
+    return UNKNOWN_STATE;
   }
 
   protected final int[] grow(int[] src, int growSize) {
@@ -92,10 +100,6 @@ public abstract class Automaton {
     return isFinished(state);
   }
 
-  public static int start() {
-    return INIT_STATE;
-  }
-
   public final int step(int current, int value) {
     int pos = current * 2;
     for (int off = states[pos], end = states[pos + 1] * transitionWidth + off;
@@ -104,10 +108,6 @@ public abstract class Automaton {
         return transitions[off];
       }
     }
-    return UNKNOWN_STATE;
-  }
-
-  public static int unknown() {
     return UNKNOWN_STATE;
   }
 

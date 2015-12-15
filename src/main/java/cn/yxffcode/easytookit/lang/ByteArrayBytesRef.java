@@ -5,8 +5,8 @@ package cn.yxffcode.easytookit.lang;
  */
 public class ByteArrayBytesRef implements BytesRef {
   private final byte[] data;
-  private final int    offset;
-  private final int    length;
+  private final int offset;
+  private final int length;
 
   public ByteArrayBytesRef(final byte[] data) {
     this(data, 0, data.length);
@@ -15,7 +15,7 @@ public class ByteArrayBytesRef implements BytesRef {
   public ByteArrayBytesRef(final byte[] data,
                            final int offset,
                            final int length
-                          ) {
+  ) {
     this.data = data;
     this.offset = offset;
     this.length = length;
