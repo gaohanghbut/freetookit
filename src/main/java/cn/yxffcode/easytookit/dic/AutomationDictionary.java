@@ -13,40 +13,40 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class AutomationDictionary implements Dictionary {
 
-    public static AutomationDictionary create(Iterable<String> words) {
-        checkNotNull(words);
+  private final Automaton automaton;
 
-        DefaultAutomaton.DictionaryBuilder builder = new DefaultAutomaton.DictionaryBuilder();
-        for (String word : words) {
-            builder.addWord(new StringIntsRef(word));
-        }
-        return new AutomationDictionary(builder.build());
+  private AutomationDictionary(final Automaton automaton) {
+    this.automaton = automaton;
+  }
+
+  public static AutomationDictionary create(Iterable<String> words) {
+    checkNotNull(words);
+
+    DefaultAutomaton.DictionaryBuilder builder = new DefaultAutomaton.DictionaryBuilder();
+    for (String word : words) {
+      builder.addWord(new StringIntsRef(word));
     }
+    return new AutomationDictionary(builder.build());
+  }
 
-    private final Automaton automaton;
+  @Override
+  public boolean match(final String word) {
+    checkNotNull(word);
+    return automaton.run(word);
+  }
 
-    private AutomationDictionary(final Automaton automaton) {
-        this.automaton = automaton;
-    }
+  @Override
+  public int startState() {
+    return Automaton.start();
+  }
 
-    @Override
-    public boolean match(final String word) {
-        checkNotNull(word);
-        return automaton.run(word);
-    }
+  @Override
+  public int nextState(final int state, final int input) {
+    return automaton.step(state, input);
+  }
 
-    @Override
-    public int startState() {
-        return Automaton.start();
-    }
-
-    @Override
-    public int nextState(final int state, final int input) {
-        return automaton.step(state, input);
-    }
-
-    @Override
-    public boolean isWordEnded(final int state) {
-        return automaton.isFinished(state);
-    }
+  @Override
+  public boolean isWordEnded(final int state) {
+    return automaton.isFinished(state);
+  }
 }

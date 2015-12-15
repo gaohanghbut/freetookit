@@ -7,7 +7,7 @@ package cn.yxffcode.easytookit.lang;
  */
 public interface BytesRef {
 
-    byte element(int index);
+  byte element(int index);
 
-    int length();
+  int length();
 }

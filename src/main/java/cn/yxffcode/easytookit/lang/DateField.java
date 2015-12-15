@@ -8,24 +8,24 @@ import java.util.Calendar;
  * @author gaohang on 15/11/29.
  */
 public enum DateField {
-    YEAR {
-        @Override
-        public int getCalendarField() {
-            return Calendar.YEAR;
-        }
-    },
-    MOUTH {
-        @Override
-        public int getCalendarField() {
-            return Calendar.MONTH;
-        }
-    },
-    DAY {
-        @Override
-        public int getCalendarField() {
-            return Calendar.DAY_OF_MONTH;
-        }
-    };
+  YEAR {
+    @Override
+    public int getCalendarField() {
+      return Calendar.YEAR;
+    }
+  },
+  MOUTH {
+    @Override
+    public int getCalendarField() {
+      return Calendar.MONTH;
+    }
+  },
+  DAY {
+    @Override
+    public int getCalendarField() {
+      return Calendar.DAY_OF_MONTH;
+    }
+  };
 
-    public abstract int getCalendarField();
+  public abstract int getCalendarField();
 }

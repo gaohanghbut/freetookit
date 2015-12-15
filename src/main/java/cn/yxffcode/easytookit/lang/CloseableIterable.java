@@ -19,8 +19,8 @@ import java.io.Closeable;
  */
 public interface CloseableIterable<E> extends Iterable<E>, Closeable {
 
-    /**
-     * 关闭资源
-     */
-    void close();
+  /**
+   * 关闭资源
+   */
+  void close();
 }

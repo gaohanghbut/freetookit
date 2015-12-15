@@ -15,34 +15,34 @@ import java.util.Set;
  */
 public class SingleCollection<E> extends AbstractList<E> implements Set<E>, Serializable {
 
-    private final E elem;
+  private final E elem;
 
-    private SingleCollection(E elem) {
-        this.elem = elem;
-    }
+  private SingleCollection(E elem) {
+    this.elem = elem;
+  }
 
-    public static <E> Set<E> newSingleSet(E elem) {
-        return new SingleCollection<>(elem);
-    }
+  public static <E> Set<E> newSingleSet(E elem) {
+    return new SingleCollection<>(elem);
+  }
 
-    public static <E> List<E> newSingleList(E elem) {
-        return new SingleCollection<>(elem);
-    }
+  public static <E> List<E> newSingleList(E elem) {
+    return new SingleCollection<>(elem);
+  }
 
-    public static <E> Collection<E> newSingleCollection(E elem) {
-        return new SingleCollection<>(elem);
-    }
+  public static <E> Collection<E> newSingleCollection(E elem) {
+    return new SingleCollection<>(elem);
+  }
 
-    @Override
-    public E get(int index) {
-        if (index != 0) {
-            throw new IndexOutOfBoundsException();
-        }
-        return elem;
+  @Override
+  public E get(int index) {
+    if (index != 0) {
+      throw new IndexOutOfBoundsException();
     }
+    return elem;
+  }
 
-    @Override
-    public int size() {
-        return 1;
-    }
+  @Override
+  public int size() {
+    return 1;
+  }
 }

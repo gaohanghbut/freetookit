@@ -26,33 +26,33 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class DCL<T> {
 
-    private Predicate<T> checker = Predicates.alwaysTrue();
-    private Consumer<T> consumer;
+  private Predicate<T> checker = Predicates.alwaysTrue();
+  private Consumer<T> consumer;
 
-    private DCL() {
-    }
+  private DCL() {
+  }
 
-    public static <T> DCL<T> create() {
-        return new DCL<>();
-    }
+  public static <T> DCL<T> create() {
+    return new DCL<>();
+  }
 
-    public void done(T key) {
+  public void done(T key) {
+    if (! checker.apply(key)) {
+      synchronized (this) {
         if (! checker.apply(key)) {
-            synchronized (this) {
-                if (! checker.apply(key)) {
-                    consumer.consume(key);
-                }
-            }
+          consumer.consume(key);
         }
+      }
     }
+  }
 
-    public DCL<T> check(Predicate<T> predicate) {
-        this.checker = checkNotNull(predicate);
-        return this;
-    }
+  public DCL<T> check(Predicate<T> predicate) {
+    this.checker = checkNotNull(predicate);
+    return this;
+  }
 
-    public DCL<T> absent(Consumer<T> consumer) {
-        this.consumer = consumer;
-        return this;
-    }
+  public DCL<T> absent(Consumer<T> consumer) {
+    this.consumer = consumer;
+    return this;
+  }
 }

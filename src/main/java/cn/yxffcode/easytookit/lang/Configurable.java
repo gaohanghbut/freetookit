@@ -7,8 +7,8 @@ package cn.yxffcode.easytookit.lang;
  */
 public interface Configurable<Configuration> {
 
-    /**
-     * 查找配置
-     */
-    Configuration lookupConfig(String name);
+  /**
+   * 查找配置
+   */
+  Configuration lookupConfig(String name);
 }

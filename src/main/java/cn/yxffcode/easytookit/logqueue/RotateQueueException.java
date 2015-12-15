@@ -5,8 +5,8 @@ package cn.yxffcode.easytookit.logqueue;
  */
 public class RotateQueueException extends Exception {
 
-    public RotateQueueException(Throwable cause) {
-        super(cause);
-    }
+  public RotateQueueException(Throwable cause) {
+    super(cause);
+  }
 
 }

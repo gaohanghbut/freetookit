@@ -11,26 +11,26 @@ import static org.junit.Assert.assertTrue;
  */
 public class DefaultAutomatonTest {
 
-    @Test
-    public void testAutomaton() {
-        DefaultAutomaton automaton = new DefaultAutomaton.DictionaryBuilder().addWord(new StringIntsRef("hello"))
-                                                                             .addWord(new StringIntsRef("helle"))
-                                                                             .addWord(new StringIntsRef("halle"))
-                                                                             .addWord(new StringIntsRef("halla"))
-                                                                             .addWord(new StringIntsRef("hallb"))
-                                                                             .addWord(new StringIntsRef("abc"))
-                                                                             .addWord(new StringIntsRef("dkk"))
-                                                                             .addWord(new StringIntsRef("dkkk"))
-                                                                             .build();
-        assertTrue(automaton.run("hello"));
-        assertTrue(automaton.run("helle"));
-        assertTrue(automaton.run("halle"));
-        assertTrue(automaton.run("halla"));
-        assertTrue(automaton.run("hallb"));
-        assertTrue(automaton.run("abc"));
-        assertTrue(automaton.run("dkk"));
-        assertTrue(automaton.run("dkkk"));
-        assertFalse(automaton.run("abcd"));
-        assertFalse(automaton.run("eeee"));
-    }
+  @Test
+  public void testAutomaton() {
+    DefaultAutomaton automaton = new DefaultAutomaton.DictionaryBuilder().addWord(new StringIntsRef("hello"))
+                                                                         .addWord(new StringIntsRef("helle"))
+                                                                         .addWord(new StringIntsRef("halle"))
+                                                                         .addWord(new StringIntsRef("halla"))
+                                                                         .addWord(new StringIntsRef("hallb"))
+                                                                         .addWord(new StringIntsRef("abc"))
+                                                                         .addWord(new StringIntsRef("dkk"))
+                                                                         .addWord(new StringIntsRef("dkkk"))
+                                                                         .build();
+    assertTrue(automaton.run("hello"));
+    assertTrue(automaton.run("helle"));
+    assertTrue(automaton.run("halle"));
+    assertTrue(automaton.run("halla"));
+    assertTrue(automaton.run("hallb"));
+    assertTrue(automaton.run("abc"));
+    assertTrue(automaton.run("dkk"));
+    assertTrue(automaton.run("dkkk"));
+    assertFalse(automaton.run("abcd"));
+    assertFalse(automaton.run("eeee"));
+  }
 }

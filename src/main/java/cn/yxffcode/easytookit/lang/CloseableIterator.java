@@ -8,5 +8,5 @@ import java.util.Iterator;
  * @see CloseableIterable
  */
 public interface CloseableIterator<E> extends Iterator<E>, Closeable {
-    void close();
+  void close();
 }

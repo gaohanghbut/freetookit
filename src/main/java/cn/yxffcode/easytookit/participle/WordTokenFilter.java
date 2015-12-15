@@ -8,5 +8,5 @@ import java.util.Iterator;
  * @author gaohang on 15/12/12.
  */
 public interface WordTokenFilter {
-    Iterator<String> token(String sentence);
+  Iterator<String> token(String sentence);
 }

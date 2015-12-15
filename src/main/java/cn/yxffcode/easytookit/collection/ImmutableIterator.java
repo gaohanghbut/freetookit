@@ -8,8 +8,8 @@ import java.util.Iterator;
  * @author gaohang on 15/9/24.
  */
 public abstract class ImmutableIterator<E> implements Iterator<E> {
-    @Override
-    public void remove() {
-        throw new UnsupportedOperationException();
-    }
+  @Override
+  public void remove() {
+    throw new UnsupportedOperationException();
+  }
 }

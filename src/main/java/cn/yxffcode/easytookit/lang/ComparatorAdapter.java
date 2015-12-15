@@ -9,17 +9,17 @@ import java.util.Comparator;
  */
 public class ComparatorAdapter<T> implements Comparator<T> {
 
-    private final ImprovedComparator<? super T> delegate;
+  private final ImprovedComparator<? super T> delegate;
 
-    public ComparatorAdapter(final ImprovedComparator<? super T> delegate) {
-        this.delegate = delegate;
-    }
+  public ComparatorAdapter(final ImprovedComparator<? super T> delegate) {
+    this.delegate = delegate;
+  }
 
-    @Override
-    public int compare(final T left,
-                       final T right
-                      ) {
-        return delegate.compare(left, right)
-                       .getComparatorResult();
-    }
+  @Override
+  public int compare(final T left,
+                     final T right
+                    ) {
+    return delegate.compare(left, right)
+                   .getComparatorResult();
+  }
 }

@@ -12,23 +12,23 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class IteratorAdapter<T> extends ImmutableIterator<T> {
 
-    private final Enumeration<? extends T> delegate;
+  private final Enumeration<? extends T> delegate;
 
-    private IteratorAdapter(Enumeration<? extends T> delegate) {
-        this.delegate = delegate;
-    }
+  private IteratorAdapter(Enumeration<? extends T> delegate) {
+    this.delegate = delegate;
+  }
 
-    public static <T> IteratorAdapter<T> create(Enumeration<? extends T> enumeration) {
-        return new IteratorAdapter<>(checkNotNull(enumeration));
-    }
+  public static <T> IteratorAdapter<T> create(Enumeration<? extends T> enumeration) {
+    return new IteratorAdapter<>(checkNotNull(enumeration));
+  }
 
-    @Override
-    public boolean hasNext() {
-        return delegate.hasMoreElements();
-    }
+  @Override
+  public boolean hasNext() {
+    return delegate.hasMoreElements();
+  }
 
-    @Override
-    public T next() {
-        return delegate.nextElement();
-    }
+  @Override
+  public T next() {
+    return delegate.nextElement();
+  }
 }

@@ -9,18 +9,18 @@ import java.io.Closeable;
  */
 public interface LogQueue<T> extends Closeable {
 
-    /**
-     * create a new log file to store logs
-     */
-    void rotate() throws RotateQueueException;
+  /**
+   * create a new log file to store logs
+   */
+  void rotate() throws RotateQueueException;
 
-    /**
-     * put an object to the log file
-     */
-    void offer(T obj);
+  /**
+   * put an object to the log file
+   */
+  void offer(T obj);
 
-    /**
-     * consume an object from the log file
-     */
-    T poll();
+  /**
+   * consume an object from the log file
+   */
+  T poll();
 }

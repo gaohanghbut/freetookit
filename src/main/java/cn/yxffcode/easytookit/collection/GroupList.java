@@ -12,36 +12,36 @@ import static com.google.common.base.Preconditions.checkArgument;
  */
 public class GroupList<E> extends AbstractList<E> {
 
-    private List<? extends E>[] lists;
-    private int                 size;
+  private List<? extends E>[] lists;
+  private int                 size;
 
-    private GroupList(List<? extends E>... lists) {
-        this.lists = lists;
-        for (List<? extends E> list : lists) {
-            size += list.size();
-        }
+  private GroupList(List<? extends E>... lists) {
+    this.lists = lists;
+    for (List<? extends E> list : lists) {
+      size += list.size();
     }
+  }
 
-    public static <T> GroupList<T> create(List<? extends T>... lists) {
-        return new GroupList<>(lists);
-    }
+  public static <T> GroupList<T> create(List<? extends T>... lists) {
+    return new GroupList<>(lists);
+  }
 
-    @Override
-    public E get(int index) {
-        checkArgument(index >= 0 && index < size);
-        //如果子集合比较多，可以换成二分查找
-        int remaining = index;
-        for (List<? extends E> list : lists) {
-            if (list.size() > remaining) {
-                return list.get(remaining);
-            }
-            remaining -= list.size();
-        }
-        return null;
+  @Override
+  public E get(int index) {
+    checkArgument(index >= 0 && index < size);
+    //如果子集合比较多，可以换成二分查找
+    int remaining = index;
+    for (List<? extends E> list : lists) {
+      if (list.size() > remaining) {
+        return list.get(remaining);
+      }
+      remaining -= list.size();
     }
+    return null;
+  }
 
-    @Override
-    public int size() {
-        return size;
-    }
+  @Override
+  public int size() {
+    return size;
+  }
 }

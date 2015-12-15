@@ -12,35 +12,35 @@ import java.util.Map;
  */
 public abstract class IndexBasedComparator<ID, T> implements Comparator<T> {
 
-    private final Map<ID, Integer> indexes;
+  private final Map<ID, Integer> indexes;
 
-    private final boolean reverse;
+  private final boolean reverse;
 
-    public IndexBasedComparator(final Iterable<? extends ID> src) {
-        this(src, false);
+  public IndexBasedComparator(final Iterable<? extends ID> src) {
+    this(src, false);
+  }
+
+  public IndexBasedComparator(final Iterable<? extends ID> src, final boolean reverse) {
+    this.reverse = reverse;
+    indexes = Maps.newHashMap();
+    int index = 0;
+    for (ID id : src) {
+      indexes.put(id, index++);
     }
+  }
 
-    public IndexBasedComparator(final Iterable<? extends ID> src, final boolean reverse) {
-        this.reverse = reverse;
-        indexes = Maps.newHashMap();
-        int index = 0;
-        for (ID id : src) {
-            indexes.put(id, index++);
-        }
+
+  @Override
+  public int compare(final T left, final T right) {
+    if (! reverse) {
+      return indexes.get(getId(left))
+                    .compareTo(indexes.get(getId(right)));
+    } else {
+      return indexes.get(getId(right))
+                    .compareTo(indexes.get(getId(left)));
     }
+  }
 
-
-    @Override
-    public int compare(final T left, final T right) {
-        if (! reverse) {
-            return indexes.get(getId(left))
-                          .compareTo(indexes.get(getId(right)));
-        } else {
-            return indexes.get(getId(right))
-                          .compareTo(indexes.get(getId(left)));
-        }
-    }
-
-    protected abstract ID getId(T elem);
+  protected abstract ID getId(T elem);
 
 }

@@ -5,8 +5,8 @@ package cn.yxffcode.easytookit.logqueue;
  */
 public class QueueOperationException extends RuntimeException {
 
-    public QueueOperationException(Throwable cause) {
-        super(cause);
-    }
+  public QueueOperationException(Throwable cause) {
+    super(cause);
+  }
 
 }

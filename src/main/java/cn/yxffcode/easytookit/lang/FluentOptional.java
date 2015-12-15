@@ -21,45 +21,45 @@ import com.google.common.base.Optional;
  */
 public class FluentOptional<T> {
 
-    private static final FluentOptional<Object> ABSENT = from(Optional.absent());
-    private final Optional<? extends T> optional;
+  private static final FluentOptional<Object> ABSENT = from(Optional.absent());
+  private final Optional<? extends T> optional;
 
-    public FluentOptional(final Optional<? extends T> optional) {
-        this.optional = optional;
-    }
+  public FluentOptional(final Optional<? extends T> optional) {
+    this.optional = optional;
+  }
 
-    public static <T> FluentOptional from(T obj) {
-        return new FluentOptional(Optional.fromNullable(obj));
-    }
+  public static <T> FluentOptional from(T obj) {
+    return new FluentOptional(Optional.fromNullable(obj));
+  }
 
-    public T or(T def) {
-        return isPresent() ? get() : def;
-    }
+  public T or(T def) {
+    return isPresent() ? get() : def;
+  }
 
-    public boolean isPresent() {
-        return optional.isPresent();
-    }
+  public boolean isPresent() {
+    return optional.isPresent();
+  }
 
-    public T get() {
-        return optional.get();
-    }
+  public T get() {
+    return optional.get();
+  }
 
-    /**
-     * 将此Optional传递,表示一次方法调用
-     */
-    public <A> FluentOptional<A> flow(Function<T, A> function) {
-        if (! isPresent()) {
-            return (FluentOptional<A>) ABSENT;
-        }
-        A result = function.apply(get());
-        if (result == null) {
-            return (FluentOptional<A>) ABSENT;
-        }
-        return from(Optional.of(result));
+  /**
+   * 将此Optional传递,表示一次方法调用
+   */
+  public <A> FluentOptional<A> flow(Function<T, A> function) {
+    if (! isPresent()) {
+      return (FluentOptional<A>) ABSENT;
     }
+    A result = function.apply(get());
+    if (result == null) {
+      return (FluentOptional<A>) ABSENT;
+    }
+    return from(Optional.of(result));
+  }
 
-    public static <T> FluentOptional from(Optional<? extends T> src) {
-        return new FluentOptional(src);
-    }
+  public static <T> FluentOptional from(Optional<? extends T> src) {
+    return new FluentOptional(src);
+  }
 
 }

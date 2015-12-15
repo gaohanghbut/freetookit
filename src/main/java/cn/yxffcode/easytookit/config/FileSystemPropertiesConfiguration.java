@@ -9,29 +9,29 @@ import java.util.Properties;
  */
 public class FileSystemPropertiesConfiguration extends AbstractPropertiesConfiguration {
 
-    private Properties config;
+  private Properties config;
 
-    private FileSystemPropertiesConfiguration() {
+  private FileSystemPropertiesConfiguration() {
+  }
+
+  public static FileSystemPropertiesConfiguration create(String... resources) throws IOException {
+    FileSystemPropertiesConfiguration cfg = new FileSystemPropertiesConfiguration();
+    cfg.loadConfig(resources);
+    return cfg;
+  }
+
+  private void loadConfig(String... resources) throws IOException {
+    config = new Properties();
+
+    for (String resource : resources) {
+      try (FileInputStream fis = new FileInputStream(resource)) {
+        config.load(fis);
+      }
     }
+  }
 
-    public static FileSystemPropertiesConfiguration create(String... resources) throws IOException {
-        FileSystemPropertiesConfiguration cfg = new FileSystemPropertiesConfiguration();
-        cfg.loadConfig(resources);
-        return cfg;
-    }
-
-    private void loadConfig(String... resources) throws IOException {
-        config = new Properties();
-
-        for (String resource : resources) {
-            try (FileInputStream fis = new FileInputStream(resource)) {
-                config.load(fis);
-            }
-        }
-    }
-
-    @Override
-    protected Properties getConfig() {
-        return config;
-    }
+  @Override
+  protected Properties getConfig() {
+    return config;
+  }
 }
