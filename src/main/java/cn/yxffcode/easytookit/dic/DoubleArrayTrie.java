@@ -112,10 +112,10 @@ public class DoubleArrayTrie implements Dictionary {
       if (check[t] != NONE && check[t] != s) {
         //冲突,需要重新分配base[s]
         IntStack children = new IntStack();
-        for (int k1 = base[s]; k1 < check.length; k1++) {
-          int e = check[k1];
+        for (int k = base[s]; k < check.length; k++) {
+          int e = check[k];
           if (e == s) {
-            children.push(k1 - base[s]);
+            children.push(k - base[s]);
           }
         }
         int b = 1;
@@ -124,11 +124,11 @@ public class DoubleArrayTrie implements Dictionary {
           for (IntIterator iterator = children.iterator(); iterator.hasNext(); ) {
             //t = base[s] + c,则c = t - base[s],此时t是child
             int c = iterator.next();
-            int nt1 = b + c;
-            if (nt1 >= check.length) {
-              check = grow(check, nt1 * 2);
+            int nt = b + c;
+            if (nt >= check.length) {
+              check = grow(check, nt * 2);
             }
-            if (check[nt1] != NONE) {
+            if (check[nt] != NONE) {
               continue base;
             }
           }
