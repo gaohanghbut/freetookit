@@ -121,9 +121,9 @@ public class DoubleArrayTrie implements Dictionary {
         int b = 1;
         base:
         for (; ; b++) {//b表示新的base[s]
-          for (IntIterator iterator1 = children.iterator(); iterator1.hasNext(); ) {
+          for (IntIterator iterator = children.iterator(); iterator.hasNext(); ) {
             //t = base[s] + c,则c = t - base[s],此时t是child
-            int c = iterator1.next();
+            int c = iterator.next();
             int nt1 = b + c;
             if (nt1 >= check.length) {
               check = grow(check, nt1 * 2);
