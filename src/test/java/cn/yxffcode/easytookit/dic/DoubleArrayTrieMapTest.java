@@ -1,5 +1,6 @@
 package cn.yxffcode.easytookit.dic;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -13,7 +14,7 @@ public class DoubleArrayTrieMapTest {
     map.put("limiku", "厘米库");
     map.put("baidu", "百度");
 
-    System.out.println(map.get("limiku"));
-    System.out.println(map.get("baidu"));
+    Assert.assertEquals("厘米库", map.get("limiku"));
+    Assert.assertEquals("百度", map.get("baidu"));
   }
 }
