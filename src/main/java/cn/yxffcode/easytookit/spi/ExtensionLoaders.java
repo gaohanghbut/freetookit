@@ -24,7 +24,8 @@ import static java.util.Collections.unmodifiableMap;
  */
 public final class ExtensionLoaders {
   private static final ConcurrentMap<Class<?>, ExtensionLoader<?>> extensionLoaderMap = new ConcurrentHashMap<>();
-  private static final ConcurrentMap<Class<?>, NamedExtensionLoader<?>> namedExtensionLoaderMap = new ConcurrentHashMap<>();
+  private static final ConcurrentMap<Class<?>, NamedExtensionLoader<?>> namedExtensionLoaderMap =
+          new ConcurrentHashMap<>();
   private static final Object extensionMapLock = new Object();
   private static final Object namedExtensionMapLock = new Object();
 
