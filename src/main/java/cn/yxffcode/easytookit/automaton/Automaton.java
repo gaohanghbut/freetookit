@@ -74,13 +74,11 @@ public abstract class Automaton {
     return run(new IntIterator() {
       private int cur = 0;
 
-      @Override
-      public boolean hasNext() {
+      @Override public boolean hasNext() {
         return cur < word.length;
       }
 
-      @Override
-      public int next() {
+      @Override public int next() {
         return word[cur++];
       }
     });
@@ -102,8 +100,7 @@ public abstract class Automaton {
 
   public final int step(int current, int value) {
     int pos = current * 2;
-    for (int off = states[pos], end = states[pos + 1] * transitionWidth + off;
-         off < end; off += transitionWidth) {
+    for (int off = states[pos], end = states[pos + 1] * transitionWidth + off; off < end; off += transitionWidth) {
       if (apply(off, value)) {
         return transitions[off];
       }
@@ -127,13 +124,11 @@ public abstract class Automaton {
     return run(new IntIterator() {
       private int cur;
 
-      @Override
-      public boolean hasNext() {
+      @Override public boolean hasNext() {
         return cur < word.length;
       }
 
-      @Override
-      public int next() {
+      @Override public int next() {
         return word[cur++];
       }
     });

@@ -62,14 +62,7 @@ public final class CharsetUtil {
    */
   public static final Charset US_ASCII = Charset.forName("US-ASCII");
 
-  private static final Charset[] CHARSETS = new Charset[]{
-          UTF_16,
-          UTF_16BE,
-          UTF_16LE,
-          UTF_8,
-          ISO_8859_1,
-          US_ASCII
-  };
+  private static final Charset[] CHARSETS = new Charset[]{UTF_16, UTF_16BE, UTF_16LE, UTF_8, ISO_8859_1, US_ASCII};
 
   private static final ConcurrentMap<Charset, CharsetEncoder> charsetEncoderCache = Maps.newConcurrentMap();
   private static final ConcurrentMap<Charset, CharsetDecoder> charsetDecoderCache = Maps.newConcurrentMap();

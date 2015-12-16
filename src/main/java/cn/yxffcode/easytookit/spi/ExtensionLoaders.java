@@ -36,8 +36,8 @@ public final class ExtensionLoaders {
     if (!extensionLoaderMap.containsKey(type)) {
       synchronized (extensionMapLock) {
         if (!extensionLoaderMap.containsKey(type)) {
-          extensionLoaderMap.put(type, new DefaultExtensionLoader<T>(type, Thread.currentThread()
-                  .getContextClassLoader()));
+          extensionLoaderMap
+                  .put(type, new DefaultExtensionLoader<T>(type, Thread.currentThread().getContextClassLoader()));
         }
       }
     }
@@ -48,8 +48,8 @@ public final class ExtensionLoaders {
     if (!namedExtensionLoaderMap.containsKey(type)) {
       synchronized (namedExtensionMapLock) {
         if (!namedExtensionLoaderMap.containsKey(type)) {
-          namedExtensionLoaderMap.put(type, new DefaultNamedExtensionLoader<>(type, Thread.currentThread()
-                  .getContextClassLoader()));
+          namedExtensionLoaderMap
+                  .put(type, new DefaultNamedExtensionLoader<>(type, Thread.currentThread().getContextClassLoader()));
         }
       }
     }
@@ -62,9 +62,7 @@ public final class ExtensionLoaders {
 
     private volatile List<T> cache;
 
-    public DefaultExtensionLoader(Class<T> type,
-                                  ClassLoader classLoader
-    ) {
+    public DefaultExtensionLoader(Class<T> type, ClassLoader classLoader) {
       serviceLoader = ServiceLoader.load(type, classLoader);
     }
 
@@ -74,20 +72,15 @@ public final class ExtensionLoaders {
 //               .check(v -> this.cache != null)
 //               .absent(v -> this.cache = doLoad())
 //               .done(null);
-      DCL.create()
-              .check(new Predicate<Object>() {
-                @Override
-                public boolean apply(final Object input) {
-                  return cache != null;
-                }
-              })
-              .absent(new Consumer<Object>() {
-                @Override
-                public void consume(final Object elem) {
-                  cache = doLoad();
-                }
-              })
-              .done(null);
+      DCL.create().check(new Predicate<Object>() {
+        @Override public boolean apply(final Object input) {
+          return cache != null;
+        }
+      }).absent(new Consumer<Object>() {
+        @Override public void consume(final Object elem) {
+          cache = doLoad();
+        }
+      }).done(null);
       return cache;
     }
 
@@ -106,14 +99,11 @@ public final class ExtensionLoaders {
 
   private static final class DefaultNamedExtensionLoader<T> implements NamedExtensionLoader<T> {
     private static final String PREFIX = "META-INF/services/";
-    private static final Splitter NAMED_IMPL_SPLITTER = Splitter.on('=')
-            .trimResults();
+    private static final Splitter NAMED_IMPL_SPLITTER = Splitter.on('=').trimResults();
 
     private final Map<String, T> cache;
 
-    private DefaultNamedExtensionLoader(final Class<T> type,
-                                        final ClassLoader classLoader
-    ) {
+    private DefaultNamedExtensionLoader(final Class<T> type, final ClassLoader classLoader) {
       HashMap<String, T> cache = Maps.newHashMap();
       try (BufferedReader in = toBufferedReader(classLoader.getSystemResourceAsStream(PREFIX + type.getName()))) {
         for (String line : lines(in)) {
@@ -128,13 +118,11 @@ public final class ExtensionLoaders {
     }
 
 
-    @Override
-    public Map<String, T> getExtensions() {
+    @Override public Map<String, T> getExtensions() {
       return cache;
     }
 
-    @Override
-    public T getExtension(final String name) {
+    @Override public T getExtension(final String name) {
       return getExtensions().get(name);
     }
   }

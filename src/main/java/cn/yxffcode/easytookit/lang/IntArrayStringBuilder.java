@@ -105,8 +105,7 @@ public class IntArrayStringBuilder {
     return pos;
   }
 
-  @Override
-  public boolean equals(final Object o) {
+  @Override public boolean equals(final Object o) {
     if (this == o) {
       return true;
     }
@@ -158,9 +157,7 @@ public class IntArrayStringBuilder {
     return slice(offset, this.length() - offset);
   }
 
-  public IntArrayStringBuilder slice(int offset,
-                                     int length
-  ) {
+  public IntArrayStringBuilder slice(int offset, int length) {
     return new SliceStringBuilder(this, offset, length);
   }
 
@@ -170,37 +167,30 @@ public class IntArrayStringBuilder {
     private final int offset;
     private final int length;
 
-    private SliceStringBuilder(final IntArrayStringBuilder delegate,
-                               final int offset,
-                               final int length) {
+    private SliceStringBuilder(final IntArrayStringBuilder delegate, final int offset, final int length) {
       super(0);
       this.delegate = delegate;
       this.offset = offset;
       this.length = length;
     }
 
-    @Override
-    public IntArrayStringBuilder append(final int c) {
+    @Override public IntArrayStringBuilder append(final int c) {
       throw new UnsupportedOperationException();
     }
 
-    @Override
-    public IntArrayStringBuilder append(final int... cs) {
+    @Override public IntArrayStringBuilder append(final int... cs) {
       throw new UnsupportedOperationException();
     }
 
-    @Override
-    public void clear() {
+    @Override public void clear() {
       throw new UnsupportedOperationException();
     }
 
-    @Override
-    public boolean isEmpty() {
+    @Override public boolean isEmpty() {
       return this.length == 0;
     }
 
-    @Override
-    public boolean isBlank() {
+    @Override public boolean isBlank() {
       for (int i = this.offset, j = this.offset + this.length; i < j; i++) {
         if (!Character.isWhitespace(delegate.element(i))) {
           return false;
@@ -209,38 +199,31 @@ public class IntArrayStringBuilder {
       return true;
     }
 
-    @Override
-    public String toString(final int off, final int len) {
+    @Override public String toString(final int off, final int len) {
       return delegate.toString(this.offset + len, len);
     }
 
-    @Override
-    public char[] toCharArray(final int off, final int len) {
+    @Override public char[] toCharArray(final int off, final int len) {
       return super.toCharArray(off + this.offset, len);
     }
 
-    @Override
-    public int length() {
+    @Override public int length() {
       return this.length;
     }
 
-    @Override
-    public int element(final int index) {
+    @Override public int element(final int index) {
       return delegate.element(index + this.offset);
     }
 
-    @Override
-    public String toString() {
+    @Override public String toString() {
       return delegate.toString(this.offset, this.length);
     }
 
-    @Override
-    public char[] toCharArray() {
+    @Override public char[] toCharArray() {
       return delegate.toCharArray(this.offset, this.length);
     }
 
-    @Override
-    public IntArrayStringBuilder slice(final int offset, final int length) {
+    @Override public IntArrayStringBuilder slice(final int offset, final int length) {
       return delegate.slice(this.offset + offset, length);
     }
 

@@ -33,16 +33,14 @@ public class SingleCollection<E> extends AbstractList<E> implements Set<E>, Seri
     return new SingleCollection<>(elem);
   }
 
-  @Override
-  public E get(int index) {
+  @Override public E get(int index) {
     if (index != 0) {
       throw new IndexOutOfBoundsException();
     }
     return elem;
   }
 
-  @Override
-  public int size() {
+  @Override public int size() {
     return 1;
   }
 }

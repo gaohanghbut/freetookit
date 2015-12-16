@@ -56,16 +56,14 @@ public final class IOStreams {
   public static Iterable<String> lines(final Reader reader) {
     checkNotNull(reader);
     return new Iterable<String>() {
-      @Override
-      public Iterator<String> iterator() {
+      @Override public Iterator<String> iterator() {
         return new ImmutableIterator<String>() {
 
           private String line;
 
           private BufferedReader in;
 
-          @Override
-          public boolean hasNext() {
+          @Override public boolean hasNext() {
             ensureInit();
             try {
               return (line = in.readLine()) != null;
@@ -84,8 +82,7 @@ public final class IOStreams {
             }
           }
 
-          @Override
-          public String next() {
+          @Override public String next() {
             return line;
           }
         };
@@ -102,8 +99,7 @@ public final class IOStreams {
 
       private BufferedReader in;
 
-      @Override
-      public void close() {
+      @Override public void close() {
         if (in != null) {
           try {
             in.close();
@@ -113,8 +109,7 @@ public final class IOStreams {
         }
       }
 
-      @Override
-      public Iterator<String> iterator() {
+      @Override public Iterator<String> iterator() {
         try {
           in = new BufferedReader(new FileReader(src));
           return lines(in).iterator();

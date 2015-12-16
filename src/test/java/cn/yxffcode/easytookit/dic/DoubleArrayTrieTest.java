@@ -13,8 +13,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class DoubleArrayTrieTest {
 
-  @Test
-  public void test() {
+  @Test public void test() {
     {
       List<String> words = Arrays.asList("limiku", "limika", "limikb", "limikc", "likla", "limlb", "mimik");
       DoubleArrayTrie trie = DoubleArrayTrie.create(words);

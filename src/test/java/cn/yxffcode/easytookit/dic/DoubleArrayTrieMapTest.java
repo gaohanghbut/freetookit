@@ -8,8 +8,7 @@ import org.junit.Test;
  */
 public class DoubleArrayTrieMapTest {
 
-  @Test
-  public void test() {
+  @Test public void test() {
     DoubleArrayTrieMap<String> map = new DoubleArrayTrieMap<>();
     map.put("limiku", "厘米库");
     map.put("baidu", "百度");

@@ -30,8 +30,7 @@ public class GenericPropertiesConfiguration extends AbstractPropertiesConfigurat
     }
   }
 
-  @Override
-  protected Properties getConfig() {
+  @Override protected Properties getConfig() {
     return config;
   }
 }

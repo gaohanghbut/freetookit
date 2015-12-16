@@ -19,8 +19,7 @@ public class GroupIterable<E> implements Iterable<E> {
     return new GroupIterable<>(src);
   }
 
-  @Override
-  public Iterator<E> iterator() {
+  @Override public Iterator<E> iterator() {
     return new InnerIterator();
   }
 
@@ -29,8 +28,7 @@ public class GroupIterable<E> implements Iterable<E> {
     private Iterator<? extends Iterable<? extends E>> iterator;
     private Iterator<? extends E> cur;
 
-    @Override
-    public boolean hasNext() {
+    @Override public boolean hasNext() {
       if (cur != null && cur.hasNext()) {
         return true;
       }
@@ -39,8 +37,7 @@ public class GroupIterable<E> implements Iterable<E> {
       }
       while (true) {
         if (iterator.hasNext()) {
-          cur = iterator.next()
-                  .iterator();
+          cur = iterator.next().iterator();
         } else {
           return false;
         }
@@ -50,8 +47,7 @@ public class GroupIterable<E> implements Iterable<E> {
       }
     }
 
-    @Override
-    public E next() {
+    @Override public E next() {
       return cur.next();
     }
 

@@ -28,13 +28,11 @@ public final class ReadOnlyIterator<T> extends ImmutableIterator<T> {
     this.iterator = iterator;
   }
 
-  @Override
-  public boolean hasNext() {
+  @Override public boolean hasNext() {
     return iterator.hasNext();
   }
 
-  @Override
-  public T next() {
+  @Override public T next() {
     return iterator.next();
   }
 

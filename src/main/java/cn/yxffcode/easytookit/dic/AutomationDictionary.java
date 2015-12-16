@@ -29,24 +29,20 @@ public class AutomationDictionary implements Dictionary {
     return new AutomationDictionary(builder.build());
   }
 
-  @Override
-  public boolean match(final String word) {
+  @Override public boolean match(final String word) {
     checkNotNull(word);
     return automaton.run(word);
   }
 
-  @Override
-  public int startState() {
+  @Override public int startState() {
     return Automaton.start();
   }
 
-  @Override
-  public int nextState(final int state, final int input) {
+  @Override public int nextState(final int state, final int input) {
     return automaton.step(state, input);
   }
 
-  @Override
-  public boolean isWordEnded(final int state) {
+  @Override public boolean isWordEnded(final int state) {
     return automaton.isFinished(state);
   }
 }

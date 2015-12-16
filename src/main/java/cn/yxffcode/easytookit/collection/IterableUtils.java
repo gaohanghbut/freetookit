@@ -18,8 +18,7 @@ public final class IterableUtils {
   public static <T> Iterable<T> adapt(final Enumeration<T> enumeration) {
     checkNotNull(enumeration);
     return new Iterable<T>() {
-      @Override
-      public Iterator<T> iterator() {
+      @Override public Iterator<T> iterator() {
         return IteratorAdapter.create(enumeration);
       }
     };
@@ -64,8 +63,7 @@ public final class IterableUtils {
   }
 
   private static class ArrayListSupplier<T> implements Supplier<List<T>> {
-    @Override
-    public List<T> get() {
+    @Override public List<T> get() {
       return Lists.newArrayList();
     }
   }

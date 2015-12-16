@@ -45,8 +45,7 @@ public class DefaultAutomaton extends Automaton {
     transitions[nextTransition++] = value;
   }
 
-  @Override
-  protected boolean apply(final int off, final int value) {
+  @Override protected boolean apply(final int off, final int value) {
     return transitions[off + 1] == value;
   }
 

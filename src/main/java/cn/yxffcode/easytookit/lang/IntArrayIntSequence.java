@@ -1,5 +1,7 @@
 package cn.yxffcode.easytookit.lang;
 
+import static com.google.common.base.Preconditions.checkState;
+
 /**
  * @author gaohang on 15/12/7.
  */
@@ -15,8 +17,7 @@ public class IntArrayIntSequence extends AbstractIntSequence {
     this.source = source;
   }
 
-  @Override
-  public String toString() {
+  @Override public String toString() {
     IntArrayStringBuilder appender = new IntArrayStringBuilder();
     for (int i = 0, j = length(); i < j; i++) {
       appender.append(element(i));
@@ -24,8 +25,12 @@ public class IntArrayIntSequence extends AbstractIntSequence {
     return appender.toString();
   }
 
-  @Override
-  public int element(final int index) {
+  @Override public int element(final int index) {
     return source[index + offset];
+  }
+
+  @Override public IntSequence slice(int offset, int length) {
+    checkState(offset >= 0 && offset + length <= this.length);
+    return new IntArrayIntSequence(source, offset + this.offset, length);
   }
 }

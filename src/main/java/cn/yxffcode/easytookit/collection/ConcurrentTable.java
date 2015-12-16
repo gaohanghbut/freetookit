@@ -36,118 +36,85 @@ public class ConcurrentTable<R, C, V> implements Table<R, C, V> {
     return new ConcurrentTable<R, C, V>();
   }
 
-  @Override
-  public boolean contains(Object rowKey,
-                          Object columnKey
-  ) {
-    return delegate.contains(rowKey,
-            columnKey);
+  @Override public boolean contains(Object rowKey, Object columnKey) {
+    return delegate.contains(rowKey, columnKey);
   }
 
-  @Override
-  public boolean containsRow(Object rowKey) {
+  @Override public boolean containsRow(Object rowKey) {
     return delegate.containsRow(rowKey);
   }
 
-  @Override
-  public boolean containsColumn(Object columnKey) {
+  @Override public boolean containsColumn(Object columnKey) {
     return delegate.containsColumn(columnKey);
   }
 
-  @Override
-  public boolean containsValue(Object value) {
+  @Override public boolean containsValue(Object value) {
     return delegate.containsValue(value);
   }
 
-  @Override
-  public V get(Object rowKey,
-               Object columnKey
-  ) {
-    return delegate.get(rowKey,
-            columnKey);
+  @Override public V get(Object rowKey, Object columnKey) {
+    return delegate.get(rowKey, columnKey);
   }
 
-  @Override
-  public boolean isEmpty() {
+  @Override public boolean isEmpty() {
     return delegate.isEmpty();
   }
 
-  @Override
-  public int size() {
+  @Override public int size() {
     return delegate.size();
   }
 
-  @Override
-  public void clear() {
+  @Override public void clear() {
     delegate.clear();
   }
 
-  @Override
-  public V put(R rowKey,
-               C columnKey,
-               V value
-  ) {
+  @Override public V put(R rowKey, C columnKey, V value) {
     synchronized (dataWriteLock) {
-      return delegate.put(rowKey,
-              columnKey,
-              value);
+      return delegate.put(rowKey, columnKey, value);
     }
   }
 
-  @Override
-  public void putAll(Table<? extends R, ? extends C, ? extends V> table) {
+  @Override public void putAll(Table<? extends R, ? extends C, ? extends V> table) {
     synchronized (dataWriteLock) {
       delegate.putAll(table);
     }
   }
 
-  @Override
-  public V remove(Object rowKey,
-                  Object columnKey
-  ) {
+  @Override public V remove(Object rowKey, Object columnKey) {
     synchronized (dataWriteLock) {
-      return delegate.remove(rowKey,
-              columnKey);
+      return delegate.remove(rowKey, columnKey);
     }
   }
 
-  @Override
-  public Map<C, V> row(R rowKey) {
+  @Override public Map<C, V> row(R rowKey) {
     return delegate.row(rowKey);
   }
 
-  @Override
-  public Map<R, V> column(C columnKey) {
+  @Override public Map<R, V> column(C columnKey) {
     return delegate.column(columnKey);
   }
 
-  @Override
-  public Set<Cell<R, C, V>> cellSet() {
+  @Override public Set<Cell<R, C, V>> cellSet() {
     return delegate.cellSet();
   }
 
-  @Override
-  public Set<R> rowKeySet() {
+  @Override public Set<R> rowKeySet() {
     return delegate.rowKeySet();
   }
 
-  @Override
-  public Set<C> columnKeySet() {
+  @Override public Set<C> columnKeySet() {
     return delegate.columnKeySet();
   }
 
-  @Override
-  public Collection<V> values() {
+  @Override public Collection<V> values() {
     return delegate.values();
   }
 
-  @Override
-  public Map<R, Map<C, V>> rowMap() {
+  @Override public Map<R, Map<C, V>> rowMap() {
     return delegate.rowMap();
   }
 
-  @Override
-  public Map<C, Map<R, V>> columnMap() {
+  @Override public Map<C, Map<R, V>> columnMap() {
     return delegate.columnMap();
   }
 

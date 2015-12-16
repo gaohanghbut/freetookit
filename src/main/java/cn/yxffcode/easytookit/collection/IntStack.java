@@ -55,25 +55,21 @@ public class IntStack implements IntIterable, Serializable {
     return top == 0;
   }
 
-  @Override
-  public IntIterator iterator() {
+  @Override public IntIterator iterator() {
     return new IntIterator() {
       private int cur;
 
-      @Override
-      public boolean hasNext() {
+      @Override public boolean hasNext() {
         return cur < top;
       }
 
-      @Override
-      public int next() {
+      @Override public int next() {
         return stack[cur++];
       }
     };
   }
 
-  @Override
-  public String toString() {
+  @Override public String toString() {
     StringBuilder appender = new StringBuilder();
     appender.append("[");
     for (int i = 0, j = top - 1; i < j; i++) {

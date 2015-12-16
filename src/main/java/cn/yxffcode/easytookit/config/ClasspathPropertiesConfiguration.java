@@ -30,8 +30,7 @@ public class ClasspathPropertiesConfiguration extends AbstractPropertiesConfigur
     }
   }
 
-  @Override
-  protected Properties getConfig() {
+  @Override protected Properties getConfig() {
     return config;
   }
 }

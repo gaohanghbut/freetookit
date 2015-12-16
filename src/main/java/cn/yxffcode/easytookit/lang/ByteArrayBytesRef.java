@@ -12,22 +12,17 @@ public class ByteArrayBytesRef implements BytesRef {
     this(data, 0, data.length);
   }
 
-  public ByteArrayBytesRef(final byte[] data,
-                           final int offset,
-                           final int length
-  ) {
+  public ByteArrayBytesRef(final byte[] data, final int offset, final int length) {
     this.data = data;
     this.offset = offset;
     this.length = length;
   }
 
-  @Override
-  public byte element(final int index) {
+  @Override public byte element(final int index) {
     return data[index + offset];
   }
 
-  @Override
-  public int length() {
+  @Override public int length() {
     return length;
   }
 }

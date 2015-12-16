@@ -10,8 +10,7 @@ public enum Compared {
    * 表示大于
    */
   GREATER {
-    @Override
-    public int getComparatorResult() {
+    @Override public int getComparatorResult() {
       return 1;
     }
   },
@@ -19,8 +18,7 @@ public enum Compared {
    * 表示等于
    */
   EQUAL {
-    @Override
-    public int getComparatorResult() {
+    @Override public int getComparatorResult() {
       return 0;
     }
   },
@@ -28,8 +26,7 @@ public enum Compared {
    * 表示小于
    */
   SMALLER {
-    @Override
-    public int getComparatorResult() {
+    @Override public int getComparatorResult() {
       return -1;
     }
   };

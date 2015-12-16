@@ -9,20 +9,17 @@ import java.util.Calendar;
  */
 public enum DateField {
   YEAR {
-    @Override
-    public int getCalendarField() {
+    @Override public int getCalendarField() {
       return Calendar.YEAR;
     }
   },
   MOUTH {
-    @Override
-    public int getCalendarField() {
+    @Override public int getCalendarField() {
       return Calendar.MONTH;
     }
   },
   DAY {
-    @Override
-    public int getCalendarField() {
+    @Override public int getCalendarField() {
       return Calendar.DAY_OF_MONTH;
     }
   };

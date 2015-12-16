@@ -14,9 +14,7 @@ public interface Configuration {
 
   boolean getBoolean(String key);
 
-  String getString(String key,
-                   String defaultValue
-  );
+  String getString(String key, String defaultValue);
 
   Iterator<?> propertyNames();
 

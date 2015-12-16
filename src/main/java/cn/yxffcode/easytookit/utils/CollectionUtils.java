@@ -11,9 +11,7 @@ public abstract class CollectionUtils {
   private CollectionUtils() {
   }
 
-  public static boolean safeContains(Collection<?> collection,
-                                     Object object
-  ) {
+  public static boolean safeContains(Collection<?> collection, Object object) {
     checkNotNull(collection);
     try {
       return collection.contains(object);
@@ -24,9 +22,7 @@ public abstract class CollectionUtils {
     }
   }
 
-  public static boolean safeRemove(Collection<?> collection,
-                                   Object object
-  ) {
+  public static boolean safeRemove(Collection<?> collection, Object object) {
     checkNotNull(collection);
     try {
       return collection.remove(object);

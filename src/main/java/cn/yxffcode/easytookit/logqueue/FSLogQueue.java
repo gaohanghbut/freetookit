@@ -32,25 +32,15 @@ public class FSLogQueue<T> implements LogQueue<T> {
   private BufferedWriter out;
   private BufferedReader in;
 
-  public FSLogQueue(Codec<T> codec,
-                    String dir,
-                    final String baseFilename
-  ) {
+  public FSLogQueue(Codec<T> codec, String dir, final String baseFilename) {
     this(codec, dir, baseFilename, new FilenameFilter() {
-      @Override
-      public boolean accept(File dir,
-                            String name
-      ) {
+      @Override public boolean accept(File dir, String name) {
         return true;
       }
     });
   }
 
-  public FSLogQueue(Codec<T> codec,
-                    String dir,
-                    final String baseFilename,
-                    FilenameFilter filter
-  ) {
+  public FSLogQueue(Codec<T> codec, String dir, final String baseFilename, FilenameFilter filter) {
     this.codec = codec;
     this.dir = dir;
     this.baseFilename = baseFilename;
@@ -75,8 +65,7 @@ public class FSLogQueue<T> implements LogQueue<T> {
     return array != null && array.length != 0;
   }
 
-  @Override
-  public void close() throws IOException {
+  @Override public void close() throws IOException {
     closeReader();
     closeWriter();
   }
@@ -107,8 +96,7 @@ public class FSLogQueue<T> implements LogQueue<T> {
     }
   }
 
-  @Override
-  public synchronized void rotate() throws RotateQueueException {
+  @Override public synchronized void rotate() throws RotateQueueException {
     File file = new File(dir, baseFilename + LOG_FILE_ID_DELIMITER + System.nanoTime());
     if (!file.exists()) {
       try {
@@ -130,8 +118,7 @@ public class FSLogQueue<T> implements LogQueue<T> {
   }
 
 
-  @Override
-  public synchronized void offer(T obj) {
+  @Override public synchronized void offer(T obj) {
     if (out == null) {
       try {
         rotate();
@@ -149,8 +136,7 @@ public class FSLogQueue<T> implements LogQueue<T> {
     }
   }
 
-  @Override
-  public T poll() {
+  @Override public T poll() {
     if (in == null && logFiles.size() <= 1) {
       return null;
     }

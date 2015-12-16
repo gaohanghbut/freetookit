@@ -191,8 +191,7 @@ public class DoubleArrayTrie implements Dictionary {
     return s;
   }
 
-  @Override
-  public boolean match(String word) {
+  @Override public boolean match(String word) {
     checkNotNull(word);
     IntSequence intSequence = new StringIntSequence(word + END_INPUT);
     for (int i = 0, j = intSequence.length(), s = INIT_STATE; i < j; i++) {
@@ -216,13 +215,11 @@ public class DoubleArrayTrie implements Dictionary {
     return true;
   }
 
-  @Override
-  public int startState() {
+  @Override public int startState() {
     return INIT_STATE;
   }
 
-  @Override
-  public int nextState(final int state, final int input) {
+  @Override public int nextState(final int state, final int input) {
     if (state >= base.length) {
       return NO_SUCH_STATE;
     }
@@ -230,8 +227,7 @@ public class DoubleArrayTrie implements Dictionary {
     return next < check.length && check[next] == state ? next : NO_SUCH_STATE;
   }
 
-  @Override
-  public boolean isWordEnded(final int state) {
+  @Override public boolean isWordEnded(final int state) {
     return nextState(state, END_INPUT) != alphabetTransformer.unwrap(NO_SUCH_STATE);
   }
 

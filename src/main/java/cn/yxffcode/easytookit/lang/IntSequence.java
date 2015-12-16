@@ -9,4 +9,6 @@ public interface IntSequence extends Comparable<IntSequence> {
   int element(int index);
 
   int length();
+
+  IntSequence slice(int offset, int length);
 }

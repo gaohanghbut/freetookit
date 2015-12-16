@@ -18,8 +18,7 @@ public class ModifiableLong extends Number implements Serializable {
 
   static {
     try {
-      VALUE_OFFSET = UNSAFE.objectFieldOffset
-              (ModifiableLong.class.getDeclaredField("value"));
+      VALUE_OFFSET = UNSAFE.objectFieldOffset(ModifiableLong.class.getDeclaredField("value"));
     } catch (Exception ex) {
       throw new Error(ex);
     }
@@ -36,23 +35,19 @@ public class ModifiableLong extends Number implements Serializable {
     this.value = value;
   }
 
-  @Override
-  public int intValue() {
+  @Override public int intValue() {
     return (int) value;
   }
 
-  @Override
-  public long longValue() {
+  @Override public long longValue() {
     return value;
   }
 
-  @Override
-  public float floatValue() {
+  @Override public float floatValue() {
     return value;
   }
 
-  @Override
-  public double doubleValue() {
+  @Override public double doubleValue() {
     return value;
   }
 
@@ -74,8 +69,7 @@ public class ModifiableLong extends Number implements Serializable {
     for (; ; ) {
       long current = value;
       long next = current + delta;
-      if (cas(current,
-              next)) {
+      if (cas(current, next)) {
         return;
       }
     }
@@ -99,8 +93,7 @@ public class ModifiableLong extends Number implements Serializable {
   public void setValue(long value) {
     for (; ; ) {
       long current = this.value;
-      if (cas(current,
-              value)) {
+      if (cas(current, value)) {
         return;
       }
     }

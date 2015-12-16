@@ -15,13 +15,11 @@ public abstract class AbstractPropertiesConfiguration implements Configuration {
 
   protected abstract Properties getConfig();
 
-  @Override
-  public String getString(String key) {
+  @Override public String getString(String key) {
     return getConfig().getProperty(key);
   }
 
-  @Override
-  public int getInt(String key) {
+  @Override public int getInt(String key) {
     String property = getString(key);
     if (property == null) {
       return 0;
@@ -29,8 +27,7 @@ public abstract class AbstractPropertiesConfiguration implements Configuration {
     return Integer.parseInt(property);
   }
 
-  @Override
-  public long getLong(String key) {
+  @Override public long getLong(String key) {
     String value = getString(key);
     if (value == null) {
       return 0l;
@@ -38,8 +35,7 @@ public abstract class AbstractPropertiesConfiguration implements Configuration {
     return Long.parseLong(value);
   }
 
-  @Override
-  public boolean getBoolean(String key) {
+  @Override public boolean getBoolean(String key) {
     String value = getString(key);
     if (value == null) {
       return false;
@@ -47,16 +43,11 @@ public abstract class AbstractPropertiesConfiguration implements Configuration {
     return Boolean.parseBoolean(value);
   }
 
-  @Override
-  public String getString(String key,
-                          String defaultValue
-  ) {
-    return getConfig().getProperty(key,
-            defaultValue);
+  @Override public String getString(String key, String defaultValue) {
+    return getConfig().getProperty(key, defaultValue);
   }
 
-  @Override
-  public Iterator<?> propertyNames() {
+  @Override public Iterator<?> propertyNames() {
     return IteratorAdapter.create(getConfig().propertyNames());
   }
 

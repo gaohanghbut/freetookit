@@ -38,8 +38,7 @@ public class RangeAutomaton extends Automaton {
     accept.set(currentState / STATE_WIDTH);
   }
 
-  @Override
-  protected boolean apply(final int off, final int value) {
+  @Override protected boolean apply(final int off, final int value) {
     int min = transitions[off + 1];
     int max = transitions[off + 2];
     return min <= value && max <= value;

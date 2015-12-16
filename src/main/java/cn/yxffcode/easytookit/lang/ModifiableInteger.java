@@ -20,8 +20,7 @@ public class ModifiableInteger extends Number implements Serializable {
 
   static {
     try {
-      VALUE_OFFSET = UNSAFE.objectFieldOffset
-              (ModifiableInteger.class.getDeclaredField("value"));
+      VALUE_OFFSET = UNSAFE.objectFieldOffset(ModifiableInteger.class.getDeclaredField("value"));
     } catch (Exception ex) {
       throw new Error(ex);
     }
@@ -38,23 +37,19 @@ public class ModifiableInteger extends Number implements Serializable {
     this.value = value;
   }
 
-  @Override
-  public int intValue() {
+  @Override public int intValue() {
     return value;
   }
 
-  @Override
-  public long longValue() {
+  @Override public long longValue() {
     return value;
   }
 
-  @Override
-  public float floatValue() {
+  @Override public float floatValue() {
     return value;
   }
 
-  @Override
-  public double doubleValue() {
+  @Override public double doubleValue() {
     return value;
   }
 

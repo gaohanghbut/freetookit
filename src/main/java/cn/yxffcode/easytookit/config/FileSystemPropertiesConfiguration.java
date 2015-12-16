@@ -30,8 +30,7 @@ public class FileSystemPropertiesConfiguration extends AbstractPropertiesConfigu
     }
   }
 
-  @Override
-  protected Properties getConfig() {
+  @Override protected Properties getConfig() {
     return config;
   }
 }

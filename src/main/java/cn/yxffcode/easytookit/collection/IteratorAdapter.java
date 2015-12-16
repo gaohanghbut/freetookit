@@ -22,13 +22,11 @@ public class IteratorAdapter<T> extends ImmutableIterator<T> {
     return new IteratorAdapter<>(checkNotNull(enumeration));
   }
 
-  @Override
-  public boolean hasNext() {
+  @Override public boolean hasNext() {
     return delegate.hasMoreElements();
   }
 
-  @Override
-  public T next() {
+  @Override public T next() {
     return delegate.nextElement();
   }
 }

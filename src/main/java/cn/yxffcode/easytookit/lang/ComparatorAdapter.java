@@ -15,11 +15,7 @@ public class ComparatorAdapter<T> implements Comparator<T> {
     this.delegate = delegate;
   }
 
-  @Override
-  public int compare(final T left,
-                     final T right
-  ) {
-    return delegate.compare(left, right)
-            .getComparatorResult();
+  @Override public int compare(final T left, final T right) {
+    return delegate.compare(left, right).getComparatorResult();
   }
 }

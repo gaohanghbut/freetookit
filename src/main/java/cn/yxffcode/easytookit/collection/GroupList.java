@@ -26,8 +26,7 @@ public class GroupList<E> extends AbstractList<E> {
     return new GroupList<>(lists);
   }
 
-  @Override
-  public E get(int index) {
+  @Override public E get(int index) {
     checkArgument(index >= 0 && index < size);
     //如果子集合比较多，可以换成二分查找
     int remaining = index;
@@ -40,8 +39,7 @@ public class GroupList<E> extends AbstractList<E> {
     return null;
   }
 
-  @Override
-  public int size() {
+  @Override public int size() {
     return size;
   }
 }
