@@ -5,7 +5,7 @@ package cn.yxffcode.easytookit.utils;
  */
 public final class StringUtils {
   public static final String EMPTY = "";
-  private static final int STRING_INDEX_OF_THRESHOLD = 5;
+  private static final int STRING_INDEX_OF_THRESHOLD = 10;
 
   private StringUtils() {
   }
