@@ -36,18 +36,26 @@ public final class StringUtils {
    */
   public static int indexOf(String source, int soff, int slen,
                             String target, int toff, int tlen) {
+    //find first equals character
+    char first = target.charAt(toff);
+    int max = soff + (slen - tlen);
+    int idx = soff;
+    while (idx <= max) {
+      if (source.charAt(idx) != first) {
+        while (++idx <= max && source.charAt(idx) != first) ;
+      }
+      if (idx > max) {
+        return -1;
+      }
+      break;
+    }
+
     if (slen < STRING_INDEX_OF_THRESHOLD) {
       if (tlen == 0) {
         return 0;
       }
 
-      char first = target.charAt(toff);
-      int max = soff + (slen - tlen);
-
-      for (int i = soff; i <= max; i++) {
-        if (source.charAt(i) != first) {
-          while (++i <= max && source.charAt(i) != first) ;
-        }
+      for (int i = idx; i <= max; i++) {
         if (i <= max) {
           int j = i + 1;
           int end = j + tlen - 1;
@@ -62,19 +70,7 @@ public final class StringUtils {
       }
       return -1;
     }
-    //find first equals character
-    char first = target.charAt(toff);
-    int max = soff + (slen - tlen);
-    int idx = soff;
-    while (idx <= max) {
-      if (source.charAt(idx) != first) {
-        while (++idx <= max && source.charAt(idx) != first) ;
-      }
-      if (idx > max) {
-        return -1;
-      }
-      break;
-    }
+
     //KMP next array
     int[] next = new int[tlen];
     next[0] = -1;
@@ -88,7 +84,7 @@ public final class StringUtils {
       }
     }
     //from idx not 0
-    int i = idx;
+    int i = idx - soff;
     int j = 0;
     while (i < slen && j < tlen) {
       if (j == -1 || target.charAt(toff + j) == source.charAt(soff + i)) {
