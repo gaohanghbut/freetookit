@@ -1,5 +1,8 @@
 package cn.yxffcode.easytookit.utils;
 
+import cn.yxffcode.easytookit.dic.DoubleArrayTrie;
+import cn.yxffcode.easytookit.participle.DictionaryTokenFilter;
+
 /**
  * @author gaohang on 15/9/12.
  */
@@ -205,6 +208,10 @@ public final class StringUtils {
 
   public boolean contains(char[] source, int fromIndex, char[] target) {
     return indexOf(source, fromIndex, source.length - fromIndex, target, 0, target.length) != -1;
+  }
+
+  public boolean contains(String source, Iterable<String> targets) {
+    return new DictionaryTokenFilter(DoubleArrayTrie.create(targets)).match(source);
   }
 
 }

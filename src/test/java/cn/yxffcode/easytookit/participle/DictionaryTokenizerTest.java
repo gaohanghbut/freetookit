@@ -17,7 +17,7 @@ public class DictionaryTokenizerTest {
     List<String> words = Arrays.asList("湖北工", "北京", "大学");
     DoubleArrayTrie dic = DoubleArrayTrie.create(words);
     DictionaryTokenFilter tokenizer = new DictionaryTokenFilter(dic);
-    ArrayList<String> tokens = Lists.newArrayList(tokenizer.contains("湖北京"));
+    ArrayList<String> tokens = Lists.newArrayList(tokenizer.getMatched("湖北京"));
     System.out.println(tokens);
   }
 }

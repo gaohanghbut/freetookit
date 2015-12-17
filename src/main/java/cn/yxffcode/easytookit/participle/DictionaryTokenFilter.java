@@ -22,7 +22,7 @@ public class DictionaryTokenFilter implements WordTokenFilter {
     this.dictionary = dictionary;
   }
 
-  @Override public Iterator<String> contains(final String sentence) {
+  @Override public Iterator<String> getMatched(final String sentence) {
     return new ImmutableIterator<String>() {
 
       private IntArrayStringBuilder appender;
@@ -50,7 +50,7 @@ public class DictionaryTokenFilter implements WordTokenFilter {
           if (next == NO_SUCH_STATE) {
             appender.clear();
             state = dictionary.startState();
-            cur = lastMatched + 1;
+            cur = lastMatched + 1;//回溯,可换成使用AC自动机
             continue;
           }
           appender.append(c);
@@ -67,5 +67,9 @@ public class DictionaryTokenFilter implements WordTokenFilter {
         return appender.toString();
       }
     };
+  }
+
+  public boolean match(String source) {
+    return getMatched(source).hasNext();
   }
 }
