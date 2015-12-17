@@ -146,7 +146,7 @@ public final class StringUtils {
       }
       return -1;
     }
-    //find first equals character
+    //find first equals character, to prevent calculate next array if the first char is not in source
     char first = target[toff];
     int max = soff + (slen - tlen);
     int idx = soff;
