@@ -121,7 +121,7 @@ public final class StringUtils {
    */
   public static int indexOf(char[] source, int soff, int slen,
                             char[] target, int toff, int tlen) {
-    if (slen < STRING_INDEX_OF_THRESHOLD) {
+    if (tlen < STRING_INDEX_OF_THRESHOLD) {
       if (tlen == 0) {
         return 0;
       }
@@ -175,7 +175,7 @@ public final class StringUtils {
       if (j == 0 && target[toff + j] != source[soff + i]) {
         while (++i <= max && source[i] != first) ;
       }
-      if (i >= tlen) {
+      if (i >= slen) {
         return -1;
       }
       if (j == -1 || target[toff + j] == source[soff + i]) {
