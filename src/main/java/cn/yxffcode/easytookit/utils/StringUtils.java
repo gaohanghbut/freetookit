@@ -40,14 +40,11 @@ public final class StringUtils {
     char first = target.charAt(toff);
     int max = soff + (slen - tlen);
     int idx = soff;
-    while (idx <= max) {
-      if (source.charAt(idx) != first) {
-        while (++idx <= max && source.charAt(idx) != first) ;
-      }
-      if (idx > max) {
-        return -1;
-      }
-      break;
+    if (source.charAt(idx) != first) {
+      while (++idx <= max && source.charAt(idx) != first) ;
+    }
+    if (idx > max) {
+      return -1;
     }
 
     if (slen < STRING_INDEX_OF_THRESHOLD) {
@@ -117,14 +114,11 @@ public final class StringUtils {
     char first = target[toff];
     int max = soff + (slen - tlen);
     int idx = soff;
-    while (idx <= max) {
-      if (source[idx] != first) {
-        while (++idx <= max && source[idx] != first) ;
-      }
-      if (idx > max) {
-        return -1;
-      }
-      break;
+    if (source[idx] != first) {
+      while (++idx <= max && source[idx] != first) ;
+    }
+    if (idx > max) {
+      return -1;
     }
 
     if (slen < STRING_INDEX_OF_THRESHOLD) {
