@@ -118,33 +118,6 @@ public final class StringUtils {
    */
   public static int indexOf(char[] source, int soff, int slen,
                             char[] target, int toff, int tlen) {
-    if (slen < STRING_INDEX_OF_THRESHOLD) {
-      if (tlen == 0) {
-        return 0;
-      }
-
-      char first = target[toff];
-      int max = soff + (slen - tlen);
-
-      for (int i = soff; i <= max; i++) {
-        if (source[i] != first) {
-          while (++i <= max && source[i] != first) ;
-        }
-        if (i <= max) {
-          int j = i + 1;
-          int end = j + tlen - 1;
-          for (int k = toff + 1; j < end && source[j] == target[k]; j++, k++)
-            ;
-
-          if (j == end) {
-                    /* Found whole string. */
-            return i - soff;
-          }
-        }
-      }
-      return -1;
-    }
-    //find first equals character
     char first = target[toff];
     int max = soff + (slen - tlen);
     int idx = soff;
@@ -156,6 +129,26 @@ public final class StringUtils {
         return -1;
       }
       break;
+    }
+
+    if (slen < STRING_INDEX_OF_THRESHOLD) {
+      if (tlen == 0) {
+        return 0;
+      }
+      //from idx not soff
+      for (int i = idx; i <= max; i++) {
+        if (i <= max) {
+          int j = i + 1;
+          int end = j + tlen - 1;
+          for (int k = toff + 1; j < end && source[j] == target[k]; j++, k++)
+            ;
+
+          if (j == end) {
+            return i - soff;
+          }
+        }
+      }
+      return -1;
     }
     //KMP next array
     int[] next = new int[tlen];
