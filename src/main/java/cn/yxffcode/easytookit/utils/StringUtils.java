@@ -66,14 +66,11 @@ public final class StringUtils {
     char first = target.charAt(toff);
     int max = soff + (slen - tlen);
     int idx = soff;
-    while (idx <= max) {
-      if (source.charAt(idx) != first) {
-        while (++idx <= max && source.charAt(idx) != first) ;
-      }
-      if (idx > max) {
-        return -1;
-      }
-      break;
+    if (source.charAt(idx) != first) {
+      while (++idx <= max && source.charAt(idx) != first) ;
+    }
+    if (idx > max) {
+      return -1;
     }
     //KMP next array
     int[] next = new int[tlen];
@@ -91,6 +88,12 @@ public final class StringUtils {
     int i = idx - soff;
     int j = 0;
     while (i < slen && j < tlen) {
+      if (j == 0 && target.charAt(toff + j) != source.charAt(soff + i)) {
+        while (++i <= max && source.charAt(i) != first) ;
+      }
+      if (i >= tlen) {
+        return -1;
+      }
       if (j == -1 || target.charAt(toff + j) == source.charAt(soff + i)) {
         ++i;
         ++j;
@@ -147,14 +150,11 @@ public final class StringUtils {
     char first = target[toff];
     int max = soff + (slen - tlen);
     int idx = soff;
-    while (idx <= max) {
-      if (source[idx] != first) {
-        while (++idx <= max && source[idx] != first) ;
-      }
-      if (idx > max) {
-        return -1;
-      }
-      break;
+    if (source[idx] != first) {
+      while (++idx <= max && source[idx] != first) ;
+    }
+    if (idx > max) {
+      return -1;
     }
     //KMP next array
     int[] next = new int[tlen];
@@ -172,6 +172,12 @@ public final class StringUtils {
     int i = idx - soff;
     int j = 0;
     while (i < slen && j < tlen) {
+      if (j == 0 && target[toff + j] != source[soff + i]) {
+        while (++i <= max && source[i] != first) ;
+      }
+      if (i >= tlen) {
+        return -1;
+      }
       if (j == -1 || target[toff + j] == source[soff + i]) {
         ++i;
         ++j;
