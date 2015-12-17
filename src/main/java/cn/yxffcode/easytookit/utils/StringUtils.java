@@ -5,7 +5,7 @@ package cn.yxffcode.easytookit.utils;
  */
 public final class StringUtils {
   public static final String EMPTY = "";
-  private static final int STRING_INDEX_OF_THRESHOLD = 20;
+  private static final int STRING_INDEX_OF_THRESHOLD = 0;
 
   private StringUtils() {
   }
@@ -36,23 +36,18 @@ public final class StringUtils {
    */
   public static int indexOf(String source, int soff, int slen,
                             String target, int toff, int tlen) {
-    //find first equals character
-    char first = target.charAt(toff);
-    int max = soff + (slen - tlen);
-    int idx = soff;
-    if (source.charAt(idx) != first) {
-      while (++idx <= max && source.charAt(idx) != first) ;
-    }
-    if (idx > max) {
-      return -1;
-    }
-
     if (slen < STRING_INDEX_OF_THRESHOLD) {
       if (tlen == 0) {
         return 0;
       }
 
-      for (int i = idx; i <= max; i++) {
+      char first = target.charAt(toff);
+      int max = soff + (slen - tlen);
+
+      for (int i = soff; i <= max; i++) {
+        if (source.charAt(i) != first) {
+          while (++i <= max && source.charAt(i) != first) ;
+        }
         if (i <= max) {
           int j = i + 1;
           int end = j + tlen - 1;
@@ -67,7 +62,19 @@ public final class StringUtils {
       }
       return -1;
     }
-
+    //find first equals character
+    char first = target.charAt(toff);
+    int max = soff + (slen - tlen);
+    int idx = soff;
+    while (idx <= max) {
+      if (source.charAt(idx) != first) {
+        while (++idx <= max && source.charAt(idx) != first) ;
+      }
+      if (idx > max) {
+        return -1;
+      }
+      break;
+    }
     //KMP next array
     int[] next = new int[tlen];
     next[0] = -1;
@@ -111,22 +118,18 @@ public final class StringUtils {
    */
   public static int indexOf(char[] source, int soff, int slen,
                             char[] target, int toff, int tlen) {
-    char first = target[toff];
-    int max = soff + (slen - tlen);
-    int idx = soff;
-    if (source[idx] != first) {
-      while (++idx <= max && source[idx] != first) ;
-    }
-    if (idx > max) {
-      return -1;
-    }
-
     if (slen < STRING_INDEX_OF_THRESHOLD) {
       if (tlen == 0) {
         return 0;
       }
-      //from idx not soff
-      for (int i = idx; i <= max; i++) {
+
+      char first = target[toff];
+      int max = soff + (slen - tlen);
+
+      for (int i = soff; i <= max; i++) {
+        if (source[i] != first) {
+          while (++i <= max && source[i] != first) ;
+        }
         if (i <= max) {
           int j = i + 1;
           int end = j + tlen - 1;
@@ -139,6 +142,19 @@ public final class StringUtils {
         }
       }
       return -1;
+    }
+    //find first equals character
+    char first = target[toff];
+    int max = soff + (slen - tlen);
+    int idx = soff;
+    while (idx <= max) {
+      if (source[idx] != first) {
+        while (++idx <= max && source[idx] != first) ;
+      }
+      if (idx > max) {
+        return -1;
+      }
+      break;
     }
     //KMP next array
     int[] next = new int[tlen];
