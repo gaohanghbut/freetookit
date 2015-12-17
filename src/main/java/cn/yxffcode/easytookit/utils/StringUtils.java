@@ -27,15 +27,15 @@ public final class StringUtils {
     return (left == right) || (left != null && left.equalsIgnoreCase(right));
   }
 
-  public static int indexOf(String source, String target) {
+  public static int indexOf(CharSequence source, CharSequence target) {
     return indexOf(source, 0, source.length(), target, 0, target.length());
   }
 
   /**
    * @see #indexOf(char[], int, int, char[], int, int)
    */
-  public static int indexOf(String source, int soff, int slen,
-                            String target, int toff, int tlen) {
+  public static int indexOf(CharSequence source, int soff, int slen,
+                            CharSequence target, int toff, int tlen) {
     if (slen < STRING_INDEX_OF_THRESHOLD) {
       if (tlen == 0) {
         return 0;
@@ -189,6 +189,22 @@ public final class StringUtils {
       }
     }
     return j == tlen ? i - j : -1;
+  }
+
+  public boolean contains(CharSequence source, CharSequence target) {
+    return indexOf(source, target) != -1;
+  }
+
+  public boolean contains(CharSequence source, int fromIndex, CharSequence target) {
+    return indexOf(source, fromIndex, source.length() - fromIndex, target, 0, target.length()) != -1;
+  }
+
+  public boolean contains(char[] source, char[] target) {
+    return indexOf(source, target) != -1;
+  }
+
+  public boolean contains(char[] source, int fromIndex, char[] target) {
+    return indexOf(source, fromIndex, source.length - fromIndex, target, 0, target.length) != -1;
   }
 
 }
