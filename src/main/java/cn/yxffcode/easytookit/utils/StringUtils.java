@@ -163,7 +163,7 @@ public final class StringUtils {
       }
     }
     //from idx not 0
-    int i = idx;
+    int i = idx - soff;
     int j = 0;
     while (i < slen && j < tlen) {
       if (j == -1 || target[toff + j] == source[soff + i]) {
