@@ -1,6 +1,5 @@
 package cn.yxffcode.easytookit.participle;
 
-import cn.yxffcode.easytookit.automaton.ACAutomaton;
 import cn.yxffcode.easytookit.collection.ImmutableIterator;
 import cn.yxffcode.easytookit.dic.Dictionary;
 import cn.yxffcode.easytookit.lang.IntArrayStringBuilder;
@@ -18,12 +17,9 @@ public class DictionaryTokenFilter implements WordTokenFilter {
 
   private static final int NO_SUCH_STATE = -1;
   private final Dictionary dictionary;
-  private final ACAutomaton acAutomaton;
 
   public DictionaryTokenFilter(final Dictionary dictionary) {
     this.dictionary = dictionary;
-    //build ac-automaton by broad first search
-    this.acAutomaton = dictionary.toAcAutomaton();
   }
 
   @Override public Iterator<String> getMatched(final String sentence) {
@@ -37,7 +33,8 @@ public class DictionaryTokenFilter implements WordTokenFilter {
        * 用于标识上一次匹配成功的位置
        * TODO:使用了最简单的回溯方式,可以使用AC自动机优化时间复杂度
        */
-//      private int lastMatched;
+      private int lastMatched;
+
       @Override public boolean hasNext() {
         if (appender == null) {
           appender = new IntArrayStringBuilder();
@@ -48,18 +45,19 @@ public class DictionaryTokenFilter implements WordTokenFilter {
 
         int len = intsRef.length();
         int state = dictionary.startState();
-        for (; cur < len; ) {
+        while (cur < len) {
           int c = intsRef.element(cur);
           int next = dictionary.nextState(state, c);
           if (next == NO_SUCH_STATE) {
             appender.clear();
-            state = acAutomaton.getFailNode(state);
-            //FIXME:bug, cannot clear the appender
+            state = dictionary.startState();
+            cur = lastMatched + 1;
             continue;
           }
           appender.append(c);
           cur++;
           if (dictionary.isWordEnded(next)) {
+            lastMatched = cur;
             return true;
           }
           state = next;
