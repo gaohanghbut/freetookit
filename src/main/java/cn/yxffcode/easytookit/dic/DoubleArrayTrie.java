@@ -14,18 +14,18 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * 双数组字典树,使用int数组实现
- * <p/>
+ * <p>
  * 实现原理:
  * base[s] + c = t;
  * check[t] = s;
  * c表示当前输入字符,s和t表示输入c之前和之后的状态
- * <p/>
+ * <p>
  * 1.base与check是两个平行的数组,数组的下标表示状态
  * 2.base数组与check数组表示节点之间的父子关系
  * 3.base[s]的值表示状态s的子节点在check数组中的起始下标(但起始下标不一定存的是s的子节点)
  * 4.check[t]表示状态t的父节点状态
  * 4.输入c后,状态由s转成t,新的状态,那么check[t]=s,状态s增加一个子节点base[s] + c且满足关系t = base[s] + c
- * <p/>
+ * <p>
  * 创建过程:
  * base数组的起始值都为0,初始状态为1,check数组的初始值为0,表示没有父节点
  * 输入字符c,则t = base[s] + c,检查check[t]的值,如果check[t]==s,则表示此字符在公共前缀中,状态转换成t,如果check[t]==0
@@ -33,7 +33,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * 占用,那么修改base[s]的值为b,使修改前,所有的check[b + m]=0(check数组元素没有被其它节点占用)
  * 假设s状态后有输入为n,那么修改后check[b+n] = check[base[s] + n],base[b + n] = base[base[s] + n],然后修改base[s]+n
  * 的所有子节点,使用其check值为b+n.
- * <p/>
+ * <p>
  * base       check
  * -------    -------
  * |     |    |     |
@@ -54,7 +54,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * base[t]变成base[t+1],base[t+1]=base[t]
  * t的子节点m也发生变动check[m]=t+1
  * 最后base[s]=1
- * <p/>
+ * <p>
  * 内存存储方面,需要对字母表做处理,{@link #alphabetTransformer}用作奖字符转换成int类型的数据(apply方法中可返回IntsRef的包装类),
  * 默认只处理英文大小写,数字和汉字,其它字符跳过(转换成int后小于或者等于0).默认的方式将终止符转换成1,数字转换成2~11,小写字母转换成12~37,大写英文字母
  * 转换成38~73,汉字大于74(汉字转换成int后数值满园在[{@link DefaultAlphabetTransformer#CN_CHAR_FIRST},{@link
@@ -229,6 +229,9 @@ public class DoubleArrayTrie implements Dictionary {
     return next < check.length && check[next] == state ? next : NO_SUCH_STATE;
   }
 
+  /**
+   * Trie加上失败指针数组可构成一个AC自动机, 此方法用于计算出失败数组
+   */
   @Override public ACAutomaton toAcAutomaton() {
     ACAutomaton acAutomaton = new ACAutomaton();
     acAutomaton.addFailNode(startState(), ACAutomaton.ROOT_FAIL_NODE);
@@ -237,44 +240,31 @@ public class DoubleArrayTrie implements Dictionary {
     while (!queue.isEmpty()) {
       int i = queue.removeFirst();
       int failNode = acAutomaton.getFailNode(i);
-      if (failNode == ACAutomaton.ROOT_FAIL_NODE) {
-        for (int j = base[i]; j < check.length; j++) {
-          if (check[j] == i) {
-            int c = j - base[i];
-            if (alphabetTransformer.unwrap(c) == END_INPUT) {
-              continue;
-            }
-            acAutomaton.addFailNode(j, i);
-            queue.addLast(j);
+      for (int j = base[i]; j < check.length; j++) {
+        if (check[j] != i) {
+          continue;
+        }
+        //j = base[i] + c;
+        int c = j - base[i];
+        if (alphabetTransformer.unwrap(c) == END_INPUT) {
+          continue;
+        }
+        if (c == END_INPUT) {
+          continue;
+        }
+        queue.addLast(j);
+        int k = failNode;
+        while (k != ACAutomaton.ROOT_FAIL_NODE) {
+          int t = base[k] + c;
+          if (t >= check.length || check[t] != failNode) {
+            k = acAutomaton.getFailNode(k);
+          } else {
+            acAutomaton.addFailNode(j, t);
+            break;
           }
         }
-      } else {
-        for (int j = base[i]; j < check.length; j++) {
-          if (check[j] != i) {
-            continue;
-          }
-          //j = base[i] + c;
-          int c = j - base[i];
-          if (alphabetTransformer.unwrap(c) == END_INPUT) {
-            continue;
-          }
-          if (c == END_INPUT) {
-            continue;
-          }
-          queue.addLast(j);
-          int k = failNode;
-          while (k != ACAutomaton.ROOT_FAIL_NODE) {
-            int t = base[k] + c;
-            if (t >= check.length || check[t] != failNode) {
-              k = acAutomaton.getFailNode(k);
-            } else {
-              acAutomaton.addFailNode(j, t);
-              break;
-            }
-          }
-          if (k == ACAutomaton.ROOT_FAIL_NODE) {
-            acAutomaton.addFailNode(j, startState());
-          }
+        if (k == ACAutomaton.ROOT_FAIL_NODE) {
+          acAutomaton.addFailNode(j, startState());
         }
       }
     }
