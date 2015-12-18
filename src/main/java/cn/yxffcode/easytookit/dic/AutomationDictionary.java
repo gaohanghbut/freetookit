@@ -1,5 +1,6 @@
 package cn.yxffcode.easytookit.dic;
 
+import cn.yxffcode.easytookit.automaton.ACAutomaton;
 import cn.yxffcode.easytookit.automaton.Automaton;
 import cn.yxffcode.easytookit.automaton.DefaultAutomaton;
 import cn.yxffcode.easytookit.lang.StringIntSequence;
@@ -44,5 +45,9 @@ public class AutomationDictionary implements Dictionary {
 
   @Override public boolean isWordEnded(final int state) {
     return automaton.isFinished(state);
+  }
+
+  @Override public ACAutomaton toAcAutomaton() {
+    return null;
   }
 }

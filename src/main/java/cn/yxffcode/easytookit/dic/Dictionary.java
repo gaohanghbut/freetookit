@@ -1,5 +1,7 @@
 package cn.yxffcode.easytookit.dic;
 
+import cn.yxffcode.easytookit.automaton.ACAutomaton;
+
 /**
  * 字典的实现
  *
@@ -24,4 +26,8 @@ public interface Dictionary {
    */
   boolean isWordEnded(int state);
 
+  /**
+   * 构建AC自动机
+   */
+  ACAutomaton toAcAutomaton();
 }
