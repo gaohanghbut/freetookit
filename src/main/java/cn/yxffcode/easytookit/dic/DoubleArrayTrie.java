@@ -1,11 +1,13 @@
 package cn.yxffcode.easytookit.dic;
 
+import cn.yxffcode.easytookit.automaton.ACAutomaton;
 import cn.yxffcode.easytookit.collection.IntIterator;
 import cn.yxffcode.easytookit.collection.IntStack;
 import cn.yxffcode.easytookit.lang.IntSequence;
 import cn.yxffcode.easytookit.lang.StringIntSequence;
 
 import java.util.Collections;
+import java.util.LinkedList;
 
 import static cn.yxffcode.easytookit.utils.ArrayUtils.grow;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -227,8 +229,60 @@ public class DoubleArrayTrie implements Dictionary {
     return next < check.length && check[next] == state ? next : NO_SUCH_STATE;
   }
 
+  @Override public ACAutomaton toAcAutomaton() {
+    ACAutomaton acAutomaton = new ACAutomaton();
+    acAutomaton.addFailNode(startState(), ACAutomaton.ROOT_FAIL_NODE);
+    LinkedList<Integer> queue = new LinkedList<>();
+    queue.add(startState());
+    while (!queue.isEmpty()) {
+      int i = queue.removeFirst();
+      int failNode = acAutomaton.getFailNode(i);
+      if (failNode == ACAutomaton.ROOT_FAIL_NODE) {
+        for (int j = base[i]; j < check.length; j++) {
+          if (check[j] == i) {
+            int c = j - base[i];
+            if (alphabetTransformer.unwrap(c) == END_INPUT) {
+              continue;
+            }
+            acAutomaton.addFailNode(j, i);
+            queue.addLast(j);
+          }
+        }
+      } else {
+        for (int j = base[i]; j < check.length; j++) {
+          if (check[j] != i) {
+            continue;
+          }
+          //j = base[i] + c;
+          int c = j - base[i];
+          if (alphabetTransformer.unwrap(c) == END_INPUT) {
+            continue;
+          }
+          if (c == END_INPUT) {
+            continue;
+          }
+          queue.addLast(j);
+          int k = failNode;
+          while (k != ACAutomaton.ROOT_FAIL_NODE) {
+            int t = base[k] + c;
+            if (t >= check.length || check[t] != failNode) {
+              k = acAutomaton.getFailNode(k);
+            } else {
+              acAutomaton.addFailNode(j, t);
+              break;
+            }
+          }
+          if (k == ACAutomaton.ROOT_FAIL_NODE) {
+            acAutomaton.addFailNode(j, startState());
+          }
+        }
+      }
+    }
+    return acAutomaton;
+  }
+
   @Override public boolean isWordEnded(final int state) {
-    return nextState(state, END_INPUT) != alphabetTransformer.unwrap(NO_SUCH_STATE);
+    return nextState(state, END_INPUT) != NO_SUCH_STATE;
   }
 
   private enum DefaultAlphabetTransformer implements AlphabetTransformer {
