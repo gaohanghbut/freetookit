@@ -4,12 +4,12 @@ package cn.yxffcode.easytookit.algorithm;
  * @author gaohang on 15/12/18.
  * @see CharsMatcher
  */
-public class CharsequenceMatcher {
+public class CharSequenceMatcher {
 
   private static final int STRING_INDEX_OF_THRESHOLD = 10;
 
-  public static CharsequenceMatcher create(CharSequence target, int toff, int tlen) {
-    return new CharsequenceMatcher(target, toff, tlen);
+  public static CharSequenceMatcher create(CharSequence target, int toff, int tlen) {
+    return new CharSequenceMatcher(target, toff, tlen);
   }
 
   private int[] next;
@@ -17,13 +17,13 @@ public class CharsequenceMatcher {
   private final int toff;
   private final int tlen;
 
-  private CharsequenceMatcher(CharSequence target, int toff, int tlen) {
+  private CharSequenceMatcher(CharSequence target, int toff, int tlen) {
     this.target = target;
     this.toff = toff;
     this.tlen = tlen;
   }
 
-  public CharsequenceMatcher buildNextIfAbsent() {
+  public CharSequenceMatcher buildNextIfAbsent() {
     if (next == null) {
       synchronized (next) {
         if (next == null) {

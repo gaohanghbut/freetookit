@@ -1,7 +1,7 @@
 package cn.yxffcode.easytookit.utils;
 
 import cn.yxffcode.easytookit.algorithm.CharsMatcher;
-import cn.yxffcode.easytookit.algorithm.CharsequenceMatcher;
+import cn.yxffcode.easytookit.algorithm.CharSequenceMatcher;
 import cn.yxffcode.easytookit.dic.DoubleArrayTrie;
 import cn.yxffcode.easytookit.participle.DictionaryTokenFilter;
 
@@ -41,7 +41,7 @@ public final class StringUtils {
    */
   public static int indexOf(CharSequence source, int soff, int slen,
                             CharSequence target, int toff, int tlen) {
-    return CharsequenceMatcher.create(target, toff, tlen).indexOf(source, soff, slen);
+    return CharSequenceMatcher.create(target, toff, tlen).indexOf(source, soff, slen);
   }
 
   public static int indexOf(char[] source, char[] target) {
