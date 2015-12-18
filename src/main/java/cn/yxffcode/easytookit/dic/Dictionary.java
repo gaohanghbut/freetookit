@@ -2,12 +2,14 @@ package cn.yxffcode.easytookit.dic;
 
 import cn.yxffcode.easytookit.automaton.ACAutomaton;
 
+import java.io.Serializable;
+
 /**
  * 字典的实现
  *
  * @author gaohang on 15/12/9.
  */
-public interface Dictionary {
+public interface Dictionary extends Serializable {
 
   boolean match(String word);
 
