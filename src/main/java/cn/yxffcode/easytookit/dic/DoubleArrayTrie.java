@@ -240,6 +240,7 @@ public class DoubleArrayTrie implements Dictionary {
     while (!queue.isEmpty()) {
       int i = queue.removeFirst();
       int failNode = acAutomaton.getFailNode(i);
+      //TODO:这一层循环次数可优化
       for (int j = base[i]; j < check.length; j++) {
         if (check[j] != i) {
           continue;
