@@ -3,7 +3,7 @@ package cn.yxffcode.easytookit.utils;
 import cn.yxffcode.easytookit.algorithm.CharsMatcher;
 import cn.yxffcode.easytookit.algorithm.CharSequenceMatcher;
 import cn.yxffcode.easytookit.dic.DoubleArrayTrie;
-import cn.yxffcode.easytookit.participle.DictionaryTokenFilter;
+import cn.yxffcode.easytookit.algorithm.DictionaryTokenFilter;
 
 /**
  * @author gaohang on 15/9/12.

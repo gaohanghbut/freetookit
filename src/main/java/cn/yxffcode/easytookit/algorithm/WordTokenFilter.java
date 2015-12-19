@@ -1,4 +1,4 @@
-package cn.yxffcode.easytookit.participle;
+package cn.yxffcode.easytookit.algorithm;
 
 import java.util.Iterator;
 

@@ -1,5 +1,6 @@
-package cn.yxffcode.easytookit.participle;
+package cn.yxffcode.easytookit.algorithm;
 
+import cn.yxffcode.easytookit.automaton.ACAutomaton;
 import cn.yxffcode.easytookit.collection.ImmutableIterator;
 import cn.yxffcode.easytookit.dic.Dictionary;
 import cn.yxffcode.easytookit.lang.IntArrayStringBuilder;
@@ -13,12 +14,13 @@ import java.util.Iterator;
  *
  * @author gaohang on 15/12/12.
  */
-public class DictionaryTokenFilter implements WordTokenFilter {
+public class ACAutomatonTokenFilter implements WordTokenFilter {
 
   private static final int NO_SUCH_STATE = -1;
   private final Dictionary dictionary;
+  private ACAutomaton acAutomaton;
 
-  public DictionaryTokenFilter(final Dictionary dictionary) {
+  public ACAutomatonTokenFilter(final Dictionary dictionary) {
     this.dictionary = dictionary;
   }
 
@@ -29,13 +31,10 @@ public class DictionaryTokenFilter implements WordTokenFilter {
       private IntSequence intsRef;
       private int cur;
 
-      /**
-       * 用于标识上一次匹配成功的位置
-       * TODO:使用了最简单的回溯方式,可以使用AC自动机优化时间复杂度
-       */
-      private int lastMatched;
-
       @Override public boolean hasNext() {
+        if (acAutomaton == null) {
+          acAutomaton = dictionary.toAcAutomaton();
+        }
         if (appender == null) {
           appender = new IntArrayStringBuilder();
           intsRef = new StringIntSequence(sentence);
@@ -51,13 +50,11 @@ public class DictionaryTokenFilter implements WordTokenFilter {
           if (next == NO_SUCH_STATE) {
             appender.clear();
             state = dictionary.startState();
-            cur = lastMatched + 1;
             continue;
           }
           appender.append(c);
           cur++;
           if (dictionary.isWordEnded(next)) {
-            lastMatched = cur;
             return true;
           }
           state = next;

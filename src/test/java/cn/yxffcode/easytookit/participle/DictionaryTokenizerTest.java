@@ -1,5 +1,6 @@
 package cn.yxffcode.easytookit.participle;
 
+import cn.yxffcode.easytookit.algorithm.DictionaryTokenFilter;
 import cn.yxffcode.easytookit.dic.DoubleArrayTrie;
 import com.google.common.collect.Lists;
 import org.junit.Test;
