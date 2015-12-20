@@ -1,9 +1,9 @@
 package cn.yxffcode.easytookit.utils;
 
-import cn.yxffcode.easytookit.algorithm.CharsMatcher;
 import cn.yxffcode.easytookit.algorithm.CharSequenceMatcher;
-import cn.yxffcode.easytookit.dic.DoubleArrayTrie;
+import cn.yxffcode.easytookit.algorithm.CharsMatcher;
 import cn.yxffcode.easytookit.algorithm.DictionaryTokenFilter;
+import cn.yxffcode.easytookit.dic.DoubleArrayTrie;
 
 /**
  * @author gaohang on 15/9/12.
@@ -39,8 +39,8 @@ public final class StringUtils {
   /**
    * @see #indexOf(char[], int, int, char[], int, int)
    */
-  public static int indexOf(CharSequence source, int soff, int slen,
-                            CharSequence target, int toff, int tlen) {
+  public static int indexOf(CharSequence source, int soff, int slen, CharSequence target, int toff,
+                            int tlen) {
     return CharSequenceMatcher.create(target, toff, tlen).indexOf(source, soff, slen);
   }
 
@@ -53,8 +53,7 @@ public final class StringUtils {
    *
    * @return -1表示没找到
    */
-  public static int indexOf(char[] source, int soff, int slen,
-                            char[] target, int toff, int tlen) {
+  public static int indexOf(char[] source, int soff, int slen, char[] target, int toff, int tlen) {
     return CharsMatcher.create(target, toff, tlen).indexOf(source, soff, slen);
   }
 
@@ -63,7 +62,8 @@ public final class StringUtils {
   }
 
   public boolean contains(CharSequence source, int fromIndex, CharSequence target) {
-    return indexOf(source, fromIndex, source.length() - fromIndex, target, 0, target.length()) != -1;
+    return indexOf(source, fromIndex, source.length() - fromIndex, target, 0, target.length())
+        != -1;
   }
 
   public boolean contains(char[] source, char[] target) {

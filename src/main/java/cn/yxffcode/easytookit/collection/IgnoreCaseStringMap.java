@@ -16,7 +16,8 @@ import static cn.yxffcode.easytookit.utils.StringUtils.equalsIgnoreCase;
  *
  * @author gaohang on 15/12/2.
  */
-@Deprecated public class IgnoreCaseStringMap<V> extends AbstractMap<String, V> implements Serializable, Cloneable {
+@Deprecated
+public class IgnoreCaseStringMap<V> extends AbstractMap<String, V> implements Serializable, Cloneable {
 
   private static final long serialVersionUID = -5567524254918911681L;
 
@@ -75,7 +76,9 @@ import static cn.yxffcode.easytookit.utils.StringUtils.equalsIgnoreCase;
   }
 
   @Override public Set<Entry<String, V>> entrySet() {
-    return this.entrySet != null ? this.entrySet : (entrySet = new EntrySetWrapper(delegate.entrySet()));
+    return this.entrySet != null ?
+        this.entrySet :
+        (entrySet = new EntrySetWrapper(delegate.entrySet()));
   }
 
   private void writeObject(java.io.ObjectOutputStream s) throws IOException {
@@ -109,6 +112,7 @@ import static cn.yxffcode.easytookit.utils.StringUtils.equalsIgnoreCase;
     }
   }
 
+
   private static final class KeySetWrapper extends AbstractSet<String> {
     private final Set<StringHolder> delegate;
 
@@ -134,6 +138,7 @@ import static cn.yxffcode.easytookit.utils.StringUtils.equalsIgnoreCase;
 
 
   }
+
 
   private static final class EntrySetWrapper<V> extends AbstractSet<Entry<String, V>> {
 
@@ -171,6 +176,7 @@ import static cn.yxffcode.easytookit.utils.StringUtils.equalsIgnoreCase;
         return delegate.setValue(value);
       }
     }
+
 
     private static class EntryTransformer<V> implements Function<Entry<StringHolder, V>, Entry<String, V>> {
       @Override public Entry<String, V> apply(final Entry<StringHolder, V> input) {

@@ -5,18 +5,18 @@ import java.util.LinkedList;
 
 /**
  * A file system log queue implementation which takes a line as a record.
- * <p/>
+ * <p>
  * Because of the I/O is stateful, the {@link #offer(Object)} method is a synchronized method, if synchronized method
  * affects the performance,io can be rewritten serialized using ExecutorService.
- * <p/>
+ * <p>
  * The {@link #offer(Object)} method is synchronized that it can be invoked concurrently,but the {@link #poll()} method
  * is not thread safe,it can only be invoked serialized.
- * <p/>
+ * <p>
  * When a thread write an object to the log file but another thread read the same file,the read thread main get a error
  * result,to resolve this problem is dependence,so I don't allow read and write a file at the same time.
- * <p/>
+ * <p>
  * It's better to invoke the {@link #rotate()} method before polling all remaining object.
- * <p/>
+ * <p>
  *
  * @author gaohang on 15/9/11.
  */
@@ -52,7 +52,7 @@ public class FSLogQueue<T> implements LogQueue<T> {
     if (isNotEmpty(files)) {
       for (File f : files) {
         String name = f.getName();
-//                int index = name.lastIndexOf(LOG_FILE_ID_DELIMITER);
+        //                int index = name.lastIndexOf(LOG_FILE_ID_DELIMITER);
         if (!name.contains(baseFilename)) {
           continue;
         }

@@ -3,7 +3,7 @@ package cn.yxffcode.easytookit.algorithm;
 /**
  * 单字符串模式匹配,{@link String#indexOf(char[], int, int, char[], int, int, int)}方法使用的是BF的方式,
  * 在模式串比较短时效果比KMP好,当模式串太长后,KMP的优势比较明显
- * <p/>
+ * <p>
  * 给一个中间值{@link #STRING_INDEX_OF_THRESHOLD},当模式串长度小于中间值时使用BF,大于中间值时使用KMP.
  * 针对一同一个模式串,对象可以被复用
  *
@@ -12,20 +12,18 @@ package cn.yxffcode.easytookit.algorithm;
 public class CharsMatcher {
 
   private static final int STRING_INDEX_OF_THRESHOLD = 10;
-
-  public static CharsMatcher create(char[] target, int toff, int tlen) {
-    return new CharsMatcher(target, toff, tlen);
-  }
-
-  private int[] next;
   private final char[] target;
   private final int toff;
   private final int tlen;
-
+  private int[] next;
   private CharsMatcher(char[] target, int toff, int tlen) {
     this.target = target;
     this.toff = toff;
     this.tlen = tlen;
+  }
+
+  public static CharsMatcher create(char[] target, int toff, int tlen) {
+    return new CharsMatcher(target, toff, tlen);
   }
 
   public CharsMatcher buildNextIfAbsent() {
@@ -53,7 +51,8 @@ public class CharsMatcher {
 
       for (int i = soff; i <= max; i++) {
         if (source[i] != first) {
-          while (++i <= max && source[i] != first) ;
+          while (++i <= max && source[i] != first)
+            ;
         }
         if (i <= max) {
           int j = i + 1;
@@ -73,7 +72,8 @@ public class CharsMatcher {
     int max = soff + (slen - tlen);
     int idx = soff;
     if (source[idx] != first) {
-      while (++idx <= max && source[idx] != first) ;
+      while (++idx <= max && source[idx] != first)
+        ;
     }
     if (idx > max) {
       return -1;
@@ -87,7 +87,8 @@ public class CharsMatcher {
     int j = 0;
     while (i < slen && j < tlen) {
       if (j == 0 && target[toff + j] != source[soff + i]) {
-        while (++i <= max && source[i] != first) ;
+        while (++i <= max && source[i] != first)
+          ;
       }
       if (i >= slen) {
         return -1;

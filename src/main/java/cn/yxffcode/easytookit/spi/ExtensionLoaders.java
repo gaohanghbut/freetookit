@@ -23,9 +23,10 @@ import static java.util.Collections.unmodifiableMap;
  * Created by hang.gao on 2015/6/9.
  */
 public final class ExtensionLoaders {
-  private static final ConcurrentMap<Class<?>, ExtensionLoader<?>> extensionLoaderMap = new ConcurrentHashMap<>();
+  private static final ConcurrentMap<Class<?>, ExtensionLoader<?>> extensionLoaderMap =
+      new ConcurrentHashMap<>();
   private static final ConcurrentMap<Class<?>, NamedExtensionLoader<?>> namedExtensionLoaderMap =
-          new ConcurrentHashMap<>();
+      new ConcurrentHashMap<>();
   private static final Object extensionMapLock = new Object();
   private static final Object namedExtensionMapLock = new Object();
 
@@ -36,8 +37,8 @@ public final class ExtensionLoaders {
     if (!extensionLoaderMap.containsKey(type)) {
       synchronized (extensionMapLock) {
         if (!extensionLoaderMap.containsKey(type)) {
-          extensionLoaderMap
-                  .put(type, new DefaultExtensionLoader<T>(type, Thread.currentThread().getContextClassLoader()));
+          extensionLoaderMap.put(type,
+              new DefaultExtensionLoader<T>(type, Thread.currentThread().getContextClassLoader()));
         }
       }
     }
@@ -48,8 +49,8 @@ public final class ExtensionLoaders {
     if (!namedExtensionLoaderMap.containsKey(type)) {
       synchronized (namedExtensionMapLock) {
         if (!namedExtensionLoaderMap.containsKey(type)) {
-          namedExtensionLoaderMap
-                  .put(type, new DefaultNamedExtensionLoader<>(type, Thread.currentThread().getContextClassLoader()));
+          namedExtensionLoaderMap.put(type, new DefaultNamedExtensionLoader<>(type,
+              Thread.currentThread().getContextClassLoader()));
         }
       }
     }
@@ -67,11 +68,11 @@ public final class ExtensionLoaders {
     }
 
     public List<T> getExtensions() {
-//            for jdk8:
-//            DCL.create()
-//               .check(v -> this.cache != null)
-//               .absent(v -> this.cache = doLoad())
-//               .done(null);
+      //            for jdk8:
+      //            DCL.create()
+      //               .check(v -> this.cache != null)
+      //               .absent(v -> this.cache = doLoad())
+      //               .done(null);
       DCL.create().check(new Predicate<Object>() {
         @Override public boolean apply(final Object input) {
           return cache != null;
@@ -97,6 +98,7 @@ public final class ExtensionLoaders {
     }
   }
 
+
   private static final class DefaultNamedExtensionLoader<T> implements NamedExtensionLoader<T> {
     private static final String PREFIX = "META-INF/services/";
     private static final Splitter NAMED_IMPL_SPLITTER = Splitter.on('=').trimResults();
@@ -105,7 +107,8 @@ public final class ExtensionLoaders {
 
     private DefaultNamedExtensionLoader(final Class<T> type, final ClassLoader classLoader) {
       HashMap<String, T> cache = Maps.newHashMap();
-      try (BufferedReader in = toBufferedReader(classLoader.getSystemResourceAsStream(PREFIX + type.getName()))) {
+      try (BufferedReader in = toBufferedReader(
+          classLoader.getSystemResourceAsStream(PREFIX + type.getName()))) {
         for (String line : lines(in)) {
           List<String> extension = NAMED_IMPL_SPLITTER.splitToList(line);
           checkState(extension.size() == 2, "SPI描述文件格式错误,使用key=value的方式表示, %s", line);

@@ -39,7 +39,8 @@ final class ConcurrentUtils0 {
       BYTE_ARRAY_BASE_OFFSET = UNSAFE.arrayBaseOffset(byte[].class);
       boolean unaligned;
       try {
-        Class<?> bitsClass = Class.forName("java.nio.Bits", false, ClassLoader.getSystemClassLoader());
+        Class<?> bitsClass =
+            Class.forName("java.nio.Bits", false, ClassLoader.getSystemClassLoader());
         Method unalignedMethod = bitsClass.getDeclaredMethod("unaligned");
         unalignedMethod.setAccessible(true);
         unaligned = Boolean.TRUE.equals(unalignedMethod.invoke(null));
@@ -61,7 +62,8 @@ final class ConcurrentUtils0 {
     return UNALIGNED;
   }
 
-  static boolean equals(byte[] bytes1, int startPos1, int endPos1, byte[] bytes2, int startPos2, int endPos2) {
+  static boolean equals(byte[] bytes1, int startPos1, int endPos1, byte[] bytes2, int startPos2,
+                        int endPos2) {
     final int len1 = endPos1 - startPos1;
     final int len2 = endPos2 - startPos2;
     if (len1 != len2) {
@@ -80,13 +82,14 @@ final class ConcurrentUtils0 {
     }
     if (remainingBytes >= 4) {
       remainingBytes -= 4;
-      if (UNSAFE.getInt(bytes1, baseOffset1 + remainingBytes) != UNSAFE.getInt(bytes2, baseOffset2 + remainingBytes)) {
+      if (UNSAFE.getInt(bytes1, baseOffset1 + remainingBytes) != UNSAFE
+          .getInt(bytes2, baseOffset2 + remainingBytes)) {
         return false;
       }
     }
     if (remainingBytes >= 2) {
-      return UNSAFE.getChar(bytes1, baseOffset1) == UNSAFE.getChar(bytes2, baseOffset2) &&
-              (remainingBytes == 2 || bytes1[startPos1 + 2] == bytes2[startPos2 + 2]);
+      return UNSAFE.getChar(bytes1, baseOffset1) == UNSAFE.getChar(bytes2, baseOffset2) && (
+          remainingBytes == 2 || bytes1[startPos1 + 2] == bytes2[startPos2 + 2]);
     }
     return bytes1[startPos1] == bytes2[startPos2];
   }

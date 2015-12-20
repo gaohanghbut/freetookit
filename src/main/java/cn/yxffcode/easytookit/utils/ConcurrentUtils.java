@@ -34,15 +34,16 @@ public final class ConcurrentUtils {
    * @param startPos2 the position (inclusive) to start comparing in {@code bytes2}.
    * @param endPos2   the position (exclusive) to stop comparing in {@code bytes2}.
    */
-  public static boolean equals(byte[] bytes1, int startPos1, int endPos1, byte[] bytes2, int startPos2, int endPos2) {
+  public static boolean equals(byte[] bytes1, int startPos1, int endPos1, byte[] bytes2,
+                               int startPos2, int endPos2) {
     if (!ConcurrentUtils0.unalignedAccess()) {
       return safeEquals(bytes1, startPos1, endPos1, bytes2, startPos2, endPos2);
     }
     return ConcurrentUtils0.equals(bytes1, startPos1, endPos1, bytes2, startPos2, endPos2);
   }
 
-  private static boolean safeEquals(byte[] bytes1, int startPos1, int endPos1, byte[] bytes2, int startPos2,
-                                    int endPos2) {
+  private static boolean safeEquals(byte[] bytes1, int startPos1, int endPos1, byte[] bytes2,
+                                    int startPos2, int endPos2) {
     final int len1 = endPos1 - startPos1;
     final int len2 = endPos2 - startPos2;
     if (len1 != len2) {

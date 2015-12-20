@@ -8,7 +8,7 @@ import java.util.Set;
 
 /**
  * 只包含一个元素的集合
- * <p/>
+ * <p>
  * FIXME:同时实现List和Set接口也许不好
  *
  * @author gaohang on 15/9/24.

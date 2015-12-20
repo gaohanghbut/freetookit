@@ -100,7 +100,8 @@ public abstract class Automaton {
 
   public final int step(int current, int value) {
     int pos = current * 2;
-    for (int off = states[pos], end = states[pos + 1] * transitionWidth + off; off < end; off += transitionWidth) {
+    for (int off = states[pos], end = states[pos + 1] * transitionWidth + off;
+         off < end; off += transitionWidth) {
       if (apply(off, value)) {
         return transitions[off];
       }

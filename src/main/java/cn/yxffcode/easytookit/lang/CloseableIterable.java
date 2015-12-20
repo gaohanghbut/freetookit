@@ -4,7 +4,7 @@ import java.io.Closeable;
 
 /**
  * 可被关闭的{@link Iterable}对象，可用于基于某种资源（如ResultSet）的迭代。
- * <p/>
+ * <p>
  * <pre>
  *     {@code
  *          try (CloseableIterable<E> iter = xxx) {

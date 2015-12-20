@@ -12,7 +12,7 @@ package cn.yxffcode.easytookit.lang;
  *          return appender.toString();
  *     }
  * </pre>
- * <p/>
+ * <p>
  * 支持只读模式下的切片{@link #slice(int, int)},切片表示此StringBuilder的一个部分,
  * 是一个视图,会随着原始StringBuilder的修改而变动,但不能直接修改一个切片
  *
@@ -167,7 +167,8 @@ public class IntArrayStringBuilder {
     private final int offset;
     private final int length;
 
-    private SliceStringBuilder(final IntArrayStringBuilder delegate, final int offset, final int length) {
+    private SliceStringBuilder(final IntArrayStringBuilder delegate, final int offset,
+                               final int length) {
       super(0);
       this.delegate = delegate;
       this.offset = offset;

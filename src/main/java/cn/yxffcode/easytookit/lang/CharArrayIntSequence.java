@@ -20,7 +20,8 @@ public class CharArrayIntSequence extends AbstractIntSequence {
       throw new IllegalArgumentException("offset cannot be negative " + offset);
     }
     if (offset + length > this.length) {
-      throw new IndexOutOfBoundsException("slice is too long, but the source length is " + this.length);
+      throw new IndexOutOfBoundsException(
+          "slice is too long, but the source length is " + this.length);
     }
     return new CharArrayIntSequence(source, offset + this.offset, length);
   }

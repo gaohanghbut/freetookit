@@ -26,9 +26,9 @@ public final class IOStreams {
 
   /**
    * 按行读取
-   * <p/>
+   * <p>
    * 使用lazy的读，只有在返回的Iterable对象上迭代一次才会读一行
-   * <p/>
+   * <p>
    * 当读取的文件比较大时，不合适一次将事个文件的行读入内存，需要逐行读并处理。在使用guava的CharStreams时比较繁锁，例如：
    * <pre>
    *      CharStreams.readLine(reader, new LineProcessor<T>() {

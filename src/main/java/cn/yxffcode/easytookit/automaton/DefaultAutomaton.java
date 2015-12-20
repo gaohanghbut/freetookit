@@ -104,6 +104,7 @@ public class DefaultAutomaton extends Automaton {
     }
   }
 
+
   public static final class SimpleBuilder {
     private final DefaultAutomaton automaton;
 

@@ -5,7 +5,7 @@ import com.google.common.base.Optional;
 
 /**
  * 流式的{@link Optional}
- * <p/>
+ * <p>
  * 使用方式:<pre>
  *     {@code
  *          T result = FluentOptional.from(obj)
