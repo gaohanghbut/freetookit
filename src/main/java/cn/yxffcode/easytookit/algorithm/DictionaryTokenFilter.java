@@ -33,7 +33,7 @@ public class DictionaryTokenFilter implements WordTokenFilter {
        * 用于标识上一次匹配成功的位置
        * TODO:使用了最简单的回溯方式,可以使用AC自动机优化时间复杂度
        */
-      private int lastMatched;
+      private int lastMatched = -1;
 
       @Override public boolean hasNext() {
         if (appender == null) {
@@ -51,7 +51,7 @@ public class DictionaryTokenFilter implements WordTokenFilter {
           if (next == NO_SUCH_STATE) {
             appender.clear();
             state = dictionary.startState();
-            cur = lastMatched + 1;
+            cur = lastMatched == -1 ? cur + 1 : lastMatched + 1;
             continue;
           }
           appender.append(c);

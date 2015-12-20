@@ -1,13 +1,16 @@
 package cn.yxffcode.easytookit.participle;
 
 import cn.yxffcode.easytookit.algorithm.DictionaryTokenFilter;
-import cn.yxffcode.easytookit.dic.DoubleArrayTrie;
+import cn.yxffcode.easytookit.dic.AutomatonDictionary;
+import cn.yxffcode.easytookit.io.IOStreams;
+import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
 import org.junit.Test;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * @author gaohang on 15/12/12.
@@ -15,10 +18,14 @@ import java.util.List;
 public class DictionaryTokenizerTest {
 
   @Test public void test() {
-    List<String> words = Arrays.asList("湖北工", "北京", "大学");
-    DoubleArrayTrie dic = DoubleArrayTrie.create(words);
-    DictionaryTokenFilter tokenizer = new DictionaryTokenFilter(dic);
-    ArrayList<String> tokens = Lists.newArrayList(tokenizer.getMatched("湖北京"));
-    System.out.println(tokens);
+    try (BufferedReader in = new BufferedReader(new InputStreamReader(
+            DictionaryTokenizerTest.class.getResourceAsStream("/dic/chinese-standard.dic")))) {
+      AutomatonDictionary dic = AutomatonDictionary.create(IOStreams.lines(in));
+      DictionaryTokenFilter tokenizer = new DictionaryTokenFilter(dic);
+      ArrayList<String> tokens = Lists.newArrayList(tokenizer.getMatched("湖北京"));
+      System.out.println(tokens);
+    } catch (IOException e) {
+      Throwables.propagate(e);
+    }
   }
 }

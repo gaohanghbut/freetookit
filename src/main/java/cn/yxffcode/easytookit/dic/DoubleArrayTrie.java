@@ -174,8 +174,14 @@ public class DoubleArrayTrie implements Dictionary {
           //base[s] + child = t;
           int nt = b + child;
           int ot = child + base[s];
+          if (nt >= check.length) {
+            check = grow(check, nt * 2);
+          }
           check[nt] = check[ot];
           check[ot] = NONE;
+          if (nt >= base.length) {
+            base = grow(base, nt * 2);
+          }
           base[nt] = base[ot];
 
           for (int k = 0, m = check.length; k < m; k++) {

@@ -12,22 +12,22 @@ import static com.google.common.base.Preconditions.checkNotNull;
  *
  * @author gaohang on 15/12/10.
  */
-public class AutomationDictionary implements Dictionary {
+public class AutomatonDictionary implements Dictionary {
 
   private final Automaton automaton;
 
-  private AutomationDictionary(final Automaton automaton) {
+  private AutomatonDictionary(final Automaton automaton) {
     this.automaton = automaton;
   }
 
-  public static AutomationDictionary create(Iterable<String> words) {
+  public static AutomatonDictionary create(Iterable<String> words) {
     checkNotNull(words);
 
     DefaultAutomaton.DictionaryBuilder builder = new DefaultAutomaton.DictionaryBuilder();
     for (String word : words) {
       builder.addWord(new StringIntSequence(word));
     }
-    return new AutomationDictionary(builder.build());
+    return new AutomatonDictionary(builder.build());
   }
 
   @Override public boolean match(final String word) {
