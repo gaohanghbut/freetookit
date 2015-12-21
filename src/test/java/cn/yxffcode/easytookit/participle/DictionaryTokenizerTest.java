@@ -22,7 +22,7 @@ public class DictionaryTokenizerTest {
         DictionaryTokenizerTest.class.getResourceAsStream("/dic/chinese-standard.dic")))) {
       AutomatonDictionary dic = AutomatonDictionary.create(IOStreams.lines(in));
       DictionaryTokenFilter tokenizer = new DictionaryTokenFilter(dic);
-      ArrayList<String> tokens = Lists.newArrayList(tokenizer.getMatched("湖北京"));
+      ArrayList<String> tokens = Lists.newArrayList(tokenizer.getMatched("大连绍杰车行245895麻烦看一下今天有没有T+0额度谢谢"));
       System.out.println(tokens);
     } catch (IOException e) {
       Throwables.propagate(e);

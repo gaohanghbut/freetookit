@@ -11,7 +11,7 @@ package cn.yxffcode.easytookit.algorithm;
  */
 public class CharsMatcher {
 
-  private static final int STRING_INDEX_OF_THRESHOLD = 10;
+  private static final int STRING_INDEX_OF_THRESHOLD = 5;
   private final char[] target;
   private final int toff;
   private final int tlen;

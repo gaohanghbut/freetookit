@@ -49,6 +49,9 @@ public class DictionaryTokenFilter implements WordTokenFilter {
           int c = intsRef.element(cur);
           int next = dictionary.nextState(state, c);
           if (next == NO_SUCH_STATE) {
+            if (cur == lastMatched + 1) {
+              lastMatched++;
+            }
             appender.clear();
             state = dictionary.startState();
             cur = lastMatched == -1 ? cur + 1 : lastMatched + 1;

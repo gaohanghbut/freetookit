@@ -7,20 +7,18 @@ package cn.yxffcode.easytookit.algorithm;
 public class CharSequenceMatcher {
 
   private static final int STRING_INDEX_OF_THRESHOLD = 10;
-
-  public static CharSequenceMatcher create(CharSequence target, int toff, int tlen) {
-    return new CharSequenceMatcher(target, toff, tlen);
-  }
-
-  private int[] next;
   private final CharSequence target;
   private final int toff;
   private final int tlen;
-
+  private int[] next;
   private CharSequenceMatcher(CharSequence target, int toff, int tlen) {
     this.target = target;
     this.toff = toff;
     this.tlen = tlen;
+  }
+
+  public static CharSequenceMatcher create(CharSequence target, int toff, int tlen) {
+    return new CharSequenceMatcher(target, toff, tlen);
   }
 
   public CharSequenceMatcher buildNextIfAbsent() {
@@ -48,7 +46,8 @@ public class CharSequenceMatcher {
 
       for (int i = soff; i <= max; i++) {
         if (source.charAt(i) != first) {
-          while (++i <= max && source.charAt(i) != first) ;
+          while (++i <= max && source.charAt(i) != first)
+            ;
         }
         if (i <= max) {
           int j = i + 1;
@@ -69,7 +68,8 @@ public class CharSequenceMatcher {
     int max = soff + (slen - tlen);
     int idx = soff;
     if (source.charAt(idx) != first) {
-      while (++idx <= max && source.charAt(idx) != first) ;
+      while (++idx <= max && source.charAt(idx) != first)
+        ;
     }
     if (idx > max) {
       return -1;
@@ -82,7 +82,8 @@ public class CharSequenceMatcher {
     int j = 0;
     while (i < slen && j < tlen) {
       if (j == 0 && target.charAt(toff + j) != source.charAt(soff + i)) {
-        while (++i <= max && source.charAt(i) != first) ;
+        while (++i <= max && source.charAt(i) != first)
+          ;
       }
       if (i >= tlen) {
         return -1;
