@@ -28,7 +28,7 @@ public class CharsMatcher {
 
   public CharsMatcher buildNextIfAbsent() {
     if (next == null) {
-      synchronized (next) {
+      synchronized (this) {
         if (next == null) {
           next = compileNext(target, toff, tlen);
         }
