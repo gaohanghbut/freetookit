@@ -330,6 +330,9 @@ public class DoubleArrayTrie implements Dictionary {
     }
 
     public int unwrap(int c) {
+      if (c == END_INPUT_VALUE) {
+        return END_INPUT;
+      }
       if (c < DIGIT_START) {
         return c;
       }
