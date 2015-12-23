@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 
 import static cn.yxffcode.easytookit.utils.ArrayUtils.grow;
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -276,6 +277,29 @@ public class DoubleArrayTrie implements Dictionary {
       }
     }
     return acAutomaton;
+  }
+
+  public String buildWord(int endState) {
+    checkArgument(endState != NO_SUCH_STATE && endState < check.length);
+    int state = endState;
+    char[] data = new char[10];
+    int pos = data.length;
+    while (true) {
+      int parent = check[state];
+      //base[s] + c = t => base[parent] + c = state
+      int c = state - base[parent];
+      if (pos == 0) {
+        char[] tmp = new char[data.length * 2];
+        System.arraycopy(data, pos, tmp, data.length, data.length);
+        pos = data.length;
+        data = tmp;
+      }
+      data[--pos] = (char) alphabetTransformer.unwrap(c);
+      if (parent == startState()) {
+        return new String(data, pos, data.length - pos);
+      }
+      state = parent;
+    }
   }
 
   @Override public boolean isWordEnded(final int state) {
