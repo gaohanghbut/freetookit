@@ -89,9 +89,9 @@ public class CharsMatcher {
       if (j == 0 && target[toff + j] != source[soff + i]) {
         while (++i <= max && source[i] != first)
           ;
-      }
-      if (i >= slen) {
-        return -1;
+        if (i >= slen) {
+          return -1;
+        }
       }
       if (j == -1 || target[toff + j] == source[soff + i]) {
         ++i;
