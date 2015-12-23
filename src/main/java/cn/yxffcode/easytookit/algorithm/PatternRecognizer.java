@@ -23,8 +23,7 @@ public class PatternRecognizer {
         new InputStreamReader(PatternRecognizer.class.getResourceAsStream(dictionaryPath)))) {
 
       DoubleArrayTrie dic = DoubleArrayTrie.create(IOStreams.lines(in));
-      PatternRecognizer recognizer = new PatternRecognizer(dic);
-      return recognizer;
+      return new PatternRecognizer(dic);
     } catch (IOException e) {
       Throwables.propagate(e);
       return null;//not happen
