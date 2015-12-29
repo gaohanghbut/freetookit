@@ -23,7 +23,7 @@ public class CharSequenceMatcher {
 
   public CharSequenceMatcher buildNextIfAbsent() {
     if (next == null) {
-      synchronized (next) {
+      synchronized (this) {
         if (next == null) {
           next = compileNext(target, toff, tlen);
         }
@@ -84,9 +84,9 @@ public class CharSequenceMatcher {
       if (j == 0 && target.charAt(toff + j) != source.charAt(soff + i)) {
         while (++i <= max && source.charAt(i) != first)
           ;
-      }
-      if (i >= tlen) {
-        return -1;
+        if (i >= max) {
+          return -1;
+        }
       }
       if (j == -1 || target.charAt(toff + j) == source.charAt(soff + i)) {
         ++i;

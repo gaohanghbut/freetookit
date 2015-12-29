@@ -165,7 +165,7 @@ public class DoubleArrayTrie implements Dictionary {
               continue loop;
             }
           }
-          if (check[b + elem] == NONE) {
+          if (b + elem >= check.length || check[b + elem] == NONE) {
             break;
           }
         }
@@ -193,6 +193,9 @@ public class DoubleArrayTrie implements Dictionary {
         }
         base[s] = b;
         t = base[s] + elem;
+      }
+      if (t >= check.length) {
+        check = grow(check, t * 2);
       }
       check[t] = s;
       s = t;
