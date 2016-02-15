@@ -82,12 +82,11 @@ public final class SuffixTree {
   private int remainingSuffixCount;
   private End end;
   private char[] input;
-  private static char UNIQUE_CHAR = '$';
 
   public SuffixTree(char[] input) {
     this.input = new char[input.length + 1];
     System.arraycopy(input, 0, this.input, 0, input.length);
-    this.input[input.length] = UNIQUE_CHAR;
+    this.input[input.length] = '$';
   }
 
   public void build() {
