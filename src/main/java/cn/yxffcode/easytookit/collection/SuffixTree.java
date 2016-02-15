@@ -392,7 +392,7 @@ public class SuffixTree {
 
     @Override
     public String toString() {
-      StringBuffer buffer = new StringBuffer();
+      StringBuilder buffer = new StringBuilder();
       int i = 0;
       for (SuffixNode node : child) {
         if (node != null) {
