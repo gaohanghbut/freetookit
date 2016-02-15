@@ -1,8 +1,5 @@
 package cn.yxffcode.easytookit.collection;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * <p>
  * Construct suffix tree using Ukkonen's algorithm
@@ -70,14 +67,13 @@ import java.util.List;
  *
  * @author tusroy
  */
-public class SuffixTree {
+public final class SuffixTree {
 
   public static void main(String args[]) {
     SuffixTree st = new SuffixTree("mississippi".toCharArray());
 
     st.build();
-    st.dfsTraversal();
-    System.out.println(st.validate());
+    st.validate();
 
   }
 
@@ -85,14 +81,12 @@ public class SuffixTree {
   private Active active;
   private int remainingSuffixCount;
   private End end;
-  private char input[];
+  private char[] input;
   private static char UNIQUE_CHAR = '$';
 
-  public SuffixTree(char input[]) {
+  public SuffixTree(char[] input) {
     this.input = new char[input.length + 1];
-    for (int i = 0; i < input.length; i++) {
-      this.input[i] = input[i];
-    }
+    System.arraycopy(input, 0, this.input, 0, input.length);
     this.input[input.length] = UNIQUE_CHAR;
   }
 
@@ -278,94 +272,43 @@ public class SuffixTree {
   }
 
   /**
-   * Do a DFS traversal of the tree.
-   */
-  public void dfsTraversal() {
-    List<Character> result = new ArrayList<>();
-    for (SuffixNode node : root.child) {
-      dfsTraversal(node, result);
-    }
-  }
-
-  private void dfsTraversal(SuffixNode root, List<Character> result) {
-    if (root == null) {
-      return;
-    }
-    if (root.index != -1) {
-      for (int i = root.start; i <= root.end.end; i++) {
-        result.add(input[i]);
-      }
-      for (Character character : result) {
-        System.out.print(character);
-      }
-      System.out.println(" " + root.index);
-      for (int i = root.start; i <= root.end.end; i++) {
-        result.remove(result.size() - 1);
-      }
-      return;
-    }
-
-    for (int i = root.start; i <= root.end.end; i++) {
-      result.add(input[i]);
-    }
-
-    for (SuffixNode node : root.child) {
-      dfsTraversal(node, result);
-    }
-
-    for (int i = root.start; i <= root.end.end; i++) {
-      result.remove(result.size() - 1);
-    }
-
-  }
-
-  /**
    * Do validation of the tree by comparing all suffixes and their index at leaf node.
    */
-  private boolean validate(SuffixNode root, char[] input, int index, int curr) {
+  private void validate(SuffixNode root, char[] input, int index, int curr) {
     if (root == null) {
-      System.out.println("Failed at " + curr + " for index " + index);
-      return false;
+      throw new RuntimeException("Failed at " + curr + " for index " + index);
     }
 
     if (root.index != -1) {
       if (root.index != index) {
-        System.out.println("Index not same. Failed at " + curr + " for index " + index);
-        return false;
+        throw new RuntimeException("Index not same. Failed at " + curr + " for index " + index);
       } else {
-        return true;
+        return;
       }
     }
     if (curr >= input.length) {
-      System.out.println("Index not same. Failed at " + curr + " for index " + index);
-      return false;
+      throw new RuntimeException("Index not same. Failed at " + curr + " for index " + index);
     }
 
     SuffixNode node = root.child[input[curr]];
     if (node == null) {
-      System.out.println("Failed at " + curr + " for index " + index);
-      return false;
+      throw new RuntimeException("Failed at " + curr + " for index " + index);
     }
     int j = 0;
     for (int i = node.start; i <= node.end.end; i++) {
       if (input[curr + j] != input[i]) {
-        System.out.println("Mismatch found " + input[curr + j] + " " + input[i]);
-        return false;
+        throw new RuntimeException("Mismatch found " + input[curr + j] + " " + input[i]);
       }
       j++;
     }
     curr += node.end.end - node.start + 1;
-    return validate(node, input, index, curr);
+    validate(node, input, index, curr);
   }
 
-  public boolean validate() {
+  public void validate() {
     for (int i = 0; i < this.input.length; i++) {
-      if (!validate(this.root, this.input, i, i)) {
-        System.out.println("Failed validation");
-        return false;
-      }
+      validate(this.root, this.input, i, i);
     }
-    return true;
   }
 
 
@@ -375,11 +318,11 @@ public class SuffixTree {
     }
 
     private static final int TOTAL = 256;
-    SuffixNode[] child = new SuffixNode[TOTAL];
+    private SuffixNode[] child = new SuffixNode[TOTAL];
 
-    int start;
-    End end;
-    int index;
+    private int start;
+    private End end;
+    private int index;
 
     SuffixNode suffixLink;
 
@@ -415,7 +358,7 @@ public class SuffixTree {
 
 
   private static final class Active {
-    Active(SuffixNode node) {
+    private Active(SuffixNode node) {
       activeLength = 0;
       activeNode = node;
       activeEdge = -1;
@@ -428,9 +371,9 @@ public class SuffixTree {
           + activeEdge + ", activeLength=" + activeLength + "]";
     }
 
-    SuffixNode activeNode;
-    int activeEdge;
-    int activeLength;
+    private SuffixNode activeNode;
+    private int activeEdge;
+    private int activeLength;
   }
 
 }
