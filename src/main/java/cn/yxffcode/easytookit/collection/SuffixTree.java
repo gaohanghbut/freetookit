@@ -339,7 +339,7 @@ public final class SuffixTree {
       int i = 0;
       for (SuffixNode node : child) {
         if (node != null) {
-          buffer.append((char) i + " ");
+          buffer.append((char) i).append(" ");
         }
         i++;
       }
