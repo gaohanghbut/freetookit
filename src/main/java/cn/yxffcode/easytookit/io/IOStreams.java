@@ -18,13 +18,6 @@ public final class IOStreams {
   }
 
   /**
-   * @see #lines(Reader)
-   */
-  public static Iterable<String> lines(InputStream in) {
-    return lines(new InputStreamReader(checkNotNull(in)));
-  }
-
-  /**
    * 按行读取
    * <p>
    * 使用lazy的读，只有在返回的Iterable对象上迭代一次才会读一行
@@ -53,7 +46,7 @@ public final class IOStreams {
    *     }
    * </pre>
    */
-  public static Iterable<String> lines(final Reader reader) {
+  public static Iterable<String> lines(final BufferedReader reader) {
     checkNotNull(reader);
     return new Iterable<String>() {
       @Override public Iterator<String> iterator() {
@@ -61,24 +54,13 @@ public final class IOStreams {
 
           private String line;
 
-          private BufferedReader in;
+          private BufferedReader in = reader;
 
           @Override public boolean hasNext() {
-            ensureInit();
             try {
               return (line = in.readLine()) != null;
             } catch (IOException e) {
               throw new IOReaderException(e);
-            }
-          }
-
-          private void ensureInit() {
-            if (in == null) {
-              if (reader instanceof BufferedReader) {
-                in = (BufferedReader) reader;
-              } else {
-                in = new BufferedReader(reader);
-              }
             }
           }
 
@@ -90,9 +72,6 @@ public final class IOStreams {
     };
   }
 
-  /**
-   * @see #lines(Reader)
-   */
   public static CloseableIterable<String> lines(final File src) {
 
     return new CloseableIterable<String>() {

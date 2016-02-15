@@ -6,7 +6,13 @@ import com.google.common.collect.Iterators;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.*;
+import java.util.AbstractMap;
+import java.util.AbstractSet;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 import static cn.yxffcode.easytookit.utils.StringUtils.equalsIgnoreCase;
 
@@ -183,7 +189,5 @@ public class IgnoreCaseStringMap<V> extends AbstractMap<String, V> implements Se
         return new TransformEntry<V>(input);
       }
     }
-
-
   }
 }
