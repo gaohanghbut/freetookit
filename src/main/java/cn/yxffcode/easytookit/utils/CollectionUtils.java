@@ -1,6 +1,7 @@
 package cn.yxffcode.easytookit.utils;
 
 import java.util.Collection;
+import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -33,4 +34,7 @@ public abstract class CollectionUtils {
     }
   }
 
+  public static <T> boolean isNotEmpty(List<T> list) {
+    return list != null || !list.isEmpty();
+  }
 }
