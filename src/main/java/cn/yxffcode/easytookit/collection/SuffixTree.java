@@ -1,81 +1,9 @@
 package cn.yxffcode.easytookit.collection;
 
 /**
- * <p>
- * Construct suffix tree using Ukkonen's algorithm
- * <p>
- * Solution
- * Rule 1: For phase i+1 if S[j..i] ends at last character of leaf edge then add S[i+1] at
- * the end.
- * Rule 2: For phase i+1 if S[j..i] ends somewhere in middle of edge and next character is
- * not S[i+1] then a new leaf edge with label S[i+1] should be created
- * Rule 3: For phase i+1 if S[j..i] ends somewhere in middle of edge and next character is
- * S[i+1] then do nothing(resulting in implicit tree)
- * <p>
- * Suffix Link:
- * For every node with label x@ where x is a single character and @ is possibly empty substring
- * there is another node with label x. This node is suffix link of first node. If @ is
- * empty then suffix link is root.
- * <p>
- * Trick1
- * Skip/Count trick
- * While traveling down if number of characters on edge is less than number of characters
- * to traverse then skip directly to the end of the edge. If number of characters on label
- * is more than number of characters to traverse then go directly to that character
- * we care about.
- * <p>
- * Edge-label compression
- * Instead of storing actual characters on the path store start and end indices on the
- * path.
- * <p>
- * Trick2 - Stop process as soon as you hit rule 3. Rule 3 is show stopper
- * <p>
- * Trick3 - Keep a global end on leaf to do rule 1 extension.
- * <p>
- * Active point - It is the point from which traversal starts for next extension or next phase.
- * Active point always starts from root. Other extension will get active point set up
- * correctly by last extension.
- * <p>
- * Active node - Node from which active point will start
- * Active Edge - It is used to choose the edge from active node. It has index of character.
- * Active Length - How far to go on active edge.
- * <p>
- * Active point rules
- * 1) If rule 3 extension is applied then active length will increment by 1 if active length is not greater then length of path on edge.
- * 2) If rule 3 extension is applied and if active length gets greater than length path of edge then change active node, active edge and active length
- * 3) If active length is 0 then always start looking for the character from root.
- * 4) If rule 2 extension is applied and if active node is root then active edge is active edge + 1 and active length is active lenght -1
- * 5) If rule 2 extension is applied and if active node is not root then follow suffix link and make active node as suffix link and do no change
- * anything.
- * <p>
- * Test cases
- * adeacdade
- * abcabxabcd
- * abcdefabxybcdmnabcdex
- * abcadak
- * dedododeodo
- * abcabxabcd
- * mississippi
- * banana
- * ooooooooo
- * <p>
- * References
- * http://web.stanford.edu/~mjkay/gusfield.pdf
- * http://www.geeksforgeeks.org/ukkonens-suffix-tree-construction-part-6/
- * https://www.cs.helsinki.fi/u/ukkonen/SuffixT1withFigs.pdf
- * https://gist.github.com/axefrog/2373868
- *
- * @author tusroy
+ * @author gaohang
  */
 public final class SuffixTree {
-
-  public static void main(String args[]) {
-    SuffixTree st = new SuffixTree("mississippi".toCharArray());
-
-    st.build();
-    st.validate();
-
-  }
 
   private SuffixNode root;
   private Active active;
@@ -94,86 +22,60 @@ public final class SuffixTree {
     root.index = -1;
     active = new Active(root);
     this.end = new End(-1);
-    //loop through string to start new phase
     for (int i = 0; i < input.length; i++) {
       startPhase(i);
     }
-    //finally walk the tree again and set up the index.
-    setIndexUsingDfs(root, 0, input.length);
+    setIndexByDfs(root, 0, input.length);
   }
 
   private void startPhase(int i) {
-    //set lastCreatedInternalNode to null before start of every phase.
     SuffixNode lastCreatedInternalNode = null;
-    //global end for leaf. Does rule 1 extension as per trick 3 by incrementing end.
     end.end++;
-
-    //these many suffixes need to be created.
     remainingSuffixCount++;
     while (remainingSuffixCount > 0) {
-      //if active length is 0 then look for current character from root.
       if (active.activeLength == 0) {
-        //if current character from root is not null then increase active length by 1
-        //and break out of while loop. This is rule 3 extension and trick 2 (show stopper)
         if (active.activeNode.child[input[i]] != null) {
           active.activeEdge = active.activeNode.child[input[i]].start;
           active.activeLength++;
           break;
-        } else {//create a new leaf node with current character from leaf. This is rule 2 extension.
+        } else {
           root.child[input[i]] = SuffixNode.createNode(i, end);
           remainingSuffixCount--;
         }
       } else {
-        //if active length is not 0 means we are traversing somewhere in middle. So check if next character is same as
-        //current character.
         try {
           char ch = nextChar(i);
-          //if next character is same as current character then do a walk down. This is again a rule 3 extension and
-          //trick 2 (show stopper).
           if (ch == input[i]) {
-            //if lastCreatedInternalNode is not null means rule 2 extension happened before this. Point suffix link of that node
-            //to selected node using active point.
             //TODO - Could be wrong here. Do we only do this if when walk down goes past a node or we do it every time.
             if (lastCreatedInternalNode != null) {
               lastCreatedInternalNode.suffixLink =
                   active.activeNode.child[input[active.activeEdge]];
             }
-            //walk down and update active node if required as per rules of active node update for rule 3 extension.
             walkDown(i);
             break;
           } else {
-            //next character is not same as current character so create a new internal node as per
-            //rule 2 extension.
             SuffixNode node = active.activeNode.child[input[active.activeEdge]];
             int oldStart = node.start;
             node.start = node.start + active.activeLength;
-            //create new internal node
             SuffixNode newInternalNode =
                 SuffixNode.createNode(oldStart, new End(oldStart + active.activeLength - 1));
 
-            //create new leaf node
             SuffixNode newLeafNode = SuffixNode.createNode(i, this.end);
 
-            //set internal nodes child as old node and new leaf node.
             newInternalNode.child[input[newInternalNode.start + active.activeLength]] = node;
             newInternalNode.child[input[i]] = newLeafNode;
             newInternalNode.index = -1;
             active.activeNode.child[input[newInternalNode.start]] = newInternalNode;
 
-            //if another internal node was created in last extension of this phase then suffix link of that
-            //node will be this node.
             if (lastCreatedInternalNode != null) {
               lastCreatedInternalNode.suffixLink = newInternalNode;
             }
-            //set this guy as lastCreatedInternalNode and if new internalNode is created in next extension of this phase
-            //then point suffix of this node to that node. Meanwhile set suffix of this node to root.
             lastCreatedInternalNode = newInternalNode;
             newInternalNode.suffixLink = root;
 
-            //if active node is not root then follow suffix link
             if (active.activeNode != root) {
               active.activeNode = active.activeNode.suffixLink;
-            } else {//if active node is root then increase active index by one and decrease active length by 1
+            } else {
               active.activeEdge = active.activeEdge + 1;
               active.activeLength--;
             }
@@ -181,16 +83,11 @@ public final class SuffixTree {
           }
 
         } catch (EndOfPathException e) {
-
-          //this happens when we are looking for new character from end of current path edge. Here we already have internal node so
-          //we don't have to create new internal node. Just create a leaf node from here and move to suffix new link.
           SuffixNode node = active.activeNode.child[input[active.activeEdge]];
           node.child[input[i]] = SuffixNode.createNode(i, end);
-          //if active node is not root then follow suffix link
           if (active.activeNode != root) {
             active.activeNode = active.activeNode.suffixLink;
           }
-          //if active node is root then increase active index by one and decrease active length by 1
           else {
             active.activeEdge = active.activeEdge + 1;
             active.activeLength--;
@@ -203,9 +100,6 @@ public final class SuffixTree {
 
   private void walkDown(int index) {
     SuffixNode node = active.activeNode.child[input[active.activeEdge]];
-    //active length is greater than path edge length.
-    //walk past current node so change active point.
-    //This is as per rules of walk down for rule 3 extension.
     if (lengthOf(node) < active.activeLength) {
       active.activeNode = node;
       active.activeLength = active.activeLength - lengthOf(node);
@@ -215,7 +109,6 @@ public final class SuffixTree {
     }
   }
 
-  //find next character to be compared to current phase character.
   private char nextChar(int i) throws EndOfPathException {
     SuffixNode node = active.activeNode.child[input[active.activeEdge]];
     if (lengthOf(node) >= active.activeLength) {
@@ -243,7 +136,7 @@ public final class SuffixTree {
     return node.end.end - node.start;
   }
 
-  private void setIndexUsingDfs(SuffixNode root, int val, int size) {
+  private void setIndexByDfs(SuffixNode root, int val, int size) {
     if (root == null) {
       return;
     }
@@ -255,50 +148,9 @@ public final class SuffixTree {
     }
 
     for (SuffixNode node : root.child) {
-      setIndexUsingDfs(node, val, size);
+      setIndexByDfs(node, val, size);
     }
   }
-
-  /**
-   * Do validation of the tree by comparing all suffixes and their index at leaf node.
-   */
-  private void validate(SuffixNode root, char[] input, int index, int curr) {
-    if (root == null) {
-      throw new RuntimeException("Failed at " + curr + " for index " + index);
-    }
-
-    if (root.index != -1) {
-      if (root.index != index) {
-        throw new RuntimeException("Index not same. Failed at " + curr + " for index " + index);
-      } else {
-        return;
-      }
-    }
-    if (curr >= input.length) {
-      throw new RuntimeException("Index not same. Failed at " + curr + " for index " + index);
-    }
-
-    SuffixNode node = root.child[input[curr]];
-    if (node == null) {
-      throw new RuntimeException("Failed at " + curr + " for index " + index);
-    }
-    int j = 0;
-    for (int i = node.start; i <= node.end.end; i++) {
-      if (input[curr + j] != input[i]) {
-        throw new RuntimeException("Mismatch found " + input[curr + j] + " " + input[i]);
-      }
-      j++;
-    }
-    curr += node.end.end - node.start + 1;
-    validate(node, input, index, curr);
-  }
-
-  public void validate() {
-    for (int i = 0; i < this.input.length; i++) {
-      validate(this.root, this.input, i, i);
-    }
-  }
-
 
   private static final class SuffixNode {
 
