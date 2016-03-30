@@ -184,6 +184,7 @@ public class DoubleArrayTrie implements Dictionary {
             base = grow(base, nt * 2);
           }
           base[nt] = base[ot];
+          base[ot] = NONE;
 
           for (int k = 0, m = check.length; k < m; k++) {
             if (check[k] == ot) {
