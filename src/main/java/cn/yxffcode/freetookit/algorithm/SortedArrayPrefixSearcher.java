@@ -34,6 +34,7 @@ public class SortedArrayPrefixSearcher implements PrefixSearcher {
     //不要使用ArrayList,避免创建ArrayList时的O(n)时间开销
     return new AbstractList<String>() {
       @Override public String get(int index) {
+        checkArgument(index >= 0);
         return data[from + index];
       }
 
