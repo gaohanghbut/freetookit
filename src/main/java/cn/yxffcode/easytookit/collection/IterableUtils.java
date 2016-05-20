@@ -3,7 +3,12 @@ package cn.yxffcode.easytookit.collection;
 import com.google.common.base.Supplier;
 import com.google.common.collect.Lists;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;

@@ -15,6 +15,12 @@ public abstract class ArrayUtils {
     return tmp;
   }
 
+  public static char[] reverseGrow(char[] src, int newLength) {
+    char[] tmp = new char[newLength];
+    System.arraycopy(src, 0, tmp, src.length, newLength - src.length);
+    return tmp;
+  }
+
   public static <T> T[] grow(T[] src, Class<T> type, int newLength) {
     T[] tmp = (T[]) Array.newInstance(type, newLength);
     System.arraycopy(src, 0, tmp, 0, src.length);

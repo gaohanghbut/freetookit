@@ -49,7 +49,7 @@ public final class SuffixTree {
             //TODO - Could be wrong here. Do we only do this if when walk down goes past a node or we do it every time.
             if (lastCreatedInternalNode != null) {
               lastCreatedInternalNode.suffixLink =
-                  active.activeNode.child[input[active.activeEdge]];
+                                                        active.activeNode.child[input[active.activeEdge]];
             }
             walkDown(i);
             break;
@@ -58,7 +58,10 @@ public final class SuffixTree {
             int oldStart = node.start;
             node.start = node.start + active.activeLength;
             SuffixNode newInternalNode =
-                SuffixNode.createNode(oldStart, new End(oldStart + active.activeLength - 1));
+                                                      SuffixNode.createNode(oldStart,
+                                                                                                new End(oldStart
+                                                                                                                                          + active.activeLength
+                                                                                                                                          - 1));
 
             SuffixNode newLeafNode = SuffixNode.createNode(i, this.end);
 
@@ -87,8 +90,7 @@ public final class SuffixTree {
           node.child[input[i]] = SuffixNode.createNode(i, end);
           if (active.activeNode != root) {
             active.activeNode = active.activeNode.suffixLink;
-          }
-          else {
+          } else {
             active.activeEdge = active.activeEdge + 1;
             active.activeLength--;
           }
@@ -128,10 +130,6 @@ public final class SuffixTree {
     }
   }
 
-  private static class EndOfPathException extends Exception {
-  }
-
-
   private int lengthOf(SuffixNode node) {
     return node.end.end - node.start;
   }
@@ -152,19 +150,22 @@ public final class SuffixTree {
     }
   }
 
-  private static final class SuffixNode {
 
-    private SuffixNode() {
-    }
+  private static class EndOfPathException extends Exception {
+  }
+
+
+  private static final class SuffixNode {
 
     private static final int TOTAL = 256;
     private SuffixNode[] child = new SuffixNode[TOTAL];
-
     private int start;
     private End end;
     private int index;
-
     private SuffixNode suffixLink;
+
+    private SuffixNode() {
+    }
 
     public static SuffixNode createNode(int start, End end) {
       SuffixNode node = new SuffixNode();
@@ -189,15 +190,19 @@ public final class SuffixTree {
 
 
   private static final class End {
+    int end;
+
     public End(int end) {
       this.end = end;
     }
-
-    int end;
   }
 
 
   private static final class Active {
+    private SuffixNode activeNode;
+    private int activeEdge;
+    private int activeLength;
+
     private Active(SuffixNode node) {
       activeLength = 0;
       activeNode = node;
@@ -208,12 +213,9 @@ public final class SuffixTree {
     public String toString() {
 
       return "Active [activeNode=" + activeNode + ", activeIndex="
-          + activeEdge + ", activeLength=" + activeLength + "]";
+                                                + activeEdge + ", activeLength=" + activeLength
+                                                + "]";
     }
-
-    private SuffixNode activeNode;
-    private int activeEdge;
-    private int activeLength;
   }
 
 }

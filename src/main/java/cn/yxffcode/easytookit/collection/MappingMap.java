@@ -17,49 +17,48 @@ import java.util.Set;
  */
 public class MappingMap extends AbstractMap<String, Object> {
 
-    private static final KeyResolver FIELD_NAME_KEY = new KeyResolver() {
-        @Override public String getKey(Field field) {
-            return field.getName();
+  private static final KeyResolver FIELD_NAME_KEY = new KeyResolver() {
+    @Override public String getKey(Field field) {
+      return field.getName();
+    }
+  };
+  private final Map<String, Object> table;
+
+  private MappingMap(Object bean, KeyResolver keyResolver) {
+    Map<String, Object> table = new HashMap<>();
+    Class<?> type = bean.getClass();
+    while (type != Object.class) {
+      Field[] fields = type.getDeclaredFields();
+      for (Field field : fields) {
+        field.setAccessible(true);
+        try {
+          String key = keyResolver.getKey(field);
+          if (Strings.isNullOrEmpty(key)) {
+            continue;
+          }
+          table.put(key, field.get(bean));
+        } catch (IllegalAccessException e) {
+          Throwables.propagate(e);
         }
-    };
-
-    public static MappingMap create(Object bean, KeyResolver keyResolver) {
-        return new MappingMap(bean, keyResolver);
+      }
+      type = type.getSuperclass();
     }
+    this.table = Collections.unmodifiableMap(table);
+  }
 
-    public static MappingMap create(Object bean) {
-        return create(bean, FIELD_NAME_KEY);
-    }
+  public static MappingMap create(Object bean, KeyResolver keyResolver) {
+    return new MappingMap(bean, keyResolver);
+  }
 
-    private final Map<String, Object> table;
+  public static MappingMap create(Object bean) {
+    return create(bean, FIELD_NAME_KEY);
+  }
 
-    private MappingMap(Object bean, KeyResolver keyResolver) {
-        Map<String, Object> table = new HashMap<>();
-        Class<?> type = bean.getClass();
-        while (type != Object.class) {
-            Field[] fields = type.getDeclaredFields();
-            for (Field field : fields) {
-                field.setAccessible(true);
-                try {
-                    String key = keyResolver.getKey(field);
-                    if (Strings.isNullOrEmpty(key)) {
-                        continue;
-                    }
-                    table.put(key, field.get(bean));
-                } catch (IllegalAccessException e) {
-                    Throwables.propagate(e);
-                }
-            }
-            type = type.getSuperclass();
-        }
-        this.table = Collections.unmodifiableMap(table);
-    }
+  @Override public Set<Entry<String, Object>> entrySet() {
+    return table.entrySet();
+  }
 
-    @Override public Set<Entry<String, Object>> entrySet() {
-        return table.entrySet();
-    }
-
-    public interface KeyResolver {
-        String getKey(Field field);
-    }
+  public interface KeyResolver {
+    String getKey(Field field);
+  }
 }

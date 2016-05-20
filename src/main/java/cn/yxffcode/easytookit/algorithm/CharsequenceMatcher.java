@@ -11,6 +11,7 @@ public class CharSequenceMatcher {
   private final int toff;
   private final int tlen;
   private int[] next;
+
   private CharSequenceMatcher(CharSequence target, int toff, int tlen) {
     this.target = target;
     this.toff = toff;

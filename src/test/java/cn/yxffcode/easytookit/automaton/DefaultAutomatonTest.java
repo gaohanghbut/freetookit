@@ -12,12 +12,16 @@ import static org.junit.Assert.assertTrue;
 public class DefaultAutomatonTest {
 
   @Test public void testAutomaton() {
-    DefaultAutomaton automaton =
-        new DefaultAutomaton.DictionaryBuilder().addWord(new StringIntSequence("hello"))
-            .addWord(new StringIntSequence("helle")).addWord(new StringIntSequence("halle"))
-            .addWord(new StringIntSequence("halla")).addWord(new StringIntSequence("hallb"))
-            .addWord(new StringIntSequence("abc")).addWord(new StringIntSequence("dkk"))
-            .addWord(new StringIntSequence("dkkk")).build();
+    DefaultAutomaton automaton = new DefaultAutomaton.DictionaryBuilder().addWord(
+                                              new StringIntSequence("hello"))
+                                              .addWord(new StringIntSequence("helle"))
+                                              .addWord(new StringIntSequence("halle"))
+                                              .addWord(new StringIntSequence("halla"))
+                                              .addWord(new StringIntSequence("hallb"))
+                                              .addWord(new StringIntSequence("abc"))
+                                              .addWord(new StringIntSequence("dkk"))
+                                              .addWord(new StringIntSequence("dkkk"))
+                                              .build();
     assertTrue(automaton.run("hello"));
     assertTrue(automaton.run("helle"));
     assertTrue(automaton.run("halle"));

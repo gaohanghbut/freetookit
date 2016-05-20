@@ -17,10 +17,18 @@ import java.util.Iterator;
  */
 public class PatternRecognizer {
   private static final int NO_SUCH_STATE = -1;
+  private final DoubleArrayTrie dictionary;
+  private ACAutomaton acAutomaton;
+
+  private PatternRecognizer(DoubleArrayTrie dat) {
+    this.dictionary = dat;
+    this.acAutomaton = dat.toAcAutomaton();
+  }
 
   public static final PatternRecognizer create(String dictionaryPath) {
     try (BufferedReader in = new BufferedReader(
-        new InputStreamReader(PatternRecognizer.class.getResourceAsStream(dictionaryPath)))) {
+                                              new InputStreamReader(PatternRecognizer.class
+                                                                                        .getResourceAsStream(dictionaryPath)))) {
 
       DoubleArrayTrie dic = DoubleArrayTrie.create(IOStreams.lines(in));
       return new PatternRecognizer(dic);
@@ -28,14 +36,6 @@ public class PatternRecognizer {
       Throwables.propagate(e);
       return null;//not happen
     }
-  }
-
-  private final DoubleArrayTrie dictionary;
-  private ACAutomaton acAutomaton;
-
-  private PatternRecognizer(DoubleArrayTrie dat) {
-    this.dictionary = dat;
-    this.acAutomaton = dat.toAcAutomaton();
   }
 
   public Iterable<String> getMatched(final String sentence) {

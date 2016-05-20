@@ -63,7 +63,7 @@ public final class StringUtils {
 
   public boolean contains(CharSequence source, int fromIndex, CharSequence target) {
     return indexOf(source, fromIndex, source.length() - fromIndex, target, 0, target.length())
-        != -1;
+                                              != -1;
   }
 
   public boolean contains(char[] source, char[] target) {
