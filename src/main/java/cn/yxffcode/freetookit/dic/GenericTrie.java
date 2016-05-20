@@ -4,9 +4,9 @@ import cn.yxffcode.freetookit.algorithm.PrefixSearcher;
 import cn.yxffcode.freetookit.lang.AbstractIterable;
 import cn.yxffcode.freetookit.lang.ReverseStringBuilder;
 import com.google.common.base.Predicate;
+import com.google.common.collect.Maps;
 import com.google.common.collect.TreeTraverser;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -150,7 +150,7 @@ public class GenericTrie implements PrefixSearcher {
     private Node(char elem, Node parent) {
       this.elem = elem;
       this.parent = parent;
-      this.children = new HashMap<>();
+      this.children = Maps.newTreeMap();
     }
   }
 }
