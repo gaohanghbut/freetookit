@@ -1,4 +1,4 @@
-package cn.yxffcode.easytookit.collection;
+package cn.yxffcode.easytookit.dic;
 
 import cn.yxffcode.easytookit.algorithm.PrefixSearcher;
 import cn.yxffcode.easytookit.lang.AbstractIterable;

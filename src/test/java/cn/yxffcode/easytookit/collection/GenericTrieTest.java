@@ -1,5 +1,6 @@
 package cn.yxffcode.easytookit.collection;
 
+import cn.yxffcode.easytookit.dic.GenericTrie;
 import cn.yxffcode.easytookit.io.IOStreams;
 import cn.yxffcode.easytookit.utils.StringUtils;
 import org.junit.Test;
