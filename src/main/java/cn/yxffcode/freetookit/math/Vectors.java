@@ -33,17 +33,19 @@ public final class Vectors {
    * 两个向量的内积(点乘)
    *
    * @param x     第一个向量
-   * @param w     第二个向量
+   * @param y     第二个向量
    * @param xfrom x向量的起始
-   * @param wfrom w向量的起始
+   * @param yfrom w向量的起始
    * @return 向量的内积
    */
-  public static double dot(double[] x, int xfrom, double[] w, int wfrom) {
+  public static double dot(double[] x, int xfrom, double[] y, int yfrom) {
     checkNotNull(x);
-    checkNotNull(w);
-    checkArgument(x.length == w.length);
-    //计算内积
-    return sum(x, w, (left, right) -> left * right);
+    checkNotNull(y);
+    double v = 0;
+    for (int i = xfrom, j = yfrom; i < x.length; i++) {
+      v += x[i] * y[j];
+    }
+    return v;
   }
 
   /**
