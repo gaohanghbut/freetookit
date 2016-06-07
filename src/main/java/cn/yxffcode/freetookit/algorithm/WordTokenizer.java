@@ -7,6 +7,8 @@ import cn.yxffcode.freetookit.dic.DoubleArrayTrie;
 import java.util.Iterator;
 
 /**
+ * TODO:没实现
+ *
  * @author gaohang on 15/12/20.
  */
 public abstract class WordTokenizer {

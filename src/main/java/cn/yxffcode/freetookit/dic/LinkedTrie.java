@@ -1,6 +1,5 @@
-package cn.yxffcode.freetookit.collection;
+package cn.yxffcode.freetookit.dic;
 
-import cn.yxffcode.freetookit.dic.AlphabetTransformer;
 import cn.yxffcode.freetookit.lang.StringIntSequence;
 
 /**
@@ -58,8 +57,15 @@ public class LinkedTrie {
         }
 
       }
+      if (node != root) {
+        //mark as last;
+      }
 
     }
+  }
+
+  public boolean match(String word) {
+    return false;
   }
 
   private static final class Node {

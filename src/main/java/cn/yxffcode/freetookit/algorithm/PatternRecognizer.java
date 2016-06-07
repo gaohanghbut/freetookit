@@ -26,9 +26,8 @@ public class PatternRecognizer {
   }
 
   public static final PatternRecognizer create(String dictionaryPath) {
-    try (BufferedReader in = new BufferedReader(
-                                              new InputStreamReader(PatternRecognizer.class
-                                                                                        .getResourceAsStream(dictionaryPath)))) {
+    try (BufferedReader in = new BufferedReader(new InputStreamReader(PatternRecognizer.class
+                                              .getResourceAsStream(dictionaryPath)))) {
 
       DoubleArrayTrie dic = DoubleArrayTrie.create(IOStreams.lines(in));
       return new PatternRecognizer(dic);
@@ -38,6 +37,9 @@ public class PatternRecognizer {
     }
   }
 
+  /**
+   * 利用AC自动机做模式匹配,最短匹配方式
+   */
   public Iterable<String> getMatched(final String sentence) {
     return new Iterable<String>() {
       @Override public Iterator<String> iterator() {

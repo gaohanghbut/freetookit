@@ -6,6 +6,8 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
 /**
+ * 使用SortedTree实现前缀查找
+ *
  * @author gaohang on 16/5/11.
  */
 public class TreePrefixSearcher implements PrefixSearcher {

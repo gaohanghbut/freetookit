@@ -21,7 +21,11 @@ import static com.google.common.base.Strings.isNullOrEmpty;
  */
 public class GenericTrie implements PrefixSearcher {
 
-  public static final GenericTrie EMPTY = new GenericTrie();
+  public static final GenericTrie EMPTY = new GenericTrie() {
+    @Override public void add(String word) {
+      throw new UnsupportedOperationException("Immutable trie");
+    }
+  };
 
   private final Node root;
   private final boolean readOnly;
