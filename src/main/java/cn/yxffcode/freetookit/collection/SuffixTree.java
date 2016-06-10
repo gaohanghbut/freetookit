@@ -42,54 +42,54 @@ public final class SuffixTree {
           root.child[input[i]] = SuffixNode.createNode(i, end);
           remainingSuffixCount--;
         }
-      } else {
-        try {
-          char ch = nextChar(i);
-          if (ch == input[i]) {
-            //TODO - Could be wrong here. Do we only do this if when walk down goes past a node or we do it every time.
-            if (lastCreatedInternalNode != null) {
-              lastCreatedInternalNode.suffixLink = active.activeNode.child[input[active.activeEdge]];
-            }
-            walkDown(i);
-            break;
-          }
-          SuffixNode node = active.activeNode.child[input[active.activeEdge]];
-          int oldStart = node.start;
-          node.start = node.start + active.activeLength;
-          SuffixNode newInternalNode = SuffixNode.createNode(oldStart, new End(oldStart + active.activeLength - 1));
-
-          SuffixNode newLeafNode = SuffixNode.createNode(i, this.end);
-
-          newInternalNode.child[input[newInternalNode.start + active.activeLength]] = node;
-          newInternalNode.child[input[i]] = newLeafNode;
-          newInternalNode.index = -1;
-          active.activeNode.child[input[newInternalNode.start]] = newInternalNode;
-
+        continue;
+      }
+      try {
+        char ch = nextChar(i);
+        if (ch == input[i]) {
+          //TODO - Could be wrong here. Do we only do this if when walk down goes past a node or we do it every time.
           if (lastCreatedInternalNode != null) {
-            lastCreatedInternalNode.suffixLink = newInternalNode;
+            lastCreatedInternalNode.suffixLink = active.activeNode.child[input[active.activeEdge]];
           }
-          lastCreatedInternalNode = newInternalNode;
-          newInternalNode.suffixLink = root;
-
-          if (active.activeNode != root) {
-            active.activeNode = active.activeNode.suffixLink;
-          } else {
-            active.activeEdge = active.activeEdge + 1;
-            active.activeLength--;
-          }
-          remainingSuffixCount--;
-
-        } catch (EndOfPathException e) {
-          SuffixNode node = active.activeNode.child[input[active.activeEdge]];
-          node.child[input[i]] = SuffixNode.createNode(i, end);
-          if (active.activeNode != root) {
-            active.activeNode = active.activeNode.suffixLink;
-          } else {
-            active.activeEdge = active.activeEdge + 1;
-            active.activeLength--;
-          }
-          remainingSuffixCount--;
+          walkDown(i);
+          break;
         }
+        SuffixNode node = active.activeNode.child[input[active.activeEdge]];
+        int oldStart = node.start;
+        node.start = node.start + active.activeLength;
+        SuffixNode newInternalNode = SuffixNode.createNode(oldStart, new End(oldStart + active.activeLength - 1));
+
+        SuffixNode newLeafNode = SuffixNode.createNode(i, this.end);
+
+        newInternalNode.child[input[newInternalNode.start + active.activeLength]] = node;
+        newInternalNode.child[input[i]] = newLeafNode;
+        newInternalNode.index = -1;
+        active.activeNode.child[input[newInternalNode.start]] = newInternalNode;
+
+        if (lastCreatedInternalNode != null) {
+          lastCreatedInternalNode.suffixLink = newInternalNode;
+        }
+        lastCreatedInternalNode = newInternalNode;
+        newInternalNode.suffixLink = root;
+
+        if (active.activeNode != root) {
+          active.activeNode = active.activeNode.suffixLink;
+        } else {
+          active.activeEdge = active.activeEdge + 1;
+          active.activeLength--;
+        }
+        remainingSuffixCount--;
+
+      } catch (EndOfPathException e) {
+        SuffixNode node = active.activeNode.child[input[active.activeEdge]];
+        node.child[input[i]] = SuffixNode.createNode(i, end);
+        if (active.activeNode != root) {
+          active.activeNode = active.activeNode.suffixLink;
+        } else {
+          active.activeEdge = active.activeEdge + 1;
+          active.activeLength--;
+        }
+        remainingSuffixCount--;
       }
     }
   }
