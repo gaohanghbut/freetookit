@@ -48,42 +48,36 @@ public final class SuffixTree {
           if (ch == input[i]) {
             //TODO - Could be wrong here. Do we only do this if when walk down goes past a node or we do it every time.
             if (lastCreatedInternalNode != null) {
-              lastCreatedInternalNode.suffixLink =
-                                                        active.activeNode.child[input[active.activeEdge]];
+              lastCreatedInternalNode.suffixLink = active.activeNode.child[input[active.activeEdge]];
             }
             walkDown(i);
             break;
-          } else {
-            SuffixNode node = active.activeNode.child[input[active.activeEdge]];
-            int oldStart = node.start;
-            node.start = node.start + active.activeLength;
-            SuffixNode newInternalNode =
-                                                      SuffixNode.createNode(oldStart,
-                                                                                                new End(oldStart
-                                                                                                                                          + active.activeLength
-                                                                                                                                          - 1));
-
-            SuffixNode newLeafNode = SuffixNode.createNode(i, this.end);
-
-            newInternalNode.child[input[newInternalNode.start + active.activeLength]] = node;
-            newInternalNode.child[input[i]] = newLeafNode;
-            newInternalNode.index = -1;
-            active.activeNode.child[input[newInternalNode.start]] = newInternalNode;
-
-            if (lastCreatedInternalNode != null) {
-              lastCreatedInternalNode.suffixLink = newInternalNode;
-            }
-            lastCreatedInternalNode = newInternalNode;
-            newInternalNode.suffixLink = root;
-
-            if (active.activeNode != root) {
-              active.activeNode = active.activeNode.suffixLink;
-            } else {
-              active.activeEdge = active.activeEdge + 1;
-              active.activeLength--;
-            }
-            remainingSuffixCount--;
           }
+          SuffixNode node = active.activeNode.child[input[active.activeEdge]];
+          int oldStart = node.start;
+          node.start = node.start + active.activeLength;
+          SuffixNode newInternalNode = SuffixNode.createNode(oldStart, new End(oldStart + active.activeLength - 1));
+
+          SuffixNode newLeafNode = SuffixNode.createNode(i, this.end);
+
+          newInternalNode.child[input[newInternalNode.start + active.activeLength]] = node;
+          newInternalNode.child[input[i]] = newLeafNode;
+          newInternalNode.index = -1;
+          active.activeNode.child[input[newInternalNode.start]] = newInternalNode;
+
+          if (lastCreatedInternalNode != null) {
+            lastCreatedInternalNode.suffixLink = newInternalNode;
+          }
+          lastCreatedInternalNode = newInternalNode;
+          newInternalNode.suffixLink = root;
+
+          if (active.activeNode != root) {
+            active.activeNode = active.activeNode.suffixLink;
+          } else {
+            active.activeEdge = active.activeEdge + 1;
+            active.activeLength--;
+          }
+          remainingSuffixCount--;
 
         } catch (EndOfPathException e) {
           SuffixNode node = active.activeNode.child[input[active.activeEdge]];
@@ -119,15 +113,13 @@ public final class SuffixTree {
     if (lengthOf(node) + 1 == active.activeLength) {
       if (node.child[input[i]] != null) {
         return input[i];
-      } else {
-        throw new EndOfPathException();
       }
-    } else {
-      active.activeNode = node;
-      active.activeLength = active.activeLength - lengthOf(node) - 1;
-      active.activeEdge = active.activeEdge + lengthOf(node) + 1;
-      return input[active.activeNode.child[input[active.activeEdge]].start + active.activeLength];
+      throw new EndOfPathException();
     }
+    active.activeNode = node;
+    active.activeLength = active.activeLength - lengthOf(node) - 1;
+    active.activeEdge = active.activeEdge + lengthOf(node) + 1;
+    return input[active.activeNode.child[input[active.activeEdge]].start + active.activeLength];
   }
 
   private int lengthOf(SuffixNode node) {
@@ -213,8 +205,8 @@ public final class SuffixTree {
     public String toString() {
 
       return "Active [activeNode=" + activeNode + ", activeIndex="
-                                                + activeEdge + ", activeLength=" + activeLength
-                                                + "]";
+              + activeEdge + ", activeLength=" + activeLength
+              + "]";
     }
   }
 
