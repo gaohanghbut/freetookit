@@ -42,7 +42,7 @@ public class CharsMatcher {
    * 调用此方法前,如果没有调用{@link #buildNextIfAbsent()},会以创建next数组,但next数组可能会被创建多次
    */
   public int indexOf(char[] source, int soff, int slen) {
-    if (tlen <= STRING_INDEX_OF_THRESHOLD) {
+    if (next == null && tlen <= STRING_INDEX_OF_THRESHOLD) {
       if (tlen == 0) {
         return 0;
       }
