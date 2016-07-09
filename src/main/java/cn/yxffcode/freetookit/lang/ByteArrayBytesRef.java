@@ -1,5 +1,7 @@
 package cn.yxffcode.freetookit.lang;
 
+import cn.yxffcode.freetookit.utils.ArrayUtils;
+
 /**
  * @author gaohang on 15/12/10.
  */
@@ -24,5 +26,32 @@ public class ByteArrayBytesRef implements BytesRef {
 
   @Override public int length() {
     return length;
+  }
+
+  @Override public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    ByteArrayBytesRef that = (ByteArrayBytesRef) o;
+    if (this.length != that.length) {
+      return false;
+    }
+    for (int i = 0; i < length; i++) {
+      if (this.element(i) != that.element(i)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  @Override public int hashCode() {
+    return ArrayUtils.hashCode(data, offset, length);
+  }
+
+  @Override public String toString() {
+    return ArrayUtils.toString(data, offset, length);
   }
 }

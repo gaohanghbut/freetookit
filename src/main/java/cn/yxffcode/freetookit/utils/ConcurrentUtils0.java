@@ -39,9 +39,8 @@ final class ConcurrentUtils0 {
       BYTE_ARRAY_BASE_OFFSET = UNSAFE.arrayBaseOffset(byte[].class);
       boolean unaligned;
       try {
-        Class<?> bitsClass =
-                                                  Class.forName("java.nio.Bits", false,
-                                                                                            ClassLoader.getSystemClassLoader());
+        Class<?> bitsClass = Class.forName("java.nio.Bits", false,
+                                                  ClassLoader.getSystemClassLoader());
         Method unalignedMethod = bitsClass.getDeclaredMethod("unaligned");
         unalignedMethod.setAccessible(true);
         unaligned = Boolean.TRUE.equals(unalignedMethod.invoke(null));
@@ -89,14 +88,8 @@ final class ConcurrentUtils0 {
       }
     }
     if (remainingBytes >= 2) {
-      return UNSAFE.getChar(bytes1, baseOffset1) == UNSAFE.getChar(bytes2, baseOffset2) && (
-                                                remainingBytes == 2
-                                                                                          ||
-                                                                                          bytes1[startPos1
-                                                                                                                                    + 2]
-                                                                                                                                    == bytes2[
-                                                                                                                                    startPos2
-                                                                                                                                                                              + 2]);
+      return UNSAFE.getChar(bytes1, baseOffset1) == UNSAFE.getChar(bytes2, baseOffset2) &&
+                                                (remainingBytes == 2 || bytes1[startPos1 + 2] == bytes2[startPos2+ 2]);
     }
     return bytes1[startPos1] == bytes2[startPos2];
   }

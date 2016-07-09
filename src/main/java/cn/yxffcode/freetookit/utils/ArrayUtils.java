@@ -26,4 +26,35 @@ public abstract class ArrayUtils {
     System.arraycopy(src, 0, tmp, 0, src.length);
     return tmp;
   }
+
+  public static int hashCode(byte[] data, int off, int len) {
+    if (data == null) {
+      return 0;
+    }
+
+    int result = 1;
+    for (int i = off, j = off + len; i < j; i++) {
+      result = 31 * result + data[i];
+    }
+    return result;
+  }
+
+  public static String toString(byte[] data, int off, int len) {
+    if (data == null) {
+      return "null";
+    }
+    if (len == 0) {
+      return "[]";
+    }
+
+    StringBuilder b = new StringBuilder();
+    b.append('[');
+    for (int i = off, j = len + off - 1; ; i++) {
+      b.append(data[i]);
+        if (i == j) {
+          return b.append(']').toString();
+        }
+      b.append(", ");
+    }
+  }
 }
