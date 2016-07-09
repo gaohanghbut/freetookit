@@ -58,7 +58,7 @@ public class LinkedTrie {
 
       }
       if (node != root) {
-        //mark as last;
+        //todo:mark as last;
       }
 
     }

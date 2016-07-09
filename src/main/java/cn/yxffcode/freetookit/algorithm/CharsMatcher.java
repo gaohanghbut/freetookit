@@ -15,7 +15,7 @@ public class CharsMatcher {
   private final char[] target;
   private final int toff;
   private final int tlen;
-  private int[] next;
+  private volatile int[] next;
 
   private CharsMatcher(char[] target, int toff, int tlen) {
     this.target = target;
