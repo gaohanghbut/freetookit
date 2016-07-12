@@ -1,10 +1,12 @@
 package cn.yxffcode.freetookit.collection;
 
 import cn.yxffcode.freetookit.utils.Reflections;
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 
 import java.util.HashMap;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -14,12 +16,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class HashBasedIterTransMap<K, V> extends HashMap<K, V> implements IterTransMap<K, V> {
   public static <K, V> HashBasedIterTransMap<K, V> immutableCopyOf(
-                                            Iterable<V> meta, String keyProperty) {
+          Iterable<V> meta, String keyProperty) {
     return new HashBasedIterTransMap<>(meta, keyProperty, true);
   }
 
   public static <K, V> HashBasedIterTransMap<K, V> newInstance(
-                                            Iterable<V> meta, String keyProperty) {
+          Iterable<V> meta, String keyProperty) {
     return new HashBasedIterTransMap<>(meta, keyProperty, false);
   }
 
@@ -27,6 +29,7 @@ public class HashBasedIterTransMap<K, V> extends HashMap<K, V> implements IterTr
 
   private HashBasedIterTransMap(Iterable<V> meta, String keyProperty, boolean immutableCopy) {
     checkNotNull(meta);
+    checkArgument(!Strings.isNullOrEmpty(keyProperty));
     if (immutableCopy) {
       this.meta = ImmutableList.copyOf(meta);
     } else {
@@ -34,11 +37,17 @@ public class HashBasedIterTransMap<K, V> extends HashMap<K, V> implements IterTr
     }
     for (V value : this.meta) {
       K key = (K) Reflections.getField(keyProperty, value);
-      put(key, value);
+      super.put(key, value);
     }
   }
 
-  @Override public Iterable<V> metaData() {
+  @Override
+  public Iterable<V> metaData() {
     return meta;
+  }
+
+  @Override
+  public V put(K key, V value) {
+    throw new UnsupportedOperationException("put is not supported by this map");
   }
 }
