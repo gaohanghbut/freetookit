@@ -109,4 +109,8 @@ public final class IOStreams {
     return new BufferedReader(new InputStreamReader(in));
   }
 
+  public static BufferedReader openClasspath(String classpath) {
+    return toBufferedReader(IOStreams.class.getResourceAsStream(classpath));
+  }
+
 }
