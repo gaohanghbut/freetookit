@@ -6,7 +6,11 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterators;
 
-import java.util.*;
+import java.util.AbstractMap;
+import java.util.AbstractSet;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -32,10 +36,10 @@ public class DirectIterTransMap<K, V> extends AbstractMap<K, V> implements IterT
   private int size = -1;
   private Function<V, Entry<K, V>> entryFunction;
 
-  private DirectIterTransMap(Iterable<V> meta, String keyProperty, boolean immutableCopy) {
+  private DirectIterTransMap(Iterable<V> meta, String keyProp, boolean immutableCopy) {
     checkNotNull(meta);
-    checkArgument(!Strings.isNullOrEmpty(keyProperty));
-    final String keyProperty1 = keyProperty;
+    checkArgument(!Strings.isNullOrEmpty(keyProp));
+    final String keyProperty = keyProp;
     this.entryFunction = new Function<V, Entry<K, V>>() {
 
       @Override
@@ -43,7 +47,7 @@ public class DirectIterTransMap<K, V> extends AbstractMap<K, V> implements IterT
         return new Entry<K, V>() {
           @Override
           public K getKey() {
-            return (K) Reflections.getField(keyProperty1, value);
+            return (K) Reflections.getField(keyProperty, value);
           }
 
           @Override

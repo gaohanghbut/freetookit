@@ -1,6 +1,8 @@
 package cn.yxffcode.freetookit.collection;
 
-import java.util.*;
+import java.util.AbstractCollection;
+import java.util.Collection;
+import java.util.Iterator;
 
 import static com.google.common.base.Preconditions.checkArgument;
 

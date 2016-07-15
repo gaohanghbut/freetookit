@@ -2,7 +2,10 @@ package cn.yxffcode.freetookit.collection;
 
 import cn.yxffcode.freetookit.utils.Reflections;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
