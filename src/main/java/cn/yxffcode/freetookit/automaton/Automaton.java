@@ -7,7 +7,7 @@ import java.util.BitSet;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * 轻量级的自动机
+ * 自动机
  *
  * @author gaohang on 15/12/6.
  */
