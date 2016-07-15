@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package cn.yxffcode.freetookit.concurrent;
+package cn.yxffcode.freetookit.collection;
 
 import com.google.common.collect.Maps;
 

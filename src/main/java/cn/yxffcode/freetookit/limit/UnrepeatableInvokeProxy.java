@@ -1,6 +1,6 @@
 package cn.yxffcode.freetookit.limit;
 
-import cn.yxffcode.freetookit.concurrent.ConcurrentSet;
+import cn.yxffcode.freetookit.collection.ConcurrentSet;
 import com.google.common.reflect.AbstractInvocationHandler;
 
 import java.lang.reflect.Method;
