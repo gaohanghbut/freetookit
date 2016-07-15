@@ -14,8 +14,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  *
  * @author gaohang on 7/16/16.
  */
-public class BuildingMap<K, V> extends HashMap<K, V> {
-  protected BuildingMap(Iterable<?> srcObjects, String keyProperty, String valueProperty) {
+public class HashBuildingMap<K, V> extends HashMap<K, V> {
+  protected HashBuildingMap(Iterable<?> srcObjects, String keyProperty, String valueProperty) {
     checkNotNull(srcObjects);
     for (Object object : srcObjects) {
       K key = (K) Reflections.getField(keyProperty, object);
