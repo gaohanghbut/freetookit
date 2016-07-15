@@ -63,7 +63,10 @@ public class RedisSpinLock implements DistributeLock {
       String holder = jedis.get(lockHolder);
       if (holder != null && lockHolder.equals(holder)) {
         return true;
+      } else if (holder != null) {
+        return false;
       }
+      //竞争,第一个incr的持有锁
       Long locked = jedis.incr(lockName);
       if (locked == 1L) {
         //lock success
