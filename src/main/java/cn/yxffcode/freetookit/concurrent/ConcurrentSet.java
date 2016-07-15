@@ -37,27 +37,37 @@ public final class ConcurrentSet<E> extends AbstractSet<E> implements Serializab
     return new ConcurrentSet<>();
   }
 
-  @Override public Iterator<E> iterator() {
+  @Override
+  public Iterator<E> iterator() {
     return map.keySet().iterator();
   }
 
-  @Override public int size() {
+  @Override
+  public int size() {
     return map.size();
   }
 
-  @Override public boolean contains(Object o) {
+  @Override
+  public boolean contains(Object o) {
     return map.containsKey(o);
   }
 
-  @Override public boolean add(E o) {
+  @Override
+  public boolean add(E o) {
     return map.putIfAbsent(o, Boolean.TRUE) == null;
   }
 
-  @Override public boolean remove(Object o) {
+  @Override
+  public boolean remove(Object o) {
     return map.remove(o) != null;
   }
 
-  @Override public void clear() {
+  @Override
+  public void clear() {
     map.clear();
+  }
+
+  public boolean addIfAbsent(E e) {
+    return map.putIfAbsent(e, Boolean.TRUE) == null;
   }
 }
