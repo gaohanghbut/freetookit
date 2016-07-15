@@ -93,4 +93,14 @@ public class DirectIterTransMap<K, V> extends AbstractMap<K, V> implements IterT
     };
   }
 
+  @Override
+  public V remove(Object key) {
+    throw new UnsupportedOperationException("put is not supported by this map");
+  }
+
+  @Override
+  public void clear() {
+    throw new UnsupportedOperationException("put is not supported by this map");
+  }
+
 }
