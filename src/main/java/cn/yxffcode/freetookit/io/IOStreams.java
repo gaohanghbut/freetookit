@@ -60,11 +60,9 @@ public final class IOStreams {
 
           private String line;
 
-          private BufferedReader in = reader;
-
           @Override public boolean hasNext() {
             try {
-              return (line = in.readLine()) != null;
+              return (line = reader.readLine()) != null;
             } catch (IOException e) {
               throw new IOReaderException(e);
             }
