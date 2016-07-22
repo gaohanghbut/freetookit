@@ -1,5 +1,6 @@
 package cn.yxffcode.freetookit.automaton;
 
+import cn.yxffcode.freetookit.dic.DoubleArrayTrie;
 import cn.yxffcode.freetookit.utils.ArrayUtils;
 
 /**
@@ -13,7 +14,10 @@ public class ACAutomaton {
 
   private int[] failedNodes;
 
-  public ACAutomaton() {
+  private final DoubleArrayTrie doubleArrayTrie;
+
+  public ACAutomaton(DoubleArrayTrie doubleArrayTrie) {
+    this.doubleArrayTrie = doubleArrayTrie;
     this.failedNodes = new int[10];
   }
 

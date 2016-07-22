@@ -244,7 +244,7 @@ public class DoubleArrayTrie implements Dictionary {
    * Trie加上失败指针数组可构成一个AC自动机, 此方法用于计算出失败数组
    */
   @Override public ACAutomaton toAcAutomaton() {
-    ACAutomaton acAutomaton = new ACAutomaton();
+    ACAutomaton acAutomaton = new ACAutomaton(this);
     acAutomaton.addFailNode(startState(), ACAutomaton.ROOT_FAIL_NODE);
     LinkedList<Integer> queue = new LinkedList<>();
     queue.add(startState());
