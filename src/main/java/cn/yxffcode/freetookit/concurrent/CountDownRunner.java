@@ -32,8 +32,7 @@ public final class CountDownRunner {
       int cur = count.get();
       int v = cur - 1;
 
-      boolean cas = count.compareAndSet(cur, v);
-      if (cas) {
+      if (count.compareAndSet(cur, v)) {
         if (v == 0) {
           task.run();
         }
