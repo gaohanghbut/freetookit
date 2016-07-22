@@ -1,6 +1,6 @@
 package cn.yxffcode.freetookit.dic;
 
-import cn.yxffcode.freetookit.automaton.ACAutomaton;
+import cn.yxffcode.freetookit.automaton.FailureArray;
 import cn.yxffcode.freetookit.collection.IntIterator;
 import cn.yxffcode.freetookit.collection.IntStack;
 import cn.yxffcode.freetookit.lang.IntSequence;
@@ -243,14 +243,14 @@ public class DoubleArrayTrie implements Dictionary {
   /**
    * Trie加上失败指针数组可构成一个AC自动机, 此方法用于计算出失败数组
    */
-  @Override public ACAutomaton toAcAutomaton() {
-    ACAutomaton acAutomaton = new ACAutomaton(this);
-    acAutomaton.addFailNode(startState(), ACAutomaton.ROOT_FAIL_NODE);
+  @Override public FailureArray toAcAutomaton() {
+    FailureArray failureArray = new FailureArray();
+    failureArray.addFailNode(startState(), FailureArray.ROOT_FAIL_NODE);
     LinkedList<Integer> queue = new LinkedList<>();
     queue.add(startState());
     while (!queue.isEmpty()) {
       int i = queue.removeFirst();
-      int failNode = acAutomaton.getFailNode(i);
+      int failNode = failureArray.getFailNode(i);
       //TODO:这一层循环次数可优化
       for (int j = base[i]; j < check.length; j++) {
         if (check[j] != i) {
@@ -266,21 +266,21 @@ public class DoubleArrayTrie implements Dictionary {
         }
         queue.addLast(j);
         int k = failNode;
-        while (k != ACAutomaton.ROOT_FAIL_NODE) {
+        while (k != FailureArray.ROOT_FAIL_NODE) {
           int t = base[k] + c;
           if (t >= check.length || check[t] != failNode) {
-            k = acAutomaton.getFailNode(k);
+            k = failureArray.getFailNode(k);
           } else {
-            acAutomaton.addFailNode(j, t);
+            failureArray.addFailNode(j, t);
             break;
           }
         }
-        if (k == ACAutomaton.ROOT_FAIL_NODE) {
-          acAutomaton.addFailNode(j, startState());
+        if (k == FailureArray.ROOT_FAIL_NODE) {
+          failureArray.addFailNode(j, startState());
         }
       }
     }
-    return acAutomaton;
+    return failureArray;
   }
 
   public String buildWord(int endState) {

@@ -1,6 +1,6 @@
 package cn.yxffcode.freetookit.algorithm;
 
-import cn.yxffcode.freetookit.automaton.ACAutomaton;
+import cn.yxffcode.freetookit.automaton.FailureArray;
 import cn.yxffcode.freetookit.collection.ImmutableIterator;
 import cn.yxffcode.freetookit.dic.DoubleArrayTrie;
 import cn.yxffcode.freetookit.io.IOStreams;
@@ -18,11 +18,11 @@ import java.util.Iterator;
 public class PatternRecognizer {
   private static final int NO_SUCH_STATE = -1;
   private final DoubleArrayTrie dictionary;
-  private ACAutomaton acAutomaton;
+  private FailureArray failureArray;
 
   private PatternRecognizer(DoubleArrayTrie dat) {
     this.dictionary = dat;
-    this.acAutomaton = dat.toAcAutomaton();
+    this.failureArray = dat.toAcAutomaton();
   }
 
   public static final PatternRecognizer create(String dictionaryPath) {
@@ -59,8 +59,8 @@ public class PatternRecognizer {
               int c = intsRef.element(cur);
               int next = dictionary.nextState(state, c);
               if (next == NO_SUCH_STATE) {
-                state = acAutomaton.getFailNode(state);
-                if (state == ACAutomaton.ROOT_FAIL_NODE) {
+                state = failureArray.getFailNode(state);
+                if (state == FailureArray.ROOT_FAIL_NODE) {
                   state = dictionary.startState();
                   cur++;
                 }

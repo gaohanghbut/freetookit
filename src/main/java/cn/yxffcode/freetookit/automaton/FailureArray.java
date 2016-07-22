@@ -1,23 +1,19 @@
 package cn.yxffcode.freetookit.automaton;
 
-import cn.yxffcode.freetookit.dic.DoubleArrayTrie;
 import cn.yxffcode.freetookit.utils.ArrayUtils;
 
 /**
- * AC自动机,此处的实现只用于记录失败指针
+ * AC自动机的失败指针
  *
  * @author gaohang on 15/12/17.
  */
-public class ACAutomaton {
+public class FailureArray {
 
   public static final int ROOT_FAIL_NODE = -1;
 
   private int[] failedNodes;
 
-  private final DoubleArrayTrie doubleArrayTrie;
-
-  public ACAutomaton(DoubleArrayTrie doubleArrayTrie) {
-    this.doubleArrayTrie = doubleArrayTrie;
+  public FailureArray() {
     this.failedNodes = new int[10];
   }
 

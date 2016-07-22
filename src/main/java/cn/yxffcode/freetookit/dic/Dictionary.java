@@ -1,6 +1,6 @@
 package cn.yxffcode.freetookit.dic;
 
-import cn.yxffcode.freetookit.automaton.ACAutomaton;
+import cn.yxffcode.freetookit.automaton.FailureArray;
 
 import java.io.Serializable;
 
@@ -31,5 +31,5 @@ public interface Dictionary extends Serializable {
   /**
    * 构建AC自动机
    */
-  ACAutomaton toAcAutomaton();
+  FailureArray toAcAutomaton();
 }

@@ -1,6 +1,6 @@
 package cn.yxffcode.freetookit.dic;
 
-import cn.yxffcode.freetookit.automaton.ACAutomaton;
+import cn.yxffcode.freetookit.automaton.FailureArray;
 import cn.yxffcode.freetookit.automaton.Automaton;
 import cn.yxffcode.freetookit.automaton.DefaultAutomaton;
 import cn.yxffcode.freetookit.lang.StringIntSequence;
@@ -47,7 +47,7 @@ public class AutomatonDictionary implements Dictionary {
     return automaton.isFinished(state);
   }
 
-  @Override public ACAutomaton toAcAutomaton() {
+  @Override public FailureArray toAcAutomaton() {
     return null;
   }
 }
