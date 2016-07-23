@@ -23,6 +23,10 @@ import java.util.Iterator;
 import java.util.concurrent.ConcurrentMap;
 
 /**
+ * 线程安全的Set
+ * <p>
+ * 此类与ConcurrentHashMap的关系类似于HashSet与HashMap
+ *
  * @author gaohang
  */
 public final class ConcurrentSet<E> extends AbstractSet<E> implements Serializable {
