@@ -1,7 +1,5 @@
 package cn.yxffcode.freetookit.dic;
 
-import cn.yxffcode.freetookit.automaton.FailureArray;
-
 import java.io.Serializable;
 
 /**
@@ -28,8 +26,4 @@ public interface Dictionary extends Serializable {
    */
   boolean isWordEnded(int state);
 
-  /**
-   * 构建AC自动机
-   */
-  FailureArray buildFailureArray();
 }

@@ -1,6 +1,5 @@
 package cn.yxffcode.freetookit.algorithm;
 
-import cn.yxffcode.freetookit.automaton.FailureArray;
 import cn.yxffcode.freetookit.collection.ImmutableIterator;
 import cn.yxffcode.freetookit.dic.DoubleArrayTrie;
 import cn.yxffcode.freetookit.io.IOStreams;
