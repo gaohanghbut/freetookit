@@ -67,9 +67,4 @@ public final class Reflections {
                                                 .getName() + ": " + ex.getMessage(), ex);
     }
   }
-
-  public static boolean hasField(String fieldName, Class<?> c) {
-    Field field = ReflectionUtils.findField(c, fieldName);
-    return field != null;
-  }
 }
