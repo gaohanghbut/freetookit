@@ -28,9 +28,9 @@ import static java.util.Collections.unmodifiableMap;
  */
 public final class ExtensionLoaders {
   private static final ConcurrentMap<Class<?>, ExtensionLoader<?>> extensionLoaderMap =
-                                            new ConcurrentHashMap<>();
+          new ConcurrentHashMap<>();
   private static final ConcurrentMap<Class<?>, NamedExtensionLoader<?>> namedExtensionLoaderMap =
-                                            new ConcurrentHashMap<>();
+          new ConcurrentHashMap<>();
   private static final Object extensionMapLock = new Object();
   private static final Object namedExtensionMapLock = new Object();
 
@@ -41,10 +41,8 @@ public final class ExtensionLoaders {
     if (!extensionLoaderMap.containsKey(type)) {
       synchronized (extensionMapLock) {
         if (!extensionLoaderMap.containsKey(type)) {
-          extensionLoaderMap.put(type,
-                                                    new DefaultExtensionLoader<T>(type,
-                                                                                              Thread.currentThread()
-                                                                                                                                        .getContextClassLoader()));
+          extensionLoaderMap.put(type, new DefaultExtensionLoader<T>(type, Thread.currentThread()
+                  .getContextClassLoader()));
         }
       }
     }
@@ -56,8 +54,7 @@ public final class ExtensionLoaders {
       synchronized (namedExtensionMapLock) {
         if (!namedExtensionLoaderMap.containsKey(type)) {
           namedExtensionLoaderMap.put(type, new DefaultNamedExtensionLoader<>(type,
-                                                    Thread.currentThread()
-                                                                                              .getContextClassLoader()));
+                  Thread.currentThread().getContextClassLoader()));
         }
       }
     }
@@ -81,11 +78,13 @@ public final class ExtensionLoaders {
       //               .absent(v -> this.cache = doLoad())
       //               .done(null);
       DCL.create().check(new Predicate<Object>() {
-        @Override public boolean apply(final Object input) {
+        @Override
+        public boolean apply(final Object input) {
           return cache != null;
         }
       }).absent(new Consumer<Object>() {
-        @Override public void consume(final Object elem) {
+        @Override
+        public void consume(final Object elem) {
           cache = doLoad();
         }
       }).done(null);
@@ -115,8 +114,8 @@ public final class ExtensionLoaders {
     private DefaultNamedExtensionLoader(final Class<T> type, final ClassLoader classLoader) {
       HashMap<String, T> cache = Maps.newHashMap();
       try (BufferedReader in = toBufferedReader(
-                                                classLoader.getSystemResourceAsStream(PREFIX + type
-                                                                                          .getName()))) {
+              classLoader.getSystemResourceAsStream(PREFIX + type
+                      .getName()))) {
         for (String line : lines(in)) {
           List<String> extension = NAMED_IMPL_SPLITTER.splitToList(line);
           checkState(extension.size() == 2, "SPI描述文件格式错误,使用key=value的方式表示, %s", line);
@@ -129,11 +128,13 @@ public final class ExtensionLoaders {
     }
 
 
-    @Override public Map<String, T> getExtensions() {
+    @Override
+    public Map<String, T> getExtensions() {
       return cache;
     }
 
-    @Override public T getExtension(final String name) {
+    @Override
+    public T getExtension(final String name) {
       return getExtensions().get(name);
     }
   }
