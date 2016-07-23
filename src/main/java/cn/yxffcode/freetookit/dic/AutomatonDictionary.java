@@ -47,7 +47,7 @@ public class AutomatonDictionary implements Dictionary {
     return automaton.isFinished(state);
   }
 
-  @Override public FailureArray toAcAutomaton() {
+  @Override public FailureArray buildFailureArray() {
     return null;
   }
 }

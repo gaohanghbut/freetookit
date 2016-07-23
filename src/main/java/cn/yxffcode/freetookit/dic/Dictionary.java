@@ -31,5 +31,5 @@ public interface Dictionary extends Serializable {
   /**
    * 构建AC自动机
    */
-  FailureArray toAcAutomaton();
+  FailureArray buildFailureArray();
 }

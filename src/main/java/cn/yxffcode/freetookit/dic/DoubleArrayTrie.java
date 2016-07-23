@@ -31,7 +31,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * base数组的起始值都为0,初始状态为1,check数组的初始值为0,表示没有父节点
  * 输入字符c,则t = base[s] + c,检查check[t]的值,如果check[t]==s,则表示此字符在公共前缀中,状态转换成t,如果check[t]==0
  * 表示t这个状态还没有被加入到字典中,则check[t]=s,状态转换成t,如果check[t]!=0且check[t]!=s,则表示check[t]已经被其它状态
- * 占用,那么修改base[s]的值为b,使修改前,所有的check[b + m]=0(check数组元素没有被其它节点占用)
+ * 占用,那么修改base[s]的值为b,使修改后,所有的check[b + m]=0(check数组元素没有被其它节点占用)
  * 假设s状态后有输入为n,那么修改后check[b+n] = check[base[s] + n],base[b + n] = base[base[s] + n],然后修改base[s]+n
  * 的所有子节点,使用其check值为b+n.
  * <p>
@@ -243,7 +243,7 @@ public class DoubleArrayTrie implements Dictionary {
   /**
    * Trie加上失败指针数组可构成一个AC自动机, 此方法用于计算出失败数组
    */
-  @Override public FailureArray toAcAutomaton() {
+  @Override public FailureArray buildFailureArray() {
     FailureArray failureArray = new FailureArray();
     failureArray.addFailNode(startState(), FailureArray.ROOT_FAIL_NODE);
     LinkedList<Integer> queue = new LinkedList<>();

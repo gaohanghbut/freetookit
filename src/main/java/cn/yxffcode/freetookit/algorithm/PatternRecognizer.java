@@ -22,7 +22,7 @@ public class PatternRecognizer {
 
   private PatternRecognizer(DoubleArrayTrie dat) {
     this.dictionary = dat;
-    this.failureArray = dat.toAcAutomaton();
+    this.failureArray = dat.buildFailureArray();
   }
 
   public static final PatternRecognizer create(String dictionaryPath) {
