@@ -74,6 +74,7 @@ public class DictionaryTokenFilter implements WordTokenFilter {
     };
   }
 
+  @Override
   public boolean match(String source) {
     return getMatched(source).hasNext();
   }
