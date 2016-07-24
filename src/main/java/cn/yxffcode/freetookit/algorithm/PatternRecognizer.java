@@ -17,7 +17,7 @@ import java.util.Iterator;
 public class PatternRecognizer {
   private static final int NO_SUCH_STATE = -1;
   private final DoubleArrayTrie dictionary;
-  private FailureArray failureArray;
+  private DoubleArrayTrie.FailureArray failureArray;
 
   private PatternRecognizer(DoubleArrayTrie dat) {
     this.dictionary = dat;
@@ -59,7 +59,7 @@ public class PatternRecognizer {
               int next = dictionary.nextState(state, c);
               if (next == NO_SUCH_STATE) {
                 state = failureArray.getFailNode(state);
-                if (state == FailureArray.ROOT_FAIL_NODE) {
+                if (state == DoubleArrayTrie.FailureArray.ROOT_FAIL_NODE) {
                   state = dictionary.startState();
                   cur++;
                 }
