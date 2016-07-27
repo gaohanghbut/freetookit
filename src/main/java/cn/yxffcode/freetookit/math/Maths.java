@@ -1,8 +1,9 @@
 package cn.yxffcode.freetookit.math;
 
+import com.google.common.base.Function;
+
 import java.util.AbstractList;
 import java.util.Collections;
-import java.util.function.Function;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;

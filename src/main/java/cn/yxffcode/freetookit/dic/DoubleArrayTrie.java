@@ -1,10 +1,10 @@
 package cn.yxffcode.freetookit.dic;
 
-import cn.yxffcode.freetookit.automaton.FailureArray;
 import cn.yxffcode.freetookit.collection.IntIterator;
 import cn.yxffcode.freetookit.collection.IntStack;
 import cn.yxffcode.freetookit.lang.IntSequence;
 import cn.yxffcode.freetookit.lang.StringIntSequence;
+import cn.yxffcode.freetookit.utils.ArrayUtils;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -31,7 +31,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * base数组的起始值都为0,初始状态为1,check数组的初始值为0,表示没有父节点
  * 输入字符c,则t = base[s] + c,检查check[t]的值,如果check[t]==s,则表示此字符在公共前缀中,状态转换成t,如果check[t]==0
  * 表示t这个状态还没有被加入到字典中,则check[t]=s,状态转换成t,如果check[t]!=0且check[t]!=s,则表示check[t]已经被其它状态
- * 占用,那么修改base[s]的值为b,使修改前,所有的check[b + m]=0(check数组元素没有被其它节点占用)
+ * 占用,那么修改base[s]的值为b,使修改后,所有的check[b + m]=0(check数组元素没有被其它节点占用)
  * 假设s状态后有输入为n,那么修改后check[b+n] = check[base[s] + n],base[b + n] = base[base[s] + n],然后修改base[s]+n
  * 的所有子节点,使用其check值为b+n.
  * <p>
@@ -204,7 +204,8 @@ public class DoubleArrayTrie implements Dictionary {
     return s;
   }
 
-  @Override public boolean match(String word) {
+  @Override
+  public boolean match(String word) {
     checkNotNull(word);
     IntSequence intSequence = new StringIntSequence(word + END_INPUT);
     for (int i = 0, j = intSequence.length(), s = INIT_STATE; i < j; i++) {
@@ -228,11 +229,13 @@ public class DoubleArrayTrie implements Dictionary {
     return true;
   }
 
-  @Override public int startState() {
+  @Override
+  public int startState() {
     return INIT_STATE;
   }
 
-  @Override public int nextState(final int state, final int input) {
+  @Override
+  public int nextState(final int state, final int input) {
     if (state >= base.length) {
       return NO_SUCH_STATE;
     }
@@ -243,7 +246,7 @@ public class DoubleArrayTrie implements Dictionary {
   /**
    * Trie加上失败指针数组可构成一个AC自动机, 此方法用于计算出失败数组
    */
-  @Override public FailureArray toAcAutomaton() {
+  public FailureArray buildFailureArray() {
     FailureArray failureArray = new FailureArray();
     failureArray.addFailNode(startState(), FailureArray.ROOT_FAIL_NODE);
     LinkedList<Integer> queue = new LinkedList<>();
@@ -306,7 +309,8 @@ public class DoubleArrayTrie implements Dictionary {
     }
   }
 
-  @Override public boolean isWordEnded(final int state) {
+  @Override
+  public boolean isWordEnded(final int state) {
     return nextState(state, END_INPUT) != NO_SUCH_STATE;
   }
 
@@ -377,4 +381,27 @@ public class DoubleArrayTrie implements Dictionary {
     }
 
   }
+
+  public static class FailureArray {
+
+    public static final int ROOT_FAIL_NODE = -1;
+
+    private int[] failedNodes;
+
+    public FailureArray() {
+      this.failedNodes = new int[10];
+    }
+
+    public void addFailNode(int srcNode, int failedNode) {
+      if (srcNode >= failedNodes.length) {
+        failedNodes = ArrayUtils.grow(failedNodes, 2 * srcNode);
+      }
+      failedNodes[srcNode] = failedNode;
+    }
+
+    public int getFailNode(int srcNode) {
+      return failedNodes[srcNode];
+    }
+  }
+
 }
