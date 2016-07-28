@@ -3,6 +3,8 @@
 
 工程中使用到的常用工具类，做个整理，以备重用 
 
+部分类的使用示例:
+
 ## GroupList与GroupIterable 
 用于将多个List转换成一个List,与使用ArrayList不同的是,GroupList的创建开销非常小,
 没有真正的创建一个新的ArrayList,它只是为多个List提供一个视图,类似的还有GroupIterable 
