@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
  * @author gaohang on 7/16/16.
  */
 public class RedisSpinLock implements DistributeLock {
-  public Builder newBuilder(JedisPool jedisPool, String lockName) {
+  public static Builder newBuilder(JedisPool jedisPool, String lockName) {
     return new Builder(jedisPool, lockName);
   }
 
