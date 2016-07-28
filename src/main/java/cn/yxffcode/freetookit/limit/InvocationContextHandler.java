@@ -6,7 +6,7 @@ package cn.yxffcode.freetookit.limit;
 public interface InvocationContextHandler {
 
   /**
-   * save the invocation context
+   * save the invocation context,if failed,it represent that the method is called repeat at one time
    *
    * @return if success,return true. else return false.
    */
