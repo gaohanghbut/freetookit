@@ -5,6 +5,37 @@
 
 部分类的使用示例:
 
+## FluentOptional 
+流式的Optional,需要多次判断空的,代码中需要多个if-else,即使使用Optional,例如:
+```java 
+World world = xxx;
+Country country = world.getCountry("cn");
+if (country != null) {
+    Province province = country.getProvince("bj");
+    if (province != null) {
+        City city = province.getCity("bj");
+        if (city != null) {
+            Region region = city.getRegion("hd");
+            if (region != null) {
+                return region.getCode();
+            }
+        }
+    }
+}
+return defaultCode;
+```
+代码非常的繁琐,FluentOptional可减少大量的判断,在配合lambda的时候,FluentOptional使用更加简便:
+```java 
+World world = xxx;
+return FluentOptional.from(world)
+        .flow(world -> world.getCountry("cn"))
+        .flow(country -> country.getProvince("bj"))
+        .flow(province -> province.getCity("bj"))
+        .flow(city -> city.getRegion("hd"))
+        .flow(region -> region.getCode())
+        .or(defaultCode);
+```
+
 ## GroupList与GroupIterable 
 用于将多个List转换成一个List,与使用ArrayList不同的是,GroupList的创建开销非常小,
 没有真正的创建一个新的ArrayList,它只是为多个List提供一个视图,类似的还有GroupIterable 
