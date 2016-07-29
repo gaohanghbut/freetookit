@@ -130,7 +130,7 @@ public class GenericTrie implements PrefixSearcher {
           }
         };
         this.endNodes = treeTraverser.breadthFirstTraversal(subTrie.root)
-                                                  .filter(EndNodePredicate.INSTANCE).iterator();
+                .filter(EndNodePredicate.INSTANCE).iterator();
         this.trieRoot = subTrie.root;
       }
     };

@@ -23,10 +23,10 @@ public class DoubleArrayTrieTest {
   @Test public void test() {
     {
       List<String> words = Arrays.asList("limiku", "limika", "limikb",
-                                                "limikc",
-                                                "likla",
-                                                "limlb",
-                                                "mimik");
+              "limikc",
+              "likla",
+              "limlb",
+              "mimik");
       DoubleArrayTrie trie = DoubleArrayTrie.create(words);
 
       for (String word : words) {
@@ -60,7 +60,7 @@ public class DoubleArrayTrieTest {
 
     List<String> words = new ArrayList<>(4001);
     try (BufferedReader in = new BufferedReader(new InputStreamReader(DoubleArrayTrieTest.class
-                                              .getResourceAsStream("/dic/cet4.dic")))) {
+            .getResourceAsStream("/dic/cet4.dic")))) {
       for (String line : IOStreams.lines(in)) {
         words.add(line.trim());
       }

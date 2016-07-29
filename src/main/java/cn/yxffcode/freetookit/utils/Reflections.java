@@ -31,7 +31,7 @@ public final class Reflections {
       field.set(target, value);
     } catch (IllegalAccessException ex) {
       throw new IllegalStateException("Unexpected reflection exception - " + ex.getClass()
-                                                .getName() + ": " + ex.getMessage(), ex);
+              .getName() + ": " + ex.getMessage(), ex);
     }
   }
 
@@ -45,7 +45,7 @@ public final class Reflections {
       Field[] fields = searchType.getDeclaredFields();
       for (Field field : fields) {
         if ((name == null || name.equals(field.getName())) && (type == null || type
-                                                  .equals(field.getType()))) {
+                .equals(field.getType()))) {
           return field;
         }
       }
@@ -64,7 +64,7 @@ public final class Reflections {
       return field.get(target);
     } catch (IllegalAccessException ex) {
       throw new IllegalStateException("Unexpected reflection exception - " + ex.getClass()
-                                                .getName() + ": " + ex.getMessage(), ex);
+              .getName() + ": " + ex.getMessage(), ex);
     }
   }
 }

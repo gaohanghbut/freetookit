@@ -46,6 +46,7 @@ public class CharSequenceMatcher {
     checkNotNull(source);
     return indexOf(source, 0, source.length());
   }
+
   public int indexOf(CharSequence source, int soff, int slen) {
     if (next == null && slen < STRING_INDEX_OF_THRESHOLD) {
       if (tlen == 0) {

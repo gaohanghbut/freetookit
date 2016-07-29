@@ -100,7 +100,8 @@ public class StandardMultiTable<R, C, V> implements MultiTable<R, C, V> {
     if (table.isEmpty()) {
       return;
     }
-    for (Map.Entry<? extends R, ? extends Map<? extends C, ? extends Collection<? extends V>>> re : table.rowMap().entrySet()) {
+    for (Map.Entry<? extends R, ? extends Map<? extends C, ? extends Collection<? extends V>>> re : table.rowMap()
+            .entrySet()) {
       for (Map.Entry<? extends C, ? extends Collection<? extends V>> ce : re.getValue().entrySet()) {
         putAll(re.getKey(), ce.getKey(), ce.getValue());
       }

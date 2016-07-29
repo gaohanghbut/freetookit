@@ -21,8 +21,8 @@ public class CharArrayIntSequence extends AbstractIntSequence {
     }
     if (offset + length > this.length) {
       throw new IndexOutOfBoundsException(
-                                                "slice is too long, but the source length is "
-                                                                                          + this.length);
+              "slice is too long, but the source length is "
+                      + this.length);
     }
     return new CharArrayIntSequence(source, offset + this.offset, length);
   }

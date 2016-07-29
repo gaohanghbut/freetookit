@@ -4,8 +4,6 @@ import java.util.AbstractCollection;
 import java.util.Collection;
 import java.util.Iterator;
 
-import static com.google.common.base.Preconditions.checkArgument;
-
 /**
  * 表示多个{@link Collection}的一个视图，不能调用{@link GroupCollection#add(Object)}等方法对Collection做修改
  *

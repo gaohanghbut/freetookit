@@ -19,7 +19,7 @@ public class GenericTrieTest {
     GenericTrie trie = new GenericTrie();
 
     try (BufferedReader in = new BufferedReader(new InputStreamReader(GenericTrieTest.class
-                                              .getResourceAsStream("/dic/cet4.dic")))) {
+            .getResourceAsStream("/dic/cet4.dic")))) {
       for (String line : IOStreams.lines(in)) {
         if (!StringUtils.isBlank(line)) {
           trie.add(line.trim());

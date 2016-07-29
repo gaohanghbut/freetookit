@@ -51,9 +51,9 @@ public abstract class ArrayUtils {
     b.append('[');
     for (int i = off, j = len + off - 1; ; i++) {
       b.append(data[i]);
-        if (i == j) {
-          return b.append(']').toString();
-        }
+      if (i == j) {
+        return b.append(']').toString();
+      }
       b.append(", ");
     }
   }

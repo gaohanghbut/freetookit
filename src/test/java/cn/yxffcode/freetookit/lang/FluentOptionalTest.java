@@ -7,7 +7,7 @@ import org.junit.Test;
  */
 public class FluentOptionalTest {
 
-    @Test
-    public void test() {
-    }
+  @Test
+  public void test() {
+  }
 }

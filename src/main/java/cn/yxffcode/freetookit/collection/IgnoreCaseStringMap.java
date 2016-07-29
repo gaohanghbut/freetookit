@@ -83,8 +83,8 @@ public class IgnoreCaseStringMap<V> extends AbstractMap<String, V> implements Se
 
   @Override public Set<Entry<String, V>> entrySet() {
     return this.entrySet != null ?
-        this.entrySet :
-        (entrySet = new EntrySetWrapper(delegate.entrySet()));
+            this.entrySet :
+            (entrySet = new EntrySetWrapper(delegate.entrySet()));
   }
 
   private void writeObject(java.io.ObjectOutputStream s) throws IOException {

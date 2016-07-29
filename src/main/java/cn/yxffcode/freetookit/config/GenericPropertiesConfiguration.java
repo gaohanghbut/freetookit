@@ -17,7 +17,7 @@ public class GenericPropertiesConfiguration extends AbstractPropertiesConfigurat
   }
 
   public static GenericPropertiesConfiguration create(InputStream... inputStreams)
-      throws IOException {
+          throws IOException {
     checkNotNull(inputStreams);
     GenericPropertiesConfiguration config = new GenericPropertiesConfiguration();
     config.init(inputStreams);

@@ -16,68 +16,68 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class MpscLinkedQueue<E> extends AbstractQueue<E> {
 
-    private Node<E> head = new Node<>(null, null);
-    private Node<E> tail = head;
-    private int size = 0;
+  private Node<E> head = new Node<>(null, null);
+  private Node<E> tail = head;
+  private int size = 0;
 
-    private final AtomicReferenceFieldUpdater<MpscLinkedQueue, Node> tailUpdater =
-            AtomicReferenceFieldUpdater.newUpdater(MpscLinkedQueue.class, Node.class, "head");
+  private final AtomicReferenceFieldUpdater<MpscLinkedQueue, Node> tailUpdater =
+          AtomicReferenceFieldUpdater.newUpdater(MpscLinkedQueue.class, Node.class, "head");
 
-    @Override public Iterator<E> iterator() {
-        //因为针对的是单线程消费,使用带头节点的链表,消费端不会有线程冲突
-        return new ImmutableIterator<E>() {
-            private Node<E> node = head;
+  @Override public Iterator<E> iterator() {
+    //因为针对的是单线程消费,使用带头节点的链表,消费端不会有线程冲突
+    return new ImmutableIterator<E>() {
+      private Node<E> node = head;
 
-            @Override public boolean hasNext() {
-                return node.next != null;
-            }
+      @Override public boolean hasNext() {
+        return node.next != null;
+      }
 
-            @Override public E next() {
-                node = node.next;
-                return node.elem;
-            }
-        };
+      @Override public E next() {
+        node = node.next;
+        return node.elem;
+      }
+    };
+  }
+
+  @Override public int size() {
+    return size;
+  }
+
+  @Override public boolean offer(final E e) {
+    checkNotNull(e);
+    Node<E> nextTail = new Node<>(e, null);
+    Node<E> oldTail = this.tail;
+    while (true) {
+      if (tailUpdater.compareAndSet(this, oldTail, nextTail)) {
+        ++size;
+        return true;
+      }
     }
+  }
 
-    @Override public int size() {
-        return size;
+  @Override public E poll() {
+    if (head.next == null) {
+      return null;
     }
+    //因为针对的是单线程消费,使用带头节点的链表,消费端不会有线程冲突
+    head = head.next;
+    return head.elem;
+  }
 
-    @Override public boolean offer(final E e) {
-        checkNotNull(e);
-        Node<E> nextTail = new Node<>(e, null);
-        Node<E> oldTail = this.tail;
-        while (true) {
-            if (tailUpdater.compareAndSet(this, oldTail, nextTail)) {
-                ++size;
-                return true;
-            }
-        }
+  @Override public E peek() {
+    if (head.next == null) {
+      return null;
     }
+    return head.elem;
+  }
 
-    @Override public E poll() {
-        if (head.next == null) {
-            return null;
-        }
-        //因为针对的是单线程消费,使用带头节点的链表,消费端不会有线程冲突
-        head = head.next;
-        return head.elem;
+  private static final class Node<E> {
+    private E elem;
+    private Node<E> next;
+
+    public Node(final E elem, final Node<E> next) {
+      this.elem = elem;
+      this.next = next;
     }
-
-    @Override public E peek() {
-        if (head.next == null) {
-            return null;
-        }
-        return head.elem;
-    }
-
-    private static final class Node<E> {
-        private E elem;
-        private Node<E> next;
-
-        public Node(final E elem, final Node<E> next) {
-            this.elem = elem;
-            this.next = next;
-        }
-    }
+  }
 }

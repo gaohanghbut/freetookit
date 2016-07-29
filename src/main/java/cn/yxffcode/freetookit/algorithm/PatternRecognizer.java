@@ -26,7 +26,7 @@ public class PatternRecognizer {
 
   public static final PatternRecognizer create(String dictionaryPath) {
     try (BufferedReader in = new BufferedReader(new InputStreamReader(PatternRecognizer.class
-                                              .getResourceAsStream(dictionaryPath)))) {
+            .getResourceAsStream(dictionaryPath)))) {
 
       DoubleArrayTrie dic = DoubleArrayTrie.create(IOStreams.lines(in));
       return new PatternRecognizer(dic);
