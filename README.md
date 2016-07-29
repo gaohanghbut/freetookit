@@ -215,3 +215,93 @@ List<Class<?>> classes = SpringBasedClassScanner.getInstance()
                     }
                 });
 ```
+
+## CharSequenceMatcher与CharsMatcher 
+用于做字符串的匹配,区分于String.indexOf,这两个类使用了KMP算法,对于同一个模式串,可以使用KMP生成一次next数组,然后匹配多个目标串
+```java 
+CharSequenceMatcher charsMatcher = CharSequenceMatcher.create("hello").buildNextIfAbsent();
+{
+    int idx = charsMatcher.indexOf("hello world");
+}
+{
+    int idx = charsMatcher.indexOf("hello everybody");
+}
+```
+
+## DoubleArrayTrie 
+双数组字典树,用作字典 
+```java 
+{
+  List<String> words = Arrays.asList("limiku", "limika", "limikb",
+                                            "limikc",
+                                            "likla",
+                                            "limlb",
+                                            "mimik");
+  DoubleArrayTrie trie = DoubleArrayTrie.create(words);
+
+  for (String word : words) {
+    assertTrue(trie.match(word));
+  }
+  //不存在的不能匹配成功
+  assertFalse(trie.match("limi"));
+}
+{
+  List<String> words = Arrays.asList("厘米网", "厘米库", "厘米百", "厘米米", "去哪儿", "百度");
+  DoubleArrayTrie trie = DoubleArrayTrie.create(words);
+
+  for (String word : words) {
+    assertTrue(trie.match(word));
+  }
+  assertFalse(trie.match("厘"));
+}
+{
+  List<String> words = Arrays.asList("qunar", "去哪儿");
+  DoubleArrayTrie trie = DoubleArrayTrie.create(words);
+
+  for (String word : words) {
+    assertTrue(trie.match(word));
+  }
+
+}
+```
+
+## DictionaryTokenFilter 
+基于字典的关键词过虑器 
+```java 
+DictionaryTokenFilter tokenFilter = new DictionaryTokenFilter(doubleArrayTrie);
+Iterator<String> keyWords = tokenFilter.getMatched("xxx");
+```
+
+## TreePrefixSearcher与SortedArrayPrefixSearcher
+针对量不是太大的词条,实现前缀搜索,可选择使用基于数组或者基于TreeSet的实现
+```java
+ TreePrefixSearcher searcher = new TreePrefixSearcher(items);
+ Iterable<String> selectedItems = searcher.search("abc");
+```
+代码返回所有以"abc"开头(包括"abc")的词条
+
+## GenericTrie
+普通的字典树实现,可用于前缀搜索
+```java 
+GenericTrie searcher = new GenericTrie(items);
+Iterable<String> selectedItems = searcher.search("abc");
+```
+
+## Automaton 
+有穷自动机的实现 
+```java 
+DefaultAutomaton automaton = new DefaultAutomaton.DictionaryBuilder().addWord(
+                                          new StringIntSequence("hello"))
+                                          .addWord(new StringIntSequence("helle"))
+                                          .addWord(new StringIntSequence("halle"))
+                                          .addWord(new StringIntSequence("halla"))
+                                          .addWord(new StringIntSequence("hallb"))
+                                          .addWord(new StringIntSequence("abc"))
+                                          .addWord(new StringIntSequence("dkk"))
+                                          .addWord(new StringIntSequence("dkkk"))
+                                          .build();
+```
+
+## NamedExtensionLoader 
+java中自带的SPI加载器不能给服务类字义名字,此接口的实现用于加载带命名的服务实现类 
+使用ExtensionLoaders类得到加载器

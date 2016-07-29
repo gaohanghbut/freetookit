@@ -1,5 +1,7 @@
 package cn.yxffcode.freetookit.algorithm;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * @author gaohang on 15/12/18.
  * @see CharsMatcher
@@ -22,6 +24,10 @@ public class CharSequenceMatcher {
     return new CharSequenceMatcher(target, toff, tlen);
   }
 
+  public static CharSequenceMatcher create(CharSequence target) {
+    return create(target, 0, target.length());
+  }
+
   public CharSequenceMatcher buildNextIfAbsent() {
     if (next == null) {
       synchronized (this) {
@@ -36,6 +42,10 @@ public class CharSequenceMatcher {
   /**
    * 调用此方法前,如果没有调用{@link #buildNextIfAbsent()},会以创建next数组,但next数组可能会被创建多次
    */
+  public int indexOf(CharSequence source) {
+    checkNotNull(source);
+    return indexOf(source, 0, source.length());
+  }
   public int indexOf(CharSequence source, int soff, int slen) {
     if (next == null && slen < STRING_INDEX_OF_THRESHOLD) {
       if (tlen == 0) {
