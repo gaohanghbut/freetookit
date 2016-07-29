@@ -305,3 +305,13 @@ DefaultAutomaton automaton = new DefaultAutomaton.DictionaryBuilder().addWord(
 ## NamedExtensionLoader 
 java中自带的SPI加载器不能给服务类字义名字,此接口的实现用于加载带命名的服务实现类 
 使用ExtensionLoaders类得到加载器
+
+## PageResolver 
+分页器,用于执行类似于分页查询的功能
+```java 
+Iterable<Integer> elems = new PageResolver<Integer>(pageSize) {
+            @Override protected List<Integer> nextPage(final int off) {
+                //query db for a page
+            }
+        }.getAll();
+```
