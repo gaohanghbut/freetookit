@@ -17,11 +17,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class MpscLinkedQueue<E> extends AbstractQueue<E> {
 
   private Node<E> head = new Node<>(null, null);
-  private Node<E> tail = head;
+  private volatile Node<E> tail = head;
   private int size = 0;
 
   private final AtomicReferenceFieldUpdater<MpscLinkedQueue, Node> tailUpdater =
-          AtomicReferenceFieldUpdater.newUpdater(MpscLinkedQueue.class, Node.class, "head");
+          AtomicReferenceFieldUpdater.newUpdater(MpscLinkedQueue.class, Node.class, "tail");
 
   @Override public Iterator<E> iterator() {
     //因为针对的是单线程消费,使用带头节点的链表,消费端不会有线程冲突

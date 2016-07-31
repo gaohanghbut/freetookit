@@ -43,7 +43,7 @@ public class DirectIterTransMap<K, V> extends AbstractMap<K, V> implements IterT
     this.entryFunction = new Function<V, Entry<K, V>>() {
 
       @Override
-      public Entry<K, V> apply(V value) {
+      public Entry<K, V> apply(final V value) {
         return new Entry<K, V>() {
           @Override
           public K getKey() {

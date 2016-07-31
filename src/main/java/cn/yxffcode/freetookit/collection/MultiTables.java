@@ -16,11 +16,11 @@ public final class MultiTables {
   }
 
   public static <R, C, V> MultiTable<R, C, V> newHashMultiTable() {
-    return new StandardMultiTable<>(new HashBasedTableSupplier<>(), new HashSetSupplier<>());
+    return new StandardMultiTable<R, C, V>(new HashBasedTableSupplier<R, C, V>(), new HashSetSupplier<V>());
   }
 
   public static <R, C, V> MultiTable<R, C, V> newListHashMultiTable() {
-    return new StandardMultiTable<>(new HashBasedTableSupplier<>(), new ArrayListSupplier<>());
+    return new StandardMultiTable<R, C, V>(new HashBasedTableSupplier<R, C, V>(), new ArrayListSupplier<V>());
   }
 
   public static <R, C, V> MultiTable<R, C, V> newCustomMultiTable(Supplier<Table<R, C, Collection<V>>> tableSupplier,
