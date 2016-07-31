@@ -133,6 +133,9 @@ public class ThreadGroupExecutor extends AbstractExecutorService {
     public void run() {
       while (!shutdownNow) {
         Runnable task = tasks.poll();
+        if (task == null && shutdown) {
+          return;
+        }
         if (task != null) {
           try {
             task.run();
