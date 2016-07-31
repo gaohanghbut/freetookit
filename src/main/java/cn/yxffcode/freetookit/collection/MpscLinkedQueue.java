@@ -50,6 +50,7 @@ public class MpscLinkedQueue<E> extends AbstractQueue<E> {
     while (true) {
       if (tailUpdater.compareAndSet(this, oldTail, nextTail)) {
         ++size;
+        oldTail.next = nextTail;
         return true;
       }
     }
@@ -61,6 +62,7 @@ public class MpscLinkedQueue<E> extends AbstractQueue<E> {
     }
     //因为针对的是单线程消费,使用带头节点的链表,消费端不会有线程冲突
     head = head.next;
+    --size;
     return head.elem;
   }
 

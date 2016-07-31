@@ -2,6 +2,8 @@ package cn.yxffcode.freetookit.concurrent;
 
 import org.junit.Test;
 
+import java.util.concurrent.TimeUnit;
+
 import static org.junit.Assert.*;
 
 /**
@@ -22,6 +24,7 @@ public class ThreadGroupExecutorTest {
     }
 
     exec.shutdown();
+    TimeUnit.SECONDS.sleep(5);
   }
 
   public static void main(String[] args) {
