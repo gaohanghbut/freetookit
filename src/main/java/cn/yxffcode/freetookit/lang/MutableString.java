@@ -28,6 +28,9 @@ public class MutableString implements CharSequence, Comparable<MutableString> {
   }
 
   public MutableString(final char[] sources, final int off, final int len, boolean copy) {
+    checkArgument(off >= 0 && off < sources.length);
+    checkArgument(len >= 0 && len < sources.length);
+    checkArgument(off + len < sources.length);
     if (!copy) {
       this.sources = sources;
       this.off = off;
