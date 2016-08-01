@@ -40,6 +40,9 @@ return FluentOptional.from(world)
 针对多线程生产,单线程消费的无锁队列,类似于ConcurrentLinkedQueue,但MpscLinkedQueue在消费端只能支持单线程,
 如果使用多线程消费则是线程不安全的
 
+## CopyOnWriterMap与CopyOnWriterHashSet
+类似CopyOnWriterArrayList,使用copy-on-write的方式优化并发下的读性能
+
 ## GroupList与GroupIterable 
 用于将多个List转换成一个List,与使用ArrayList不同的是,GroupList的创建开销非常小,
 没有真正的创建一个新的ArrayList,它只是为多个List提供一个视图,类似的还有GroupIterable 
