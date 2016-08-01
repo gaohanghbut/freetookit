@@ -11,7 +11,7 @@ import java.util.Set;
  * @author gaohang on 16/8/1.
  */
 public class CopyOnWriterHashSet<K> implements Set<K> {
-  private CopyOnWriterMap<K, Boolean> backingMap = new CopyOnWriterMap<>();
+  private final CopyOnWriterMap<K, Boolean> backingMap = new CopyOnWriterMap<>();
 
   @Override public int size() {
     return backingMap.size();
