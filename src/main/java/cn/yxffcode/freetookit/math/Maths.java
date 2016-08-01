@@ -46,7 +46,7 @@ public final class Maths {
    * @param to   迭代的终止
    * @return 可迭代的对象
    */
-  public static Iterable<Integer> iter(int[] x, int from, int to) {
+  public static Iterable<Integer> iter(final int[] x, final int from, final int to) {
     checkNotNull(x);
     checkArgument(from >= 0 && to >= from && to <= x.length);
     if (from == to) {

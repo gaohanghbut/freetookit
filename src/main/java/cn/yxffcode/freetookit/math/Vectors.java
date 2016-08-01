@@ -1,6 +1,7 @@
 package cn.yxffcode.freetookit.math;
 
 import cn.yxffcode.freetookit.lang.Merger;
+import com.google.common.base.Function;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -26,7 +27,12 @@ public final class Vectors {
     checkNotNull(w);
     checkArgument(x.length == w.length);
     //计算内积
-    return sum(x, w, (left, right) -> left * right);
+    return sum(x, w, new Merger<Double>() {
+      @Override
+      public Double merge(Double left, Double right) {
+        return left * right;
+      }
+    });
   }
 
   /**
@@ -69,7 +75,12 @@ public final class Vectors {
    * @return 向量的模
    */
   public static double len(double[] x) {
-    double sum = Maths.sum(x, (i) -> (double) Math.pow(i, 2));
+    double sum = Maths.sum(x, new Function<Double, Double>() {
+      @Override
+      public Double apply(Double i) {
+        return Math.pow(i, 2);
+      }
+    });
     return (double) Math.sqrt(sum);
   }
 
@@ -126,7 +137,12 @@ public final class Vectors {
     checkNotNull(w);
     checkArgument(x.length == w.length);
     //计算内积
-    return sum(x, w, (left, right) -> left * right);
+    return sum(x, w, new Merger<Integer>() {
+      @Override
+      public Integer merge(Integer left, Integer right) {
+        return left * right;
+      }
+    });
   }
 
   /**
@@ -150,7 +166,12 @@ public final class Vectors {
    * @return 向量的模
    */
   public static int len(int[] x) {
-    int sum = Maths.sum(x, (i) -> (int) Math.pow(i, 2));
+    int sum = Maths.sum(x, new Function<Integer, Integer>() {
+      @Override
+      public Integer apply(Integer i) {
+        return (int) Math.pow(i, 2);
+      }
+    });
     return (int) Math.sqrt(sum);
   }
 
