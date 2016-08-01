@@ -121,7 +121,7 @@ RedisSpinLock lock = RedisSpinLock.newBuilder(jedisPool, "bookingIdLock")
                                         .create();
 ```
 ## DCL 
-用于封闭双重校验锁,使用双重校验锁的代码示例:
+用于封装双重校验锁,使用双重校验锁的代码示例:
 ```java
 private Map<String, Object> cache = xxx;
 public Object getInstance(String key) {
