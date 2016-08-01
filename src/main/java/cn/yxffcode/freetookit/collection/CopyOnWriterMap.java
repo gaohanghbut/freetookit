@@ -1,6 +1,7 @@
 package cn.yxffcode.freetookit.collection;
 
 import com.google.common.base.Supplier;
+import com.google.common.collect.Maps;
 
 import java.util.AbstractCollection;
 import java.util.AbstractSet;
@@ -20,8 +21,16 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author gaohang on 16/8/1.
  */
 public class CopyOnWriterMap<K, V> implements ConcurrentMap<K, V> {
-  private volatile Map<K, V> backingMap;
+  private volatile Map<K, V> backingMap = Collections.emptyMap();
   private final Supplier<Map<K, V>> supplier;
+
+  public CopyOnWriterMap() {
+    this(new Supplier<Map<K, V>>() {
+      @Override public Map<K, V> get() {
+        return Maps.newHashMap();
+      }
+    });
+  }
 
   public CopyOnWriterMap(Supplier<Map<K, V>> supplier) {
     this.supplier = checkNotNull(supplier);
@@ -252,5 +261,20 @@ public class CopyOnWriterMap<K, V> implements ConcurrentMap<K, V> {
     }
     put(key, value);
     return exists;
+  }
+
+  @Override public String toString() {
+    return backingMap.toString();
+  }
+
+  @Override public boolean equals(final Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    final CopyOnWriterMap<?, ?> that = (CopyOnWriterMap<?, ?>) o;
+    return com.google.common.base.Objects.equal(backingMap, that.backingMap);
+  }
+
+  @Override public int hashCode() {
+    return com.google.common.base.Objects.hashCode(backingMap);
   }
 }
