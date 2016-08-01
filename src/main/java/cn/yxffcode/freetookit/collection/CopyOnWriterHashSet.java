@@ -37,11 +37,11 @@ public class CopyOnWriterHashSet<K> implements Set<K> {
     return backingMap.keySet().toArray(a);
   }
 
-  @Override public boolean add(final K k) {
+  @Override public synchronized boolean add(final K k) {
     return backingMap.put(k, Boolean.TRUE);
   }
 
-  @Override public boolean remove(final Object o) {
+  @Override public synchronized boolean remove(final Object o) {
     return backingMap.remove(o);
   }
 
@@ -84,7 +84,7 @@ public class CopyOnWriterHashSet<K> implements Set<K> {
     return r;
   }
 
-  @Override public void clear() {
+  @Override public synchronized void clear() {
     backingMap.clear();
   }
 }
