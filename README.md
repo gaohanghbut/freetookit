@@ -145,7 +145,21 @@ public Object getInstance(String key) {
 }
 ``` 
 
-## 
+## ThreadGroupExecutor
+利用MpscLinkedQueue实现的Executor,其中每个线程一个队列,利用轮循的方式选择线程添加任务,没有使用work-stealing算法,
+如果任务耗时差异比较大,会有线程负载不均衡的问题.没有使用阻塞,如果队列长时间为空,会比较耗cpu
+```java
+ ThreadGroupExecutor exec = new ThreadGroupExecutor(Runtime.getRuntime().availableProcessors());
+ for (int i = 0; i < 100; i++) {
+   exec.execute(new Runnable() {
+     @Override
+     public void run() {
+       System.out.println(Thread.currentThread());
+     }
+   });
+ }
+ exec.shutdown();
+```
 
 ## IOStreams 
 在文件比较大时,可能需要按行读按行处理,但是这样带来的问题在于将读取文件的代码与处理数据的代码混在了一起,
