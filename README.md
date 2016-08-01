@@ -47,6 +47,9 @@ return FluentOptional.from(world)
 用于将多个List转换成一个List,与使用ArrayList不同的是,GroupList的创建开销非常小,
 没有真正的创建一个新的ArrayList,它只是为多个List提供一个视图,类似的还有GroupIterable 
 
+## IntStack
+专为int类型的数据实现的栈,没有装箱与拆箱
+
 ```java 
 public class GroupListTest {
 
