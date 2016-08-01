@@ -36,6 +36,10 @@ return FluentOptional.from(world)
         .or(defaultCode);
 ```
 
+## MpscLinkedQueue
+针对多线程生产,单线程消费的无锁队列,类似于ConcurrentLinkedQueue,但MpscLinkedQueue在消费端只能支持单线程,
+如果使用多线程消费则是线程不安全的
+
 ## GroupList与GroupIterable 
 用于将多个List转换成一个List,与使用ArrayList不同的是,GroupList的创建开销非常小,
 没有真正的创建一个新的ArrayList,它只是为多个List提供一个视图,类似的还有GroupIterable 
@@ -140,6 +144,8 @@ public Object getInstance(String key) {
   return dcl.done(key);
 }
 ``` 
+
+## 
 
 ## IOStreams 
 在文件比较大时,可能需要按行读按行处理,但是这样带来的问题在于将读取文件的代码与处理数据的代码混在了一起,
