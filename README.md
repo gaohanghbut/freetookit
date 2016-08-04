@@ -346,3 +346,25 @@ Iterable<Integer> elems = new PageResolver<Integer>(pageSize) {
             }
         }.getAll();
 ```
+
+## MpscQueue
+用于多生产者单消费者的线程安全的无锁队列,当有多个消费者时,非线程安全 
+默认使用的线程数是cpu核心数
+```java 
+ThreadGroupExecutor exec = new ThreadGroupExecutor();
+```
+也可以指定线程数
+```java
+ThreadGroupExecutor exec = new ThreadGroupExecutor(nthread);
+```
+可以指定线程工厂 
+```java 
+ThreadGroupExecutor exec = new ThreadGroupExecutor(nthread, new ThreadFactory() {
+      @Override
+      public Thread newThread(Runnable r) {
+        Thread thread = new Thread(r);
+        thread.setDaemon(true);
+        return thread;
+      }
+    });
+```
