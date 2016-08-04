@@ -36,9 +36,19 @@ return FluentOptional.from(world)
         .or(defaultCode);
 ```
 
+## MpscLinkedQueue
+针对多线程生产,单线程消费的无锁队列,类似于ConcurrentLinkedQueue,但MpscLinkedQueue在消费端只能支持单线程,
+如果使用多线程消费则是线程不安全的
+
+## CopyOnWriterMap与CopyOnWriterHashSet
+类似CopyOnWriterArrayList,使用copy-on-write的方式优化并发下的读性能
+
 ## GroupList与GroupIterable 
 用于将多个List转换成一个List,与使用ArrayList不同的是,GroupList的创建开销非常小,
 没有真正的创建一个新的ArrayList,它只是为多个List提供一个视图,类似的还有GroupIterable 
+
+## IntStack
+专为int类型的数据实现的栈,没有装箱与拆箱
 
 ```java 
 public class GroupListTest {
@@ -117,7 +127,7 @@ RedisSpinLock lock = RedisSpinLock.newBuilder(jedisPool, "bookingIdLock")
                                         .create();
 ```
 ## DCL 
-用于封闭双重校验锁,使用双重校验锁的代码示例:
+用于封装双重校验锁,使用双重校验锁的代码示例:
 ```java
 private Map<String, Object> cache = xxx;
 public Object getInstance(String key) {
@@ -140,6 +150,22 @@ public Object getInstance(String key) {
   return dcl.done(key);
 }
 ``` 
+
+## ThreadGroupExecutor
+利用MpscLinkedQueue实现的Executor,其中每个线程一个队列,利用轮循的方式选择线程添加任务,没有使用work-stealing算法,
+如果任务耗时差异比较大,会有线程负载不均衡的问题.没有使用阻塞,如果队列长时间为空,会比较耗cpu
+```java
+ ThreadGroupExecutor exec = new ThreadGroupExecutor(Runtime.getRuntime().availableProcessors());
+ for (int i = 0; i < 100; i++) {
+   exec.execute(new Runnable() {
+     @Override
+     public void run() {
+       System.out.println(Thread.currentThread());
+     }
+   });
+ }
+ exec.shutdown();
+```
 
 ## IOStreams 
 在文件比较大时,可能需要按行读按行处理,但是这样带来的问题在于将读取文件的代码与处理数据的代码混在了一起,
