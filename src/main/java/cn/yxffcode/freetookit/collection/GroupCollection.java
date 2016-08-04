@@ -27,7 +27,7 @@ public class GroupCollection<E> extends AbstractCollection<E> {
 
   @Override
   public Iterator<E> iterator() {
-    return GroupIterable.create(collections).iterator();
+    return (Iterator<E>) GroupIterable.create(collections).iterator();
   }
 
   @Override
