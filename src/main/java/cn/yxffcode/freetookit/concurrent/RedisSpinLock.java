@@ -60,10 +60,10 @@ public class RedisSpinLock implements DistributeLock {
     Pipeline pipeline = null;
     try {
       //检查锁是否已经被自己持有,如果是,则返回true,表示可重入
-      String holder = jedis.get(lockHolder);
-      if (holder != null && lockHolder.equals(holder)) {
+      String host = jedis.get(lockHolder);
+      if (host != null && localhost.equals(host)) {
         return true;
-      } else if (holder != null) {
+      } else if (host != null) {
         return false;
       }
       //竞争,第一个incr的持有锁
