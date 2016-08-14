@@ -1,5 +1,7 @@
 package cn.yxffcode.freetookit.collection;
 
+import com.google.common.collect.Multimap;
+
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
@@ -39,9 +41,9 @@ public interface MultiTable<R, C, V> {
 
   Collection<V> remove(Object rowKey, Object columnKey);
 
-  Map<C, Collection<V>> row(R rowKey);
+  Multimap<C, V> row(R rowKey);
 
-  Map<R, Collection<V>> column(C columnKey);
+  Multimap<R, V> column(C columnKey);
 
   Set<R> rowKeySet();
 
@@ -49,7 +51,7 @@ public interface MultiTable<R, C, V> {
 
   Collection<V> values();
 
-  Map<R, Map<C, Collection<V>>> rowMap();
+  Map<R, Multimap<C, V>> rowMap();
 
-  Map<C, Map<R, Collection<V>>> columnMap();
+  Map<C, Multimap<R, V>> columnMap();
 }

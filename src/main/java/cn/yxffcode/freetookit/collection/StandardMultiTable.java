@@ -1,6 +1,13 @@
 package cn.yxffcode.freetookit.collection;
 
+import cn.yxffcode.freetookit.lang.NullSupplier;
+import com.google.common.base.Function;
 import com.google.common.base.Supplier;
+import com.google.common.base.Suppliers;
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Multimaps;
 import com.google.common.collect.Table;
 
 import java.util.Collection;
@@ -43,8 +50,8 @@ public class StandardMultiTable<R, C, V> implements MultiTable<R, C, V> {
 
   @Override
   public boolean containsValue(Object value) {
-    for (Map.Entry<R, Map<C, Collection<V>>> re : rowMap().entrySet()) {
-      for (Map.Entry<C, Collection<V>> ce : re.getValue().entrySet()) {
+    for (Map.Entry<R, ? extends Multimap<C, V>> re : rowMap().entrySet()) {
+      for (Map.Entry<C, Collection<V>> ce : re.getValue().asMap().entrySet()) {
         if (ce.getValue().contains(value)) {
           return true;
         }
@@ -100,9 +107,8 @@ public class StandardMultiTable<R, C, V> implements MultiTable<R, C, V> {
     if (table.isEmpty()) {
       return;
     }
-    for (Map.Entry<? extends R, ? extends Map<? extends C, ? extends Collection<? extends V>>> re : table.rowMap()
-            .entrySet()) {
-      for (Map.Entry<? extends C, ? extends Collection<? extends V>> ce : re.getValue().entrySet()) {
+    for (Map.Entry<? extends R, ? extends Multimap<? extends C, ? extends V>> re : table.rowMap().entrySet()) {
+      for (Map.Entry<? extends C, ? extends Collection<? extends V>> ce : re.getValue().asMap().entrySet()) {
         putAll(re.getKey(), ce.getKey(), ce.getValue());
       }
     }
@@ -133,13 +139,21 @@ public class StandardMultiTable<R, C, V> implements MultiTable<R, C, V> {
   }
 
   @Override
-  public Map<C, Collection<V>> row(R rowKey) {
-    return backTable.row(rowKey);
+  public Multimap<C, V> row(R rowKey) {
+    final Map<C, Collection<V>> row = backTable.row(rowKey);
+    if (row == null) {
+      return ImmutableMultimap.of();
+    }
+    return Multimaps.unmodifiableMultimap(Multimaps.newMultimap(row, NullSupplier.<Collection<V>>getInstance()));
   }
 
   @Override
-  public Map<R, Collection<V>> column(C columnKey) {
-    return backTable.column(columnKey);
+  public Multimap<R, V> column(C columnKey) {
+    final Map<R, Collection<V>> column = backTable.column(columnKey);
+    if (column == null) {
+      return ImmutableMultimap.of();
+    }
+    return Multimaps.unmodifiableMultimap(Multimaps.newMultimap(column, NullSupplier.<Collection<V>>getInstance()));
   }
 
   @Override
@@ -159,12 +173,30 @@ public class StandardMultiTable<R, C, V> implements MultiTable<R, C, V> {
   }
 
   @Override
-  public Map<R, Map<C, Collection<V>>> rowMap() {
-    return backTable.rowMap();
+  public Map<R, Multimap<C, V>> rowMap() {
+    final Map<R, Map<C, Collection<V>>> rowMap = backTable.rowMap();
+    if (rowMap.isEmpty()) {
+      return Collections.emptyMap();
+    }
+    return Maps.transformValues(rowMap, new Function<Map<C, Collection<V>>, Multimap<C, V>>() {
+      @Override
+      public Multimap<C, V> apply(Map<C, Collection<V>> input) {
+        return Multimaps.unmodifiableMultimap(Multimaps.newMultimap(input, NullSupplier.<Collection<V>>getInstance()));
+      }
+    });
   }
 
   @Override
-  public Map<C, Map<R, Collection<V>>> columnMap() {
-    return backTable.columnMap();
+  public Map<C, Multimap<R, V>> columnMap() {
+    final Map<C, Map<R, Collection<V>>> colMap = backTable.columnMap();
+    if (colMap.isEmpty()) {
+      return Collections.emptyMap();
+    }
+    return Maps.transformValues(colMap, new Function<Map<R, Collection<V>>, Multimap<R, V>>() {
+      @Override
+      public Multimap<R, V> apply(Map<R, Collection<V>> input) {
+        return Multimaps.unmodifiableMultimap(Multimaps.newMultimap(input, NullSupplier.<Collection<V>>getInstance()));
+      }
+    });
   }
 }
