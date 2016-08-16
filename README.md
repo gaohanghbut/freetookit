@@ -36,6 +36,13 @@ return FluentOptional.from(world)
         .or(defaultCode);
 ```
 
+## TextTemplate 
+简单的字符串模板功能,提供mybatis风格的placeholder,支持转义 
+```java
+final TextTemplate textTemplate = new TextTemplate("select * from }\\\\\\\\#{tableName} where");
+final StringRef ref = textTemplate.rend(Collections.singletonMap("tableName", "hahatest"));
+```
+
 ## MpscLinkedQueue
 针对多线程生产,单线程消费的无锁队列,类似于ConcurrentLinkedQueue,但MpscLinkedQueue在消费端只能支持单线程,
 如果使用多线程消费则是线程不安全的

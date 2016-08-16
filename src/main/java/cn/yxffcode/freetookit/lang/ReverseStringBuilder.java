@@ -6,9 +6,12 @@ import static cn.yxffcode.freetookit.utils.ArrayUtils.reverseGrow;
 
 /**
  * 类似于{@link StringBuilder}
+ * <p>
+ * 不要再使用了,可以用{@link StringBuilder#reverse()}
  *
  * @author gaohang on 16/5/20.
  */
+@Deprecated
 public class ReverseStringBuilder {
 
   private static final int DEFAULT_CHARS_INIT_LEN = 10;
@@ -37,7 +40,8 @@ public class ReverseStringBuilder {
   /**
    * 反向转换成String
    */
-  @Override public String toString() {
+  @Override
+  public String toString() {
     if (pos == data.length) {
       return StringUtils.EMPTY;
     }
