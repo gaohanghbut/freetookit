@@ -75,7 +75,7 @@ public class TextTemplate {
     return new StringRef(Iterables.transform(segments, new Function<Segment, String>() {
       @Override
       public String apply(Segment segment) {
-        // TODO: 8/16/16 可以支持序列化方式,但是过于复杂,与设计目的不符
+        // NOTE:可以支持序列化方式,但是过于复杂,与设计目的不符
         return segment.isVariable() ? String.valueOf(context.get(segment.getText())) : segment.getText();
       }
     }));
