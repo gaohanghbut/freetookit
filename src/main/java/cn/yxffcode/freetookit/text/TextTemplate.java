@@ -1,5 +1,6 @@
 package cn.yxffcode.freetookit.text;
 
+import cn.yxffcode.freetookit.collection.MappingMap;
 import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
@@ -8,8 +9,6 @@ import com.google.common.collect.Lists;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * @author gaohang on 8/16/16.
@@ -66,9 +65,8 @@ public class TextTemplate {
   }
 
   public StringRef rend(final Map<String, ?> context) {
-    checkNotNull(context);
     for (Segment segment : segments) {
-      if (segment.isVariable() && !context.containsKey(segment.getText())) {
+      if (segment.isVariable() && (context == null || !context.containsKey(segment.getText()))) {
         throw new PlaceNotFoundException(segment.getText() + " cannot be found in context:" + context);
       }
     }
@@ -79,6 +77,10 @@ public class TextTemplate {
         return segment.isVariable() ? String.valueOf(context.get(segment.getText())) : segment.getText();
       }
     }));
+  }
+
+  public StringRef rend(final Object context) {
+    return rend(MappingMap.fromNotNull(context));
   }
 
 }
