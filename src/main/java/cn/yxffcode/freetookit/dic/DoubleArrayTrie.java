@@ -58,7 +58,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * <p>
  * 内存存储方面,需要对字母表做处理,{@link #alphabetTransformer}用作奖字符转换成int类型的数据(apply方法中可返回IntsRef的包装类),
  * 默认只处理英文大小写,数字和汉字,其它字符跳过(转换成int后小于或者等于0).默认的方式将终止符转换成1,数字转换成2~11,小写字母转换成12~37,大写英文字母
- * 转换成38~73,汉字大于74(汉字转换成int后数值满园在[{@link DefaultAlphabetTransformer#CN_CHAR_FIRST},{@link
+ * 转换成38~73,汉字大于74(汉字转换成int后数值范围在[{@link DefaultAlphabetTransformer#CN_CHAR_FIRST},{@link
  * DefaultAlphabetTransformer#CN_CHAR_LAST}]
  * 之间,做字母表的转换可减小字母的数值,从而减小base与check两个数组的大小.
  *
