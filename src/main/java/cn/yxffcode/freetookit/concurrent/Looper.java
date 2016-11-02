@@ -1,7 +1,6 @@
 package cn.yxffcode.freetookit.concurrent;
 
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * @author gaohang on 10/23/16.
@@ -24,15 +23,6 @@ public final class Looper {
     }
 
     final Looper looper = new Looper(messageQueue, handler);
-    LOOPER_THREAD_LOCAL.set(looper);
-  }
-
-  public static void prepare(MessageHandler handler) {
-    if (LOOPER_THREAD_LOCAL.get() != null) {
-      throw new IllegalStateException("The Looper has already been prepared.");
-    }
-
-    final Looper looper = new Looper(new LinkedBlockingQueue<>(), handler);
     LOOPER_THREAD_LOCAL.set(looper);
   }
 
