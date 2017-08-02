@@ -26,8 +26,12 @@ public final class Looper {
     LOOPER_THREAD_LOCAL.set(looper);
   }
 
+  public static Looper myLopper() {
+    return LOOPER_THREAD_LOCAL.get();
+  }
+
   public static void loop() {
-    final Looper looper = LOOPER_THREAD_LOCAL.get();
+    final Looper looper = myLopper();
     if (looper == null) {
       throw new RuntimeException("No Looper; Looper.prepare() wasn't called on this thread.");
     }

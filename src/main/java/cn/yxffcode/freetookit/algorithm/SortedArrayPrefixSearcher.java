@@ -1,6 +1,10 @@
 package cn.yxffcode.freetookit.algorithm;
 
+import com.google.common.collect.Lists;
+
 import java.util.AbstractList;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Strings.isNullOrEmpty;
