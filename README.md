@@ -5,6 +5,29 @@
 
 部分类的使用示例:
 
+## 方法的lazy调用 
+Java语法不支持lazy,如果想使用lazy调用，可使用@Lazy标记方法，并通过LazyProxy创建代理，使用方法如下:
+```java
+public interface TestService {
+  @Lazy
+  TestBean info();
+}
+```
+```java
+public class Test {
+  
+  public void create_jdk() throws Exception {
+    final TestService testService = LazyProxy.newInstance(TestService.class, new Supplier<TestService>() {
+      @Override
+      public TestService get() {
+        return new TestServiceImpl();
+      }
+    });
+    TestBean bean = testService.info();//lazy
+  }
+
+}
+```
 ## FluentOptional 
 流式的Optional,需要多次判断空的,代码中需要多个if-else,即使使用Optional,例如:
 ```java 
